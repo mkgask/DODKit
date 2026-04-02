@@ -1,0 +1,58 @@
+# DECISIONS.yml
+# Current active decision list (mutable) for DOD (Decision Oriented Development)
+# Structure: category -> main decisions -> sub-decisions (up to 5 levels)
+# Start by checking only this file when making a new decision.
+# See the corresponding record file for detailed decision history.
+
+version: "1.0"
+last_updated: "2026-04-01"
+decisions:
+
+  Architecture:
+    - id: r-007
+      title: Frontend framework selection
+      status: Accepted
+      reason: App Router issues remained unresolved; prioritize simple data loading and performance
+      updated_at: "2026-02-20"
+      sub_decisions:
+        - id: r-007-1
+          title: Routing strategy
+          status: Accepted
+          reason: Adopt file-based routing and leverage nested routes
+          sub_decisions: []
+        - id: r-007-2
+          title: Data fetching strategy
+          status: Accepted
+          reason: Prefer Server Components and minimize Client Components
+
+  Database:
+    - id: r-001
+      title: Primary database adoption
+      status: Accepted
+      reason: Prioritize strong ACID transactions and scalability
+      updated_at: "2025-10-15"
+      sub_decisions:
+        - id: r-001-1
+          title: Read scaling
+          status: Accepted
+          reason: Read Replica complemented by Citrus
+
+  Authentication and Security:
+    - id: r-012
+      title: Authentication approach selection
+      status: Accepted
+      reason: Best balance between security and development speed
+      updated_at: "2026-01-10"
+      sub_decisions: []
+
+  Operations and CI/CD:
+    - id: r-015
+      title: Automated dependency updates
+      status: Accepted
+      reason: Enable rapid response to security patches
+      updated_at: "2026-03-15"
+      sub_decisions:
+        - id: r-015-1
+          title: Update frequency and review policy
+          status: Accepted
+          reason: Create automated PRs weekly and require manual review

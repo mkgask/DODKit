@@ -1,56 +1,79 @@
-# DOD: Decision-Oriented Development
+# Decision Oriented Development
 
-DOD is a lightweight development method that places decisions at the center of development, and by simply repeating the **discussion phase** and **implementation phase**, it obtains truly purposeful software.
+**Decision Oriented Development: DOD**
 
-It makes decisions quick and easy, yet manages them in a way that allows for reliable later review, enabling AI and humans to work together to drive fast and accurate development.
+DOD is a lightweight development method that places decisions at the center of development. By repeating only two phases, the **discussion phase** and the **implementation phase**, teams can deliver software that stays aligned with real goals.
 
-In DOD, the following two types of documentation are used:
+It keeps decision-making lightweight while preserving strong traceability for later review. This enables AI and humans to collaborate on fast and accurate development without losing rationale.
 
-- **Variable File (DECISIONS.yml)**: Manages a list of currently valid decisions and their reasons.
+DOD uses the following two document types:
 
--> When creating a new decision, you can **start immediately by looking only at this**, without having to reread past history. Cognitive load is dramatically reduced, and it is highly compatible with AI.
+**Decision List File (`DECISIONS.yml`)**: A list of currently valid decisions and their reasons.
+This file is mutable. When making a new decision, you can **start immediately by checking only this file**. You do not need to reread historical context first. That sharply reduces cognitive load and works very well with AI-assisted workflows.
 
-- **Immutable File (records/{decision ID}.md)**: Records the background, research, trade-offs, and discussion process that led to the decision.
+**Decision Record File (`records/{decision-id}.md`)**: The background, investigation, trade-offs, and discussion process behind each decision.
+This file is immutable in principle. Once created, append-only updates are the default. It remains a reliable history for accurately answering, "Why was this decided at that time?"
 
--> Once written, basically only appends are made. It remains as a history that allows for accurate later review of "why this decision was made at the time."
+This separation makes it possible to get both **what is currently valid** and **why it became valid** with minimal effort at the right time.
+In traditional SDD or ADR-style workflows, those concerns are often mixed together, so people must filter old noise before making new decisions. DOD addresses this problem at the root.
 
-This separation allows you to obtain **only what is effective now and why it was done, at the time and at the minimum cost**.
-Traditional SDD and ADR mix these together, requiring you to sift through past noise to find reference material for new decisions, but DOD fundamentally solves this problem.
+## Development Flow (Only Two Phases)
 
-## Development Flow (Only 2 Phases)
+**Discussion Phase** (until a decision is finalized)
+- Actions: Investigate, research, ask questions, and discuss in order to finalize decisions (not only product specs, but also technology choices and constraints)
+- Deliverables (always in this order):
+	1. Write the process in **`records/{decision-id}.md`** (immutable, append-only; newly discovered facts can be added as they appear)
+	2. Update the decision and reason in **`DECISIONS.yml`** (mutable)
+	3. Write tests for implementing the decision first (primarily e2e tests, plus unit tests where possible)
+- Constraint: Do not write implementation code until test creation is complete
+- Constraint: Do not over-investigate beyond what is needed
 
-**Discussion Phase** (Until a decision is finalized)
-- Actions: Research, study, questions, and discussions for the decision (including not only specifications but also technology selection and constraints)
-- Deliverables (must be output in this order):
-1. Record the process in **records/{Decision ID}.md** (immutable, only additions are OK / new facts discovered during research, etc. can be recorded)
-2. Update the decisions and reasons in **DECISIONS.yml** (variable)
-3. Create test code to implement the decision first (mainly end-to-end tests, write unit tests where possible)
-- Constraint: Do not write code until the test code creation is complete
-- Constraint: Do not delve deeper than necessary
+**Implementation Phase** (until tests pass)
+- Actions: Implement and refactor code to satisfy tests; add more tests whenever needed
+- Deliverable: Working code (all tests pass)
+- Constraints: Respect `DECISIONS.yml` and existing test code; `records/{decision-id}.md` remains append-only
 
-**Implementation Phase** (Until tests pass)
-- Actions: Implement code to pass the test code (including refactoring), add test code as needed
-- Deliverables: Working code (all tests pass)
-- Constraints: DECISIONS.md and existing test code must be fully respected; records/{decision ID}.md can only be appended to.
 ## Document Structure
 
-**DECISIONS.yml** (Variable, currently active list)
-- Category list at the top level
-- Array of decision objects within each category
-- Main properties of the object:
-- `id` ({category}-{sequence number}-{shortname}, called the decision ID), `title`, `decision`, `reason` (up to about 3 lines allowed), `status` (Accepted / Superseded, etc.), `updated_at`, `link`
-- YAML displayed in table view for human readability
+**`DECISIONS.yml`** (mutable, currently valid list)
+- Top-level category list
+- Each category contains an array of decision objects
+- Main object properties:
+	- `id` (`{category}-{sequence}-{shortname}`, called the decision ID), `title`, `decision`, `reason` (up to around 3 lines), `status` (`Accepted`, `Superseded`, etc.), `updated_at`, `link`
+- Decision objects can be nested up to 5 levels (3 levels recommended)
+- YAML should stay readable in table-style viewers
 
-**records/{decision ID}.md** (Immature, history record)
-- Free-form text format (MADR style or plain text is acceptable)
-- Basically, only appends are allowed. To be preserved as a historical fact
+**`records/{decision-id}.md`** (immutable, decision history)
+- Free-form format (MADR-style or plain text)
+- Append-only in principle, to preserve historical facts
 
 ## Version Control
 
-**Main Branch**
-- Always maintain consistency with DECISIONS.yml
-- Merge only when the code passes tests and the decision is finalized
+**`main` branch**
+- Keep it consistent with `DECISIONS.yml` at all times
+- Merge only when code passes tests and the decision is finalized
 
-**Individual Working Branch**
-- Branch name is `{Decision ID}`
-- Work only within this branch until the code passes tests and the decision is finalized
+**Feature branch per decision**
+- Branch name: `{decision-id}`
+- Keep work isolated in that branch until tests pass and the decision is finalized
+
+## Verification
+
+Verification is not a separate phase. Enforce it through hooks.
+Validate from high-level checks down to low-level checks.
+
+**`pre-commit` hook**: prioritize decision consistency and fix issues early
+- Consistency checks for `DECISIONS.yml`
+- Consistency checks between `DECISIONS.yml` and high-level specification tests
+
+**`pre-push` hook**: final validation of tests and code quality
+- High-level e2e specification tests and unit tests
+- Type checks, lint, and coding-standard checks
+
+## Notes
+
+DOD is not ADR.
+It is not SDD (Specification-Driven Development).
+It is not IDD (Intent-Driven Development).
+
+Those methods can still be referenced, but do not let them pull the process away from DOD's core principles.
