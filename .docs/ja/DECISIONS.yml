@@ -1,0 +1,25 @@
+version: "1.0"
+last_updated: "2026-04-03"
+decisions:
+
+  Copilot Customization:
+    - id: agent-001-dod-custom-agent
+      title: DOD専用のVS Codeカスタムエージェントを作成する
+      reason: DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
+      status: Accepted
+      updated_at: "2026-04-03"
+      link: "records/agent-001-dod-custom-agent.md"
+
+    - id: agent-002-installer-delivery
+      title: DODエージェントパッケージ用のリポジトリインストーラーを提供する
+      reason: ワンコマンドで導入できるようにし、ローカル配置の一貫性を確保するため。
+      status: Accepted
+      updated_at: "2026-04-03"
+      link: "records/agent-002-installer-delivery.md"
+
+    - id: agent-003-raw-github-install
+      title: raw.githubusercontent.com経由でinstaller.sh | bashの導線を提供する
+      reason: GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
+      status: Accepted
+      updated_at: "2026-04-03"
+      link: "records/agent-003-raw-github-install.md"
