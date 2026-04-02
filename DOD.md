@@ -22,30 +22,43 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 **Discussion Phase** (until a decision is finalized)
 - Actions: Investigate, research, ask questions, and discuss in order to finalize decisions (not only product specs, but also technology choices and constraints)
 - Deliverables (always in this order):
-	1. Write the process in **`records/{decision-id}.md`** (immutable, append-only; newly discovered facts can be added as they appear)
-	2. Update the decision and reason in **`DECISIONS.yml`** (mutable)
-	3. Write tests for implementing the decision first (primarily e2e tests, plus unit tests where possible)
-- Constraint: Do not write implementation code until test creation is complete
-- Constraint: Do not over-investigate beyond what is needed
+	1. Write the process in **Decision Record File (`records/{decision-id}.md`)** (immutable, append-only; newly discovered facts can be added as they appear)
+	2. Update the decision and reason in **Decision List File (`DECISIONS.yml`)** (mutable)
+- Constraint: Do not enter the implementation phase or start writing code until the decision contract (invariants, non-goals, acceptance criteria, and failure criteria) is finalized in the decision record file and the decision is recorded in `DECISIONS.yml`
 
 **Implementation Phase** (until tests pass)
-- Actions: Implement and refactor code to satisfy tests; add more tests whenever needed
-- Deliverable: Working code (all tests pass)
-- Constraints: Respect `DECISIONS.yml` and existing test code; `records/{decision-id}.md` remains append-only
+- Actions: Design, test implementation, and code implementation
+- Deliverables:
+	- Test code that enforces the decision
+	- Working code (all tests pass)
+- Constraints:
+	- Fully respect `DECISIONS.yml`, existing test code, and existing implementation code
+	- If new facts are discovered, append them to the decision record file
 
 ## Document Structure
 
-**`DECISIONS.yml`** (mutable, currently valid list)
-- Top-level category list
+**Decision List File (`DECISIONS.yml`)**: mutable, currently active list
+- Category list at the top level
 - Each category contains an array of decision objects
-- Main object properties:
-	- `id` (`{category}-{sequence}-{shortname}`, called the decision ID), `title`, `decision`, `reason` (up to around 3 lines), `status` (`Accepted`, `Superseded`, etc.), `updated_at`, `link`
+- Main properties of a decision object:
+	- `id`: required. `{category}-{sequence}-{shortname}`. Referred to as the decision ID
+	- `title`: required
+	- `reason`: required. Up to around 3 lines is acceptable
+	- `status`: optional. `Accepted`, `Superseded`, etc.
+	- `updated_at`: optional
+	- `link`: optional. Pointer to the related decision record file
 - Decision objects can be nested up to 5 levels (3 levels recommended)
-- YAML should stay readable in table-style viewers
+- Keep this file as thin as possible
+- Keep YAML readable in table-view tools
 
-**`records/{decision-id}.md`** (immutable, decision history)
-- Free-form format (MADR-style or plain text)
-- Append-only in principle, to preserve historical facts
+**Decision Record File (`records/{decision-id}.md`)**: immutable, decision history
+- Free-form format (MADR-like or plain text)
+- Append-only in principle, preserving historical facts
+- Keep the decision contract in this file:
+	- Invariants: what must always be preserved
+	- Non-goals: what will not be done
+	- Acceptance criteria: observable target values/behaviors
+	- Failure criteria: explicitly define what is unacceptable
 
 ## Version Control
 
@@ -60,15 +73,14 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 ## Verification
 
 Verification is not a separate phase. Enforce it through hooks.
-Validate from high-level checks down to low-level checks.
 
-**`pre-commit` hook**: prioritize decision consistency and fix issues early
-- Consistency checks for `DECISIONS.yml`
-- Consistency checks between `DECISIONS.yml` and high-level specification tests
-
-**`pre-push` hook**: final validation of tests and code quality
+**`pre-commit` hook**: validation for tests and code quality
 - High-level e2e specification tests and unit tests
 - Type checks, lint, and coding-standard checks
+
+**`pre-push` hook**: early correction for decision consistency
+- Consistency checks for `DECISIONS.yml`
+- Consistency checks between `DECISIONS.yml` and high-level specification tests
 
 ## Notes
 
