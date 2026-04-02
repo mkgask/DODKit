@@ -1,0 +1,57 @@
+# DECISIONS.yml
+# DOD（決定指向開発）用 現在有効な決定事項一覧（可変）
+# 構造：カテゴリ → メイン決定事項 → サブ決定事項（最大5層まで許容）
+# 新しい決定時はこのファイルだけをまず参照。詳細経緯は対応するADRを参照。
+
+version: "1.0"
+last_updated: "2026-04-01"
+decisions:
+
+  アーキテクチャ:
+    - id: ADR-007
+      title: フロントエンドフレームワークの選定
+      status: Accepted
+      reason: App Routerの問題が解決されず、データロードのシンプルさとパフォーマンスを優先
+      updated_at: "2026-02-20"
+      sub_decisions:   # ← ここでネスト（サブ決定）
+        - id: ADR-007-1
+          title: ルーティング方式
+          status: Accepted
+          reason: File-based routingを採用し、ネストされたルートを活用
+          sub_decisions: []   # さらに深くネスト可能（最大5層）
+        - id: ADR-007-2
+          title: データフェッチ戦略
+          status: Accepted
+          reason: Server Componentsを優先し、Client Componentsは最小限に
+
+  データベース:
+    - id: ADR-001
+      title: プライマリデータベースの採用
+      status: Accepted
+      reason: ACIDトランザクションの強さと拡張性を重視
+      updated_at: "2025-10-15"
+      sub_decisions:
+        - id: ADR-001-1
+          title: 読み取りスケーリング
+          status: Accepted
+          reason: Read Replica + Citrusで補完
+
+  認証・セキュリティ:
+    - id: ADR-012
+      title: 認証方式の選択
+      status: Accepted
+      reason: セキュリティと開発速度のバランスが最適
+      updated_at: "2026-01-10"
+      sub_decisions: []
+
+  運用・CI/CD:
+    - id: ADR-015
+      title: 依存関係更新の自動化
+      status: Accepted
+      reason: セキュリティパッチの迅速対応のため
+      updated_at: "2026-03-15"
+      sub_decisions:
+        - id: ADR-015-1
+          title: 更新頻度とレビュー
+          status: Accepted
+          reason: 週次で自動PR作成、手動レビュー必須
