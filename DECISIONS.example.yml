@@ -11,36 +11,36 @@ decisions:
   Architecture:
     - id: r-007
       title: Frontend framework selection
-      status: Accepted
+      status: Implementation Approved
       reason: App Router issues remained unresolved; prioritize simple data loading and performance
       updated_at: "2026-02-20"
       sub_decisions:
         - id: r-007-1
           title: Routing strategy
-          status: Accepted
+          status: Discussion Approved
           reason: Adopt file-based routing and leverage nested routes
           sub_decisions: []
         - id: r-007-2
           title: Data fetching strategy
-          status: Accepted
+          status: Implementing
           reason: Prefer Server Components and minimize Client Components
 
   Database:
     - id: r-001
       title: Primary database adoption
-      status: Accepted
+      status: Implementation Approved
       reason: Prioritize strong ACID transactions and scalability
       updated_at: "2025-10-15"
       sub_decisions:
         - id: r-001-1
           title: Read scaling
-          status: Accepted
+          status: On Hold
           reason: Read Replica complemented by Citrus
 
   Authentication and Security:
     - id: r-012
       title: Authentication approach selection
-      status: Accepted
+      status: Discussion In Progress
       reason: Best balance between security and development speed
       updated_at: "2026-01-10"
       sub_decisions: []
@@ -48,11 +48,11 @@ decisions:
   Operations and CI/CD:
     - id: r-015
       title: Automated dependency updates
-      status: Accepted
+      status: Implementing
       reason: Enable rapid response to security patches
       updated_at: "2026-03-15"
       sub_decisions:
         - id: r-015-1
           title: Update frequency and review policy
-          status: Accepted
+          status: Discussion Approved
           reason: Create automated PRs weekly and require manual review
