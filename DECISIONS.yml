@@ -6,20 +6,20 @@ decisions:
     - id: agent-001-dod-custom-agent
       title: Create a dedicated DOD custom agent in VS Code
       reason: A persistent persona with constrained tools is required to keep implementation aligned with DOD decisions.
-      status: Accepted
-      updated_at: "2026-04-03"
+      status: Implementation Approved
+      updated_at: "2026-04-04"
       link: "records/agent-001-dod-custom-agent.md"
 
     - id: agent-002-installer-delivery
       title: Provide a repository installer for the DOD agent package
       reason: A one-command installer lowers setup cost and ensures consistent local file placement.
-      status: Accepted
+      status: Discussion Approved
       updated_at: "2026-04-03"
       link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe to bash
       reason: GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
-      status: Accepted
+      status: Discussion Approved
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"

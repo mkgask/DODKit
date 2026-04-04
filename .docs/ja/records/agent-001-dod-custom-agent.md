@@ -55,3 +55,15 @@ Positive:
 Trade-offs:
 - エージェント定義と関連ファイルの保守コストが発生します。
 - ツール制約は不足権限/過剰権限を避ける調整が必要です。
+
+## 実装更新（2026-04-04）
+- ワークスペースカスタムエージェントを `.github/agents/dod.agent.md` に実装。
+- 同期用の日本語ドキュメントを `.docs/ja/.github/agents/dod.agent.md` に追加。
+- エージェント指示に、DODフェーズ順序と `DECISIONS.yml` / `records/{decision-id}.md` 更新要件を明示。
+
+## エージェント定義拡張（DOD詳細準拠）（2026-04-04）
+- フェーズゲート（Gate A/B/C）を明示し、議論成果物と決定契約が揃うまで実装開始できない制御を追加。
+- ステータス運用方針を追加し、4基本ステータス（`Discussion In Progress` / `Discussion Approved` / `Implementing` / `Implementation Approved`）を優先、例外ステータスは必要時のみに制限。
+- 検証意図をDODフックに対応付け（`pre-commit`: テスト/コード品質、`pre-push`: 決定整合性）。
+- バージョン管理ルールと報告契約を追加し、決定IDブランチ運用と「変更・理由・検証・残存リスク」の報告を必須化。
+- 本拡張は、決定ドリフトを減らし、実行時挙動を `DOD.md` により厳密に一致させる目的で実施。

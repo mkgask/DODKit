@@ -55,3 +55,15 @@ Positive:
 Trade-offs:
 - Requires upfront maintenance of agent definition and related files.
 - Tool restrictions must be tuned to avoid under-permission or over-permission.
+
+## Implementation Update (2026-04-04)
+- Implemented workspace custom agent at `.github/agents/dod.agent.md`.
+- Added Japanese synchronized document at `.docs/ja/.github/agents/dod.agent.md`.
+- Agent instructions now explicitly enforce DOD phase ordering and required artifact updates for `DECISIONS.yml` and `records/{decision-id}.md`.
+
+## Agent Definition Expansion (DOD Detailed Alignment) (2026-04-04)
+- Expanded the agent with explicit phase gates (Gate A/B/C) so implementation cannot start before discussion artifacts and decision contracts are complete.
+- Added status operation policy to prioritize the four default states (`Discussion In Progress`, `Discussion Approved`, `Implementing`, `Implementation Approved`) and limit exceptional states to real necessity.
+- Added verification intent mapping to DOD hooks (`pre-commit`: tests/code quality, `pre-push`: decision consistency).
+- Added version-control and communication contracts to ensure branch naming by decision ID and mandatory reporting of change, rationale, validation, and residual risk.
+- This extension was made to reduce decision drift risk and align runtime behavior more tightly with `DOD.md`.
