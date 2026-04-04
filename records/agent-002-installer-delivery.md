@@ -70,6 +70,7 @@ Additional findings used for this decision refinement:
 Discussion outcome:
 - The template-file rule should not live only in this history record; it is an active sub-decision and is now tracked in `DECISIONS.yml`.
 - The GitHub Copilot Chat-only scope should not live only in this history record; it is an active sub-decision and is now tracked in `DECISIONS.yml`.
+- Template-file implementation details are important enough to be split into a separate decision record: `agent-004-installer-template-details`.
 
 Sources:
 - https://code.visualstudio.com/docs/copilot/customization/custom-agents

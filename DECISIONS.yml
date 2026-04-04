@@ -36,3 +36,29 @@ decisions:
       status: Discussion Approved
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"
+
+    - id: agent-004-installer-template-details
+      title: Define installer template file layout and output mapping
+      reason: Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.
+      status: Discussion Approved
+      updated_at: "2026-04-04"
+      link: "records/agent-004-installer-template-details.md"
+      sub_decisions:
+        - id: agent-004-1-template-path
+          title: Store the initial template at templates/agent.md
+          reason: A top-level template path is simple now and still leaves room for future expansion.
+          status: Discussion Approved
+          updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"
+        - id: agent-004-2-copy-manifest
+          title: Keep the installer copy-target list inside the installer
+          reason: The installer needs an explicit mapping list even with only one file so future expansion stays deterministic.
+          status: Discussion Approved
+          updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"
+        - id: agent-004-3-source-destination-rule
+          title: Use raw.githubusercontent.com as source and current-directory-relative paths as destination
+          reason: Source and destination resolution must stay explicit and consistent for installer execution.
+          status: Discussion Approved
+          updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"

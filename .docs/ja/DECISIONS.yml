@@ -36,3 +36,29 @@ decisions:
       status: Discussion Approved
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"
+
+    - id: agent-004-installer-template-details
+      title: インストーラーテンプレートファイルの構成と出力マッピングを定義する
+      reason: テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
+      status: Discussion Approved
+      updated_at: "2026-04-04"
+      link: "records/agent-004-installer-template-details.md"
+      sub_decisions:
+        - id: agent-004-1-template-path
+          title: 初期テンプレートは templates/agent.md に置く
+          reason: トップレベルの配置は当面シンプルで、将来拡張の余地も残せるため。
+          status: Discussion Approved
+          updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"
+        - id: agent-004-2-copy-manifest
+          title: インストーラー内にコピー対象リストを保持する
+          reason: 1ファイル構成でも将来拡張に備えて、明示的な対応表を持つ必要があるため。
+          status: Discussion Approved
+          updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"
+        - id: agent-004-3-source-destination-rule
+          title: コピー元は raw.githubusercontent.com、コピー先はカレントディレクトリ相対パスとする
+          reason: インストーラー実行時の入出力解決を明示的かつ一貫して扱うため。
+          status: Discussion Approved
+          updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"
