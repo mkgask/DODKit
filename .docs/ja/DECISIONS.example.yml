@@ -10,68 +10,68 @@ decisions:
   アーキテクチャ:
     - id: r-007
       title: フロントエンドフレームワークの選定
-      status: 実装承認
+      status: "✅️Implementation Approved"
       reason: App Routerの問題が解決されず、データロードのシンプルさとパフォーマンスを優先
       updated_at: "2026-02-20"
       sub_decisions:
         - id: r-007-1
           title: ルーティング方式
-          status: 議論承認
+          status: "⚠️Discussion Approved"
           reason: File-based routingを採用し、ネストされたルートを活用
           sub_decisions: []
         - id: r-007-2
           title: データフェッチ戦略
-          status: 実装中
+          status: "⚠️Implementing"
           reason: Server Componentsを優先し、Client Componentsは最小限に
         - id: r-007-3
           title: フォーム相互作用の境界
-          status: 議論中
+          status: "⚠️Discussion In Progress"
           reason: 複雑なフォーム状態は、必要最小限のClient Componentに閉じ込める
 
   データベース:
     - id: r-001
       title: プライマリデータベースの採用
-      status: 実装承認
+      status: "✅️Implementation Approved"
       reason: ACIDトランザクションの強さと拡張性を重視
       updated_at: "2025-10-15"
       sub_decisions:
         - id: r-001-1
           title: 読み取りスケーリング
-          status: 保留
+          status: "⛔️On Hold"
           reason: Read Replica + Citrusで補完
         - id: r-001-2
           title: スキーママイグレーション運用
-          status: 議論承認
+          status: "⚠️Discussion Approved"
           reason: デプロイ前に、レビュー済みのforward-only migrationをCIで実行する
 
   認証・セキュリティ:
     - id: r-012
       title: 認証方式の選択
-      status: 議論中
+      status: "⚠️Discussion In Progress"
       reason: セキュリティと開発速度のバランスが最適
       updated_at: "2026-01-10"
       sub_decisions:
         - id: r-012-1
           title: セッション保存戦略
-          status: 議論承認
+          status: "⚠️Discussion Approved"
           reason: 失効制御を中央で維持できるよう、サーバー側セッションを採用する
         - id: r-012-2
           title: MFA導入範囲
-          status: 議論中
+          status: "⚠️Discussion In Progress"
           reason: まず管理者ロールにMFAを必須化し、その後に全ユーザーへ拡張する
 
   運用・CI/CD:
     - id: r-015
       title: 依存関係更新の自動化
-      status: 実装中
+      status: "⚠️Implementing"
       reason: セキュリティパッチの迅速対応のため
       updated_at: "2026-03-15"
       sub_decisions:
         - id: r-015-1
           title: 更新頻度とレビュー
-          status: 議論承認
+          status: "⚠️Discussion Approved"
           reason: 週次で自動PR作成、手動レビュー必須
         - id: r-015-2
           title: 依存関係更新のマージ条件
-          status: 実装承認
+          status: "✅️Implementation Approved"
           reason: テスト、型チェック、セキュリティレビュー通過後にのみマージする

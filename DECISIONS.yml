@@ -1,64 +1,64 @@
 version: "1.0"
-last_updated: "2026-04-04"
+last_updated: "2026-04-05"
 decisions:
 
   Copilot Customization:
     - id: agent-001-dod-custom-agent
       title: Create a dedicated DOD custom agent in VS Code
       reason: A persistent persona with constrained tools is required to keep implementation aligned with DOD decisions.
-      status: Implementation Approved
+      status: "✅️Implementation Approved"
       updated_at: "2026-04-04"
       link: "records/agent-001-dod-custom-agent.md"
 
     - id: agent-002-installer-delivery
       title: Provide a repository installer for the DOD agent package
       reason: Provide the installer delivery mechanism and keep its active sub-decisions explicit in this list.
-      status: Discussion Approved
+      status: "⚠️Discussion Approved"
       updated_at: "2026-04-04"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
           title: Use template files as installer inputs
           reason: Templates keep source assets separate from target outputs and make future CLI expansion safer.
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-002-installer-delivery.md"
         - id: agent-002-2-github-copilot-chat-only
           title: Limit the initial installer CLI scope to GitHub Copilot Chat
           reason: A single-CLI first release reduces rollout risk while preserving a path for later expansion.
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe to bash
       reason: GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
-      status: Discussion Approved
+      status: "⚠️Discussion Approved"
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"
 
     - id: agent-004-installer-template-details
       title: Define installer template file layout and output mapping
       reason: Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.
-      status: Discussion Approved
-      updated_at: "2026-04-04"
+      status: "⚠️Implementing"
+      updated_at: "2026-04-05"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
           title: Store the initial template at templates/agent.md
           reason: A top-level template path is simple now and still leaves room for future expansion.
-          status: Discussion Approved
-          updated_at: "2026-04-04"
+          status: "✅️Implementation Approved"
+          updated_at: "2026-04-05"
           link: "records/agent-004-installer-template-details.md"
         - id: agent-004-2-copy-manifest
           title: Keep the installer copy-target list inside the installer
           reason: The installer needs an explicit mapping list even with only one file so future expansion stays deterministic.
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-004-installer-template-details.md"
         - id: agent-004-3-source-destination-rule
           title: Use raw.githubusercontent.com as source and current-directory-relative paths as destination
           reason: Source and destination resolution must stay explicit and consistent for installer execution.
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-004-installer-template-details.md"

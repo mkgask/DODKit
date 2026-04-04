@@ -1,64 +1,64 @@
 version: "1.0"
-last_updated: "2026-04-04"
+last_updated: "2026-04-05"
 decisions:
 
   Copilot Customization:
     - id: agent-001-dod-custom-agent
       title: DOD専用のVS Codeカスタムエージェントを作成する
       reason: DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
-      status: Implementation Approved
+      status: "✅️Implementation Approved"
       updated_at: "2026-04-04"
       link: "records/agent-001-dod-custom-agent.md"
 
     - id: agent-002-installer-delivery
       title: DODエージェントパッケージ用のリポジトリインストーラーを提供する
       reason: インストーラー提供の決定を置き、その下の現在有効なサブ決定もこの一覧に明示する。
-      status: Discussion Approved
+      status: "⚠️Discussion Approved"
       updated_at: "2026-04-04"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
           title: インストーラー入力としてテンプレートファイルを使用する
           reason: ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-002-installer-delivery.md"
         - id: agent-002-2-github-copilot-chat-only
           title: 初期のインストーラーCLI対応をGitHub Copilot Chatのみに限定する
           reason: 将来拡張の余地を残しつつ、初期リリースのリスクを下げるため。
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstaller.sh | bashの導線を提供する
       reason: GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
-      status: Discussion Approved
+      status: "⚠️Discussion Approved"
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"
 
     - id: agent-004-installer-template-details
       title: インストーラーテンプレートファイルの構成と出力マッピングを定義する
       reason: テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
-      status: Discussion Approved
-      updated_at: "2026-04-04"
+      status: "⚠️Implementing"
+      updated_at: "2026-04-05"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
           title: 初期テンプレートは templates/agent.md に置く
           reason: トップレベルの配置は当面シンプルで、将来拡張の余地も残せるため。
-          status: Discussion Approved
-          updated_at: "2026-04-04"
+          status: "✅️Implementation Approved"
+          updated_at: "2026-04-05"
           link: "records/agent-004-installer-template-details.md"
         - id: agent-004-2-copy-manifest
           title: インストーラー内にコピー対象リストを保持する
           reason: 1ファイル構成でも将来拡張に備えて、明示的な対応表を持つ必要があるため。
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-004-installer-template-details.md"
         - id: agent-004-3-source-destination-rule
           title: コピー元は raw.githubusercontent.com、コピー先はカレントディレクトリ相対パスとする
           reason: インストーラー実行時の入出力解決を明示的かつ一貫して扱うため。
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-004-installer-template-details.md"

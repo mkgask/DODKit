@@ -45,7 +45,7 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 	- `id`: required. `{category}-{sequence}-{shortname}`. Referred to as the decision ID
 	- `title`: required
 	- `reason`: required. Up to around 3 lines is acceptable
-	- `status`: optional. Use these four as defaults: `Discussion In Progress`, `Discussion Approved`, `Implementing`, `Implementation Approved`. Use others (for example, `On Hold`, `Cancelled`) only when necessary.
+	- `status`: optional. Use these as defaults: `⚠️Discussion In Progress`, `⚠️Discussion Approved`, `⚠️Implementing`, `✅️Implementation Approved`. Use others only when necessary, for example `⛔️On Hold` or `⛔️Cancelled`.
 	- `updated_at`: optional
 	- `link`: optional. Pointer to the related decision record file
 - Decision objects can be nested up to 5 levels (3 levels recommended)

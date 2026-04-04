@@ -67,3 +67,11 @@ Interpretation for implementation:
 Current decision effect:
 - The open questions above are resolved for the first release scope.
 - Active rules derived from this resolution are tracked in `DECISIONS.yml` as sub-decisions under `agent-004-installer-template-details`.
+
+## Implementation Update (2026-04-05)
+- Implemented the initial template file at `templates/agent.md`.
+- The template content is aligned with the current DOD agent definition to ensure deterministic first-copy behavior.
+- `agent-004-1-template-path` is now implementation-approved.
+- Remaining work for this parent decision:
+	- Implement and verify installer-internal copy-target list management.
+	- Apply source/destination resolution rules during installer execution.

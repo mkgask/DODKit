@@ -11,68 +11,68 @@ decisions:
   Architecture:
     - id: r-007
       title: Frontend framework selection
-      status: Implementation Approved
+      status: "✅️Implementation Approved"
       reason: App Router issues remained unresolved; prioritize simple data loading and performance
       updated_at: "2026-02-20"
       sub_decisions:
         - id: r-007-1
           title: Routing strategy
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           reason: Adopt file-based routing and leverage nested routes
           sub_decisions: []
         - id: r-007-2
           title: Data fetching strategy
-          status: Implementing
+          status: "⚠️Implementing"
           reason: Prefer Server Components and minimize Client Components
         - id: r-007-3
           title: Form interaction boundary
-          status: Discussion In Progress
+          status: "⚠️Discussion In Progress"
           reason: Keep complex interactive form state in narrowly scoped client components
 
   Database:
     - id: r-001
       title: Primary database adoption
-      status: Implementation Approved
+      status: "✅️Implementation Approved"
       reason: Prioritize strong ACID transactions and scalability
       updated_at: "2025-10-15"
       sub_decisions:
         - id: r-001-1
           title: Read scaling
-          status: On Hold
+          status: "⛔️On Hold"
           reason: Read Replica complemented by Citrus
         - id: r-001-2
           title: Schema migration workflow
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           reason: Run reviewed forward-only migrations in CI before deployment
 
   Authentication and Security:
     - id: r-012
       title: Authentication approach selection
-      status: Discussion In Progress
+      status: "⚠️Discussion In Progress"
       reason: Best balance between security and development speed
       updated_at: "2026-01-10"
       sub_decisions:
         - id: r-012-1
           title: Session storage strategy
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           reason: Use server-side sessions so revocation remains centrally enforceable
         - id: r-012-2
           title: MFA rollout scope
-          status: Discussion In Progress
+          status: "⚠️Discussion In Progress"
           reason: Require MFA first for admin roles before expanding to all users
 
   Operations and CI/CD:
     - id: r-015
       title: Automated dependency updates
-      status: Implementing
+      status: "⚠️Implementing"
       reason: Enable rapid response to security patches
       updated_at: "2026-03-15"
       sub_decisions:
         - id: r-015-1
           title: Update frequency and review policy
-          status: Discussion Approved
+          status: "⚠️Discussion Approved"
           reason: Create automated PRs weekly and require manual review
         - id: r-015-2
           title: Dependency update merge gate
-          status: Implementation Approved
+          status: "✅️Implementation Approved"
           reason: Merge only after tests, type checks, and security review pass

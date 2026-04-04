@@ -45,12 +45,14 @@ argument-hint: Provide decision ID and target scope, then the agent runs discuss
 
 ## ステータス運用
 原則として次の4種類を使用する。
-- Discussion In Progress
-- Discussion Approved
-- Implementing
-- Implementation Approved
+- ⚠️Discussion In Progress
+- ⚠️Discussion Approved
+- ⚠️Implementing
+- ✅️Implementation Approved
 
-例外ステータス（例: On Hold, Cancelled）は、現実上必要な場合のみ使用する。
+例外ステータスは現実上必要な場合のみ使用する。例:
+- ⛔️On Hold
+- ⛔️Cancelled
 
 ## 成果物ルール
 - DECISIONS.yml は現在有効な決定インデックスとして薄く保つ。

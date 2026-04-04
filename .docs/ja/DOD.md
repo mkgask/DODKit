@@ -44,7 +44,7 @@ DODではドキュメントについて以下の2種類を記述します。
 	- `id`: 必須 {category}-{連番}-{shortname} 決定IDと呼ぶ
 	- `title`: 必須
 	- `reason`: 必須 3行程度まで許容
-	- `status`: 任意 基本は「議論中 / 議論承認 / 実装中 / 実装承認」。保留・中止などは必要時のみ使用
+	- `status`: 任意 基本は `⚠️Discussion In Progress` / `⚠️Discussion Approved` / `⚠️Implementing` / `✅️Implementation Approved` を使用し、`⛔️On Hold` や `⛔️Cancelled` は必要時のみ使用
 	- `updated_at`: 任意
 	- `link`: 任意 関連する決定履歴ファイルへのポインタ
 - 決定事項オブジェクトは最大5層（推奨3層まで）ネスト可能
