@@ -28,26 +28,53 @@ Installer responsibilities:
 - install or update customization files,
 - print post-install validation steps.
 
+This parent decision now has active sub-decisions in `DECISIONS.yml` for:
+- template-file based installer inputs,
+- initial CLI scope limited to GitHub Copilot Chat.
+
+The detailed history and rationale for those sub-decisions are recorded in this file.
+
 ## Decision Contract
 ### Invariants
 - Installer must be idempotent (safe to run multiple times).
 - Installer must only write files inside intended workspace customization paths.
 - Installer must fail fast with explicit error messages.
+- Installer must use template assets as the source of generated/copied customization files.
+- Installer must require an explicit CLI target and reject unsupported targets.
 
 ### Non-goals
 - Do not install system packages globally.
 - Do not alter user-level VS Code profile configuration automatically.
 - Do not silently overwrite user-modified files without backup or explicit mode.
+- Do not implement multi-CLI behavior in the first release.
 
 ### Acceptance Criteria
 - Running installer once creates all required DOD agent files.
 - Running installer again does not duplicate entries or corrupt files.
 - Installer output clearly indicates success and next validation action.
+- Installer templates are separated from runtime output paths and can be extended for additional CLIs later.
+- When `github-copilot-chat` is selected, expected files are installed into workspace customization paths.
 
 ### Failure Criteria
 - Re-running installer causes duplicate configuration artifacts.
 - Installer modifies files outside declared scope.
 - Installer exits successfully while required files are missing.
+- Unsupported CLI values are accepted silently.
+
+## Research Update (2026-04-04)
+Additional findings used for this decision refinement:
+- VS Code customizations are markdown-file based (`.agent.md`, `.prompt.md`, instruction files), which is compatible with template-driven installer generation/copy.
+- VS Code customization UI supports multiple agent types (local agents, Copilot CLI, Claude agent). Restricting the initial scope to one CLI is a valid incremental rollout strategy.
+- Custom agents can be reused in background agents (Copilot CLI), which justifies a CLI-expansion-ready template structure even when release scope starts with Chat only.
+
+Discussion outcome:
+- The template-file rule should not live only in this history record; it is an active sub-decision and is now tracked in `DECISIONS.yml`.
+- The GitHub Copilot Chat-only scope should not live only in this history record; it is an active sub-decision and is now tracked in `DECISIONS.yml`.
+
+Sources:
+- https://code.visualstudio.com/docs/copilot/customization/custom-agents
+- https://code.visualstudio.com/docs/copilot/customization/overview
+- https://code.visualstudio.com/docs/copilot/customization/prompt-files
 
 ## Consequences
 Positive:

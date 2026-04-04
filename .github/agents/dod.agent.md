@@ -24,6 +24,7 @@ Before writing implementation code, confirm all of the following:
 	- Acceptance criteria
 	- Failure criteria
 - DECISIONS.yml includes or updates the target decision entry.
+- If discussion produced additional independently active rules, they are added to DECISIONS.yml as new decision objects or sub-decisions.
 - Status is moved into a discussion-ready state.
 
 If any condition is missing, complete discussion artifacts first and stop implementation.
@@ -53,7 +54,11 @@ Use exceptional statuses (for example, On Hold, Cancelled) only when required by
 
 ## Artifact Rules
 - DECISIONS.yml is the active decision index: keep it thin and current.
+- Thin means concise per decision entry, not a small number of entries.
+- Prefer adding small decision objects or sub-decisions over expanding one entry until it becomes overloaded.
+- Do not leave currently active rules only in records/{decision-id}.md.
 - records/{decision-id}.md is immutable history: append-only in principle.
+- Use records/{decision-id}.md for history, research, trade-offs, and why the current active decisions were formed.
 - Keep decision rationale in records, not in scattered chat summaries.
 
 ## Verification Rules

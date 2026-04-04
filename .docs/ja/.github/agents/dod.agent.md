@@ -24,6 +24,7 @@ argument-hint: Provide decision ID and target scope, then the agent runs discuss
 	- 受け入れ基準
 	- 失敗条件
 - DECISIONS.yml に対象決定が記載または更新されている。
+- 議論の結果として独立して有効なルールが増えた場合は、DECISIONS.yml に新規決定またはサブ決定として追加されている。
 - ステータスが議論完了に進められている。
 
 不足がある場合は、先に議論成果物を補完し、実装を停止する。
@@ -53,7 +54,11 @@ argument-hint: Provide decision ID and target scope, then the agent runs discuss
 
 ## 成果物ルール
 - DECISIONS.yml は現在有効な決定インデックスとして薄く保つ。
+- 薄く保つとは件数を減らすことではなく、各決定項目を簡潔に保つことを意味する。
+- 1つの決定を肥大化させるより、小さな決定事項やサブ決定を追加することを優先する。
+- 現在有効なルールを records/{decision-id}.md だけに残してはならない。
 - records/{decision-id}.md は不変履歴として原則追記のみで扱う。
+- records/{decision-id}.md には、履歴、調査、トレードオフ、なぜ現在の決定が形成されたかを残す。
 - 決定理由はチャット断片ではなく records に残す。
 
 ## 検証ルール

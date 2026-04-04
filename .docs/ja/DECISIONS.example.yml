@@ -4,7 +4,7 @@
 # 新しい決定時はこのファイルだけをまず参照。詳細経緯は対応するADRを参照。
 
 version: "1.0"
-last_updated: "2026-04-01"
+last_updated: "2026-04-04"
 decisions:
 
   アーキテクチャ:
@@ -23,6 +23,10 @@ decisions:
           title: データフェッチ戦略
           status: 実装中
           reason: Server Componentsを優先し、Client Componentsは最小限に
+        - id: r-007-3
+          title: フォーム相互作用の境界
+          status: 議論中
+          reason: 複雑なフォーム状態は、必要最小限のClient Componentに閉じ込める
 
   データベース:
     - id: r-001
@@ -35,6 +39,10 @@ decisions:
           title: 読み取りスケーリング
           status: 保留
           reason: Read Replica + Citrusで補完
+        - id: r-001-2
+          title: スキーママイグレーション運用
+          status: 議論承認
+          reason: デプロイ前に、レビュー済みのforward-only migrationをCIで実行する
 
   認証・セキュリティ:
     - id: r-012
@@ -42,7 +50,15 @@ decisions:
       status: 議論中
       reason: セキュリティと開発速度のバランスが最適
       updated_at: "2026-01-10"
-      sub_decisions: []
+      sub_decisions:
+        - id: r-012-1
+          title: セッション保存戦略
+          status: 議論承認
+          reason: 失効制御を中央で維持できるよう、サーバー側セッションを採用する
+        - id: r-012-2
+          title: MFA導入範囲
+          status: 議論中
+          reason: まず管理者ロールにMFAを必須化し、その後に全ユーザーへ拡張する
 
   運用・CI/CD:
     - id: r-015
@@ -55,3 +71,7 @@ decisions:
           title: 更新頻度とレビュー
           status: 議論承認
           reason: 週次で自動PR作成、手動レビュー必須
+        - id: r-015-2
+          title: 依存関係更新のマージ条件
+          status: 実装承認
+          reason: テスト、型チェック、セキュリティレビュー通過後にのみマージする
