@@ -68,6 +68,12 @@
 - 上記オープンクエスチョンは、初期リリース範囲では解決済みとする。
 - この解決から生じる現在有効なルールは、`DECISIONS.yml` 上で `agent-004-installer-template-details` 配下のサブ決定として管理する。
 
+このリポジトリにおけるコピー元URLの確認例:
+- `https://raw.githubusercontent.com/mkgask/DODKit/refs/heads/main/templates/agent.md`
+- `https://raw.githubusercontent.com/mkgask/DODKit/main/templates/agent.md`
+
+上記2形式はいずれも検証で HTTP 200 を返した。再現性を重視する場合は、コミット固定の `<ref>` を推奨する。
+
 ## 実装更新（2026-04-05）
 - 初期テンプレートファイル `templates/agent.md` を実装。
 - 初回コピーの決定性を担保するため、テンプレート内容は現在のDODエージェント定義に合わせた。
