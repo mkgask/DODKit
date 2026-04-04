@@ -57,6 +57,9 @@ argument-hint: Provide decision ID and target scope, then the agent runs discuss
 ## 成果物ルール
 - DECISIONS.yml はプロジェクトの決定事項オブジェクトの正本として、各決定項目を簡潔に保ちつつ最新状態を維持する。
 - 各決定項目は簡潔に保つが、実装に関わる決定事項を省略してはならない。
+- 判定基準は重要そうかどうかではなく、実装を拘束するかどうかである。
+- 次の実装判断が履歴を読み直さないと誤る可能性があるなら、その情報は DECISIONS.yml に記載または昇格させる。
+- 理由、トレードオフ、代替案、調査メモ、議論の履歴は、実装拘束条件にならない限り records/{decision-id}.md に残す。
 - 1つの決定を肥大化させるより、小さな決定事項やサブ決定を追加することを優先する。
 - 決定事項を records/{decision-id}.md だけに残してはならない。
 - records/{decision-id}.md は不変履歴として原則追記のみで扱う。

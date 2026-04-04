@@ -57,6 +57,9 @@ Use exceptional statuses only when required by reality, for example:
 ## Artifact Rules
 - DECISIONS.yml is the canonical set of project decision objects: keep each decision entry concise and keep the file current.
 - Decision entries should stay concise, but decisions that matter to implementation should not be omitted.
+- The classification rule is implementation constraint, not perceived importance.
+- If the next implementation decision could be wrong without rereading history, store or promote that information in DECISIONS.yml.
+- Keep reasons, trade-offs, alternatives, research notes, and discussion history in records/{decision-id}.md unless they become active implementation constraints.
 - Prefer adding small decision objects or sub-decisions over expanding one entry until it becomes overloaded.
 - Do not leave decisions only in records/{decision-id}.md.
 - records/{decision-id}.md is immutable history: append-only in principle.

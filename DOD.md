@@ -6,16 +6,33 @@ DOD is a lightweight development method that places decisions at the center of d
 
 It keeps decision-making lightweight while preserving strong traceability for later review. This enables AI and humans to collaborate on fast and accurate development without losing rationale.
 
-DOD uses the following two document types:
+## Purpose, Background, and Why DOD
 
-**Decision List File (`DECISIONS.yml`)**: The canonical set of decision objects for this project.
-This file is mutable. All project decisions should be expressed here as decision objects or sub-decisions, with `status` showing whether they are active, on hold, cancelled, or otherwise. When making a new decision, you can **start immediately by checking only this file**. You do not need to reread historical context first. That sharply reduces cognitive load and works very well with AI-assisted workflows.
+The purpose of DOD is to reduce cognitive load during development by keeping implementation aligned with explicit project decisions instead of informal memory, scattered chat, or partially outdated documents.
 
-**Decision Record File (`records/{decision-id}.md`)**: The background, investigation, trade-offs, and discussion process behind each decision.
-This file is immutable in principle. Once created, append-only updates are the default. It remains a reliable history for accurately answering, "Why was this decided at that time?"
+DOD is not merely a way to separate documents. It is a method for surfacing only the information required for future implementation decisions, and for building a canonical set of binding constraints that minimizes judgment cost for future implementers.
 
-This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
-In traditional SDD or ADR-style workflows, those concerns are often mixed together, so people must filter old noise before making new decisions. DOD addresses this problem at the root.
+The background is a common failure in software projects: the current decisions, the history behind them, and the implementation details often get mixed together. When that happens, people must repeatedly dig through old context just to answer two basic questions: "What is decided now?" and "Why was it decided?"
+
+DOD exists to solve that problem directly. It reduces cognitive load, makes active decisions easier to read, and gives AI-assisted workflows a clear source of truth so implementation is less likely to drift.
+
+## Core Principle
+
+The core distinction in DOD is not whether a piece of information feels important. The real distinction is whether that information constrains the next implementation decision.
+
+`DECISIONS.yml` is the set of constraints needed to make the next implementation decision correctly without reading history.
+
+`records/{decision-id}.md` stores the surrounding reasoning, research, trade-offs, alternatives, and discussion history that explain why the decision exists.
+
+If leaving a fact only in `records/{decision-id}.md` would force the next implementer to reread history in order to implement correctly, that fact belongs in `DECISIONS.yml`.
+
+## How DOD Works
+
+DOD works through two connected ideas:
+- Separate the current decision set from the historical reasoning behind it
+- Move work through only two phases: discussion and implementation
+
+In the discussion phase, the team investigates and finalizes the decision contract. In the implementation phase, the team writes tests and code that enforce those decisions. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
 
 ## Development Flow (Only Two Phases)
 
@@ -38,7 +55,31 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 
 ## Document Structure
 
+DOD is realized through the following two document types:
+
+Use this classification rule before writing either file:
+- If the information is needed for the next implementation decision, store it in `DECISIONS.yml`
+- If the information explains why the decision was formed, store it in `records/{decision-id}.md`
+- If information in a record later becomes a binding condition for implementation, promote it into `DECISIONS.yml` as a decision object or sub-decision
+
+Examples:
+- Scope boundaries, non-goals, invariants, acceptance criteria, and failure criteria belong in `DECISIONS.yml`
+- Interfaces, target environments, selected technologies, paths, naming rules, compatibility requirements, and other implementation constraints belong in `DECISIONS.yml`
+- Reasons, rejected alternatives, research notes, trade-offs, and discussion history belong in `records/{decision-id}.md`
+- Open questions, investigation notes, and comparison notes can stay in `records/{decision-id}.md` until they become active constraints, then they must be promoted to `DECISIONS.yml`
+
+Operational rule:
+1. If this information were missing from `DECISIONS.yml`, could another implementer make the next change correctly without reading records?
+2. If this information were missing, could tests, non-goals, constraints, or acceptance behavior be misinterpreted?
+3. Is this information a current binding condition rather than an explanation of past discussion?
+
+If the answer suggests that implementation could drift, the safe default is to store or promote the information in `DECISIONS.yml`.
+
 **Decision List File (`DECISIONS.yml`)**: mutable, project decision register
+- The canonical set of decision objects for this project
+- The set of binding constraints required to make the next implementation decision correctly without rereading history
+- All project decisions should be expressed here as decision objects or sub-decisions, with `status` showing whether they are active, on hold, cancelled, or otherwise
+- When making a new decision, you can start immediately by checking only this file, without rereading all historical context first
 - Category list at the top level
 - Each category contains an array of decision objects
 - Main properties of a decision object:
@@ -49,23 +90,28 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 	- `updated_at`: optional
 	- `link`: optional. Pointer to the related decision record file
 - Decision objects can be nested up to 5 levels (3 levels recommended)
-- Keep each decision entry as thin as possible
-- Thin means concise per entry, not a small number of entries
+- Keep each decision entry as concise as possible
+- Concise means concise per entry, not a small number of entries
 - Prefer many small decision objects over a few overloaded decision objects
 - Every decision that matters to implementation should exist here as a decision object or sub-decision
-- If a new rule emerges, add it here instead of burying it only in records
+- If a new binding rule emerges, add it here instead of burying it only in records
 - Keep YAML readable in table-view tools
 
 **Decision Record File (`records/{decision-id}.md`)**: immutable, decision history
+- The background, investigation, trade-offs, and discussion process behind each decision
+- Append-only updates are the default, so it remains a reliable history for answering, "Why was this decided at that time?"
 - Free-form format (MADR-like or plain text)
 - Append-only in principle, preserving historical facts
 - Focus this file on history: background, research, trade-offs, alternatives, and why the active decisions were formed
-- Do not use this file as the only place to store decisions; decision objects belong in `DECISIONS.yml`
+- Do not use this file as the only place to store implementation constraints; decision objects belong in `DECISIONS.yml`
 - Keep the decision contract in this file:
 	- Invariants: what must always be preserved
 	- Non-goals: what will not be done
 	- Acceptance criteria: observable target values/behaviors
 	- Failure criteria: explicitly define what is unacceptable
+
+This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
+In traditional SDD or ADR-style workflows, those concerns are often mixed together, so people must filter old noise before making new decisions. DOD addresses this problem at the root.
 
 ## Version Control
 
