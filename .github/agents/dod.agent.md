@@ -55,10 +55,10 @@ Use exceptional statuses only when required by reality, for example:
 - ⛔️Cancelled
 
 ## Artifact Rules
-- DECISIONS.yml is the active decision index: keep it thin and current.
-- Thin means concise per decision entry, not a small number of entries.
+- DECISIONS.yml is the canonical set of project decision objects: keep each decision entry concise and keep the file current.
+- Decision entries should stay concise, but decisions that matter to implementation should not be omitted.
 - Prefer adding small decision objects or sub-decisions over expanding one entry until it becomes overloaded.
-- Do not leave currently active rules only in records/{decision-id}.md.
+- Do not leave decisions only in records/{decision-id}.md.
 - records/{decision-id}.md is immutable history: append-only in principle.
 - Use records/{decision-id}.md for history, research, trade-offs, and why the current active decisions were formed.
 - Keep decision rationale in records, not in scattered chat summaries.

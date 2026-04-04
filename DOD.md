@@ -8,13 +8,13 @@ It keeps decision-making lightweight while preserving strong traceability for la
 
 DOD uses the following two document types:
 
-**Decision List File (`DECISIONS.yml`)**: A list of currently valid decisions and their reasons.
-This file is mutable. When making a new decision, you can **start immediately by checking only this file**. You do not need to reread historical context first. That sharply reduces cognitive load and works very well with AI-assisted workflows.
+**Decision List File (`DECISIONS.yml`)**: The canonical set of decision objects for this project.
+This file is mutable. All project decisions should be expressed here as decision objects or sub-decisions, with `status` showing whether they are active, on hold, cancelled, or otherwise. When making a new decision, you can **start immediately by checking only this file**. You do not need to reread historical context first. That sharply reduces cognitive load and works very well with AI-assisted workflows.
 
 **Decision Record File (`records/{decision-id}.md`)**: The background, investigation, trade-offs, and discussion process behind each decision.
 This file is immutable in principle. Once created, append-only updates are the default. It remains a reliable history for accurately answering, "Why was this decided at that time?"
 
-This separation makes it possible to get both **what is currently valid** and **why it became valid** with minimal effort at the right time.
+This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
 In traditional SDD or ADR-style workflows, those concerns are often mixed together, so people must filter old noise before making new decisions. DOD addresses this problem at the root.
 
 ## Development Flow (Only Two Phases)
@@ -38,7 +38,7 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 
 ## Document Structure
 
-**Decision List File (`DECISIONS.yml`)**: mutable, currently active list
+**Decision List File (`DECISIONS.yml`)**: mutable, project decision register
 - Category list at the top level
 - Each category contains an array of decision objects
 - Main properties of a decision object:
@@ -52,14 +52,15 @@ In traditional SDD or ADR-style workflows, those concerns are often mixed togeth
 - Keep each decision entry as thin as possible
 - Thin means concise per entry, not a small number of entries
 - Prefer many small decision objects over a few overloaded decision objects
-- If a new currently active rule emerges, add it as a new decision object or sub-decision instead of burying it only in records
+- Every decision that matters to implementation should exist here as a decision object or sub-decision
+- If a new rule emerges, add it here instead of burying it only in records
 - Keep YAML readable in table-view tools
 
 **Decision Record File (`records/{decision-id}.md`)**: immutable, decision history
 - Free-form format (MADR-like or plain text)
 - Append-only in principle, preserving historical facts
 - Focus this file on history: background, research, trade-offs, alternatives, and why the active decisions were formed
-- Do not use this file as the only place to store currently active sub-decisions; current active rules belong in `DECISIONS.yml`
+- Do not use this file as the only place to store decisions; decision objects belong in `DECISIONS.yml`
 - Keep the decision contract in this file:
 	- Invariants: what must always be preserved
 	- Non-goals: what will not be done

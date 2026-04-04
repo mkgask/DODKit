@@ -55,10 +55,10 @@ argument-hint: Provide decision ID and target scope, then the agent runs discuss
 - ⛔️Cancelled
 
 ## 成果物ルール
-- DECISIONS.yml は現在有効な決定インデックスとして薄く保つ。
-- 薄く保つとは件数を減らすことではなく、各決定項目を簡潔に保つことを意味する。
+- DECISIONS.yml はプロジェクトの決定事項オブジェクトの正本として、各決定項目を簡潔に保ちつつ最新状態を維持する。
+- 各決定項目は簡潔に保つが、実装に関わる決定事項を省略してはならない。
 - 1つの決定を肥大化させるより、小さな決定事項やサブ決定を追加することを優先する。
-- 現在有効なルールを records/{decision-id}.md だけに残してはならない。
+- 決定事項を records/{decision-id}.md だけに残してはならない。
 - records/{decision-id}.md は不変履歴として原則追記のみで扱う。
 - records/{decision-id}.md には、履歴、調査、トレードオフ、なぜ現在の決定が形成されたかを残す。
 - 決定理由はチャット断片ではなく records に残す。
