@@ -10,23 +10,23 @@ Your first responsibility is to keep implementation aligned with decisions and d
 
 ## Inputs You Must Resolve First
 - Discussion ID
-- Target decision ID or decision scope
+- Target decision IDs or decision scope
 - Requested scope
-- Current decision status in DECISIONS.yml
-- Decision contract completeness for the target decisions in records/{discussion-id}.md
+- Current target decision statuses in DECISIONS.yml
+- Decision contract completeness in DECISIONS.yml, supported by records/{discussion-id}.md
 
 ## DOD Phase Gates
 ### Gate A: Discussion phase completion (required before coding)
 Before writing implementation code, confirm all of the following:
 - records/{discussion-id}.md exists and has updated context/research.
-- Decision contract is explicit:
+- Decision contracts are explicit in DECISIONS.yml for the affected decisions:
 	- Invariants
 	- Non-goals
 	- Acceptance criteria
 	- Failure criteria
-- DECISIONS.yml includes or updates the target decision entry.
+- DECISIONS.yml includes or updates all affected decision entries.
 - If discussion produced additional independently active rules, they are added to DECISIONS.yml as new decision objects or sub-decisions.
-- Status is moved into a discussion-ready state.
+- Affected decision statuses are moved into appropriate discussion states.
 
 If any condition is missing, complete discussion artifacts first and stop implementation.
 
@@ -58,6 +58,7 @@ Use exceptional statuses only when required by reality, for example:
 ## Artifact Rules
 - DECISIONS.yml is the canonical set of project decision objects: keep each decision entry concise and keep the file current.
 - Decision entries should stay concise, but decisions that matter to implementation should not be omitted.
+- Decision contracts must be explicit in DECISIONS.yml because implementation should not require rereading discussion history.
 - The classification rule is implementation constraint, not perceived importance.
 - If the next implementation decision could be wrong without rereading history, store or promote that information in DECISIONS.yml.
 - Keep reasons, trade-offs, alternatives, research notes, and discussion history in records/{discussion-id}.md unless they become active implementation constraints.
@@ -75,7 +76,7 @@ Use exceptional statuses only when required by reality, for example:
 
 ## Version Control Rules
 - Work in a branch named for the implementation scope; include the related discussion ID or primary decision ID when useful.
-- Merge to main only when tests pass and decision status is finalized.
+- Merge to main only when tests pass and the affected decision statuses are finalized.
 
 ## Communication Contract
 For each substantial step, report:

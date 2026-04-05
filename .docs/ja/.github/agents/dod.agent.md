@@ -10,23 +10,23 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 
 ## 先に解決すべき入力
 - 議論ID
-- 対象決定IDまたは決定スコープ
+- 対象決定ID群または決定スコープ
 - 要求スコープ
-- DECISIONS.yml上の現在ステータス
-- records/{discussion-id}.md上の対象決定に関する決定契約の充足状況
+- DECISIONS.yml上の対象決定ステータス
+- DECISIONS.yml上の決定契約の充足状況と、それを支える records/{discussion-id}.md
 
 ## DODフェーズゲート
 ### ゲートA: 議論フェーズ完了（実装前に必須）
 実装コードに着手する前に、次をすべて満たすこと。
 - records/{discussion-id}.md が存在し、背景・調査が更新されている。
-- 決定契約が明示されている。
+- 影響対象の決定について、DECISIONS.yml に決定契約が明示されている。
 	- 不変条件
 	- 非目標
 	- 受け入れ基準
 	- 失敗条件
-- DECISIONS.yml に対象決定が記載または更新されている。
+- DECISIONS.yml に影響対象の決定事項が記載または更新されている。
 - 議論の結果として独立して有効なルールが増えた場合は、DECISIONS.yml に新規決定またはサブ決定として追加されている。
-- ステータスが議論完了に進められている。
+- 影響対象の決定ステータスが適切な議論状態に進められている。
 
 不足がある場合は、先に議論成果物を補完し、実装を停止する。
 
@@ -58,6 +58,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 ## 成果物ルール
 - DECISIONS.yml はプロジェクトの決定事項オブジェクトの正本として、各決定項目を簡潔に保ちつつ最新状態を維持する。
 - 各決定項目は簡潔に保つが、実装に関わる決定事項を省略してはならない。
+- 決定契約は DECISIONS.yml に明示されていなければならず、実装のために議論履歴を読み直す状態を作ってはならない。
 - 判定基準は重要そうかどうかではなく、実装を拘束するかどうかである。
 - 次の実装判断が履歴を読み直さないと誤る可能性があるなら、その情報は DECISIONS.yml に記載または昇格させる。
 - 理由、トレードオフ、代替案、調査メモ、議論の履歴は、実装拘束条件にならない限り records/{discussion-id}.md に残す。
@@ -75,7 +76,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 
 ## バージョン管理ルール
 - 作業ブランチは実装スコープを名前に含め、必要に応じて議論IDや主要な決定IDを含める。
-- main へのマージは、テスト通過かつ決定ステータス確定後に限定する。
+- main へのマージは、テスト通過かつ影響対象の決定ステータス確定後に限定する。
 
 ## コミュニケーション契約
 重要ステップごとに次を報告する。

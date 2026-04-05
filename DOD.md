@@ -4,19 +4,15 @@
 
 A lightweight continuous development method centered on the sustainable accumulation of decisions.
 
-DOD is a lightweight development method that places decisions at the center of development. By repeating only two phases, the **discussion phase** and the **implementation phase**, teams can deliver software that stays aligned with real goals.
-
-It keeps decision-making lightweight while preserving strong traceability for later review. This enables AI and humans to collaborate on fast and accurate development without losing rationale.
+DOD places decisions at the center of continuous development. By repeating only the **discussion phase** and the **implementation phase**, teams keep implementation aligned with real goals while preserving traceability for later review.
 
 ## Purpose, Background, and Why DOD
 
 The purpose of DOD is to reduce cognitive load during development by keeping implementation aligned with explicit project decisions instead of informal memory, scattered chat, or partially outdated documents.
 
-DOD is a method for collecting only the information required for future implementation decisions in the right place, and for building a canonical set of binding constraints that minimizes judgment cost for future implementers.
-
 The background is a common failure in software projects: the current decisions, the history behind them, and the implementation details often get mixed together. When that happens, people must repeatedly dig through old context just to answer two basic questions: "What is decided now?" and "Why was it decided?"
 
-DOD exists to solve that problem directly. It reduces cognitive load, makes active decisions easier to read, and gives AI-assisted workflows a clear source of truth so implementation is less likely to drift.
+DOD solves this by separating active decisions from discussion history and by making the active decision set the canonical source for implementation.
 
 ## Core Principle
 
@@ -41,21 +37,21 @@ If leaving a fact only in the discussion record file would force the next implem
 
 ## How DOD Works
 
-DOD works through two connected ideas:
+DOD works through three connected ideas:
 - Separate discussion history from active decisions, and separate both from implementation work
 - Allow one discussion to produce multiple decisions when the resulting constraints are independently active
 - Move work through only two phases: discussion and implementation
 
-In the discussion phase, the team investigates and finalizes the decision contract. In the implementation phase, the team writes tests and code that enforce those decisions. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
+In the discussion phase, the team investigates, records discussion history, and updates one or more decision objects. In the implementation phase, the team writes tests and code that enforce the active decisions. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
 
 ## Development Flow (Only Two Phases)
 
-**Discussion Phase** (until a decision is finalized)
+**Discussion Phase** (until the relevant decisions for the current discussion scope are explicit)
 - Actions: Investigate, research, ask questions, and discuss in order to finalize decisions (not only product specs, but also technology choices and constraints)
 - Deliverables (always in this order):
 	1. Write the process in **Discussion Record File (`records/{discussion-id}.md`)** (immutable, append-only; newly discovered facts can be added as they appear)
 	2. Update **Decision List File (`DECISIONS.yml`)** with the active decision objects, and add one or more new decision objects or sub-decisions when the discussion produces independently active rules
-- Constraint: Do not enter the implementation phase or start writing code until the relevant decision contracts (invariants, non-goals, acceptance criteria, and failure criteria) are finalized in the discussion record file and the resulting decisions are recorded in `DECISIONS.yml`
+- Constraint: Do not enter the implementation phase or start writing code until the relevant decisions and their decision contracts are explicit in `DECISIONS.yml`; use the discussion record file for history and supporting context.
 
 **Implementation Phase** (until tests pass)
 - Actions: Design, test implementation, and code implementation
@@ -65,7 +61,21 @@ In the discussion phase, the team investigates and finalizes the decision contra
 - Constraints:
 	- Do not deviate from the relevant decisions.
 	- Fully respect `DECISIONS.yml`, existing test code, and existing implementation code
-	- If new facts are discovered, append them to the related discussion record file
+	- If new facts are discovered, append them to the related discussion record file, and promote them to `DECISIONS.yml` if they become binding constraints
+
+## Decision Contract
+
+Decision contracts are part of the active decision set, so they must be explicit in `DECISIONS.yml`.
+
+Discussion record files exist to preserve history and supporting context. They are not the canonical place for current implementation constraints.
+
+If a decision contract is too large for one decision entry, split it into multiple decision objects or sub-decisions rather than leaving the contract only in `records/{discussion-id}.md`.
+
+At minimum, the relevant decision objects in `DECISIONS.yml` must make the following constraints explicit:
+- Invariants
+- Non-goals
+- Acceptance criteria
+- Failure criteria
 
 ## Document Structure
 
@@ -95,6 +105,7 @@ If the answer suggests that implementation could drift, the safe default is to s
 - All project decisions should be expressed here as decision objects or sub-decisions, with `status` showing whether they are active, on hold, cancelled, or otherwise
 - Multiple decision objects may point to the same discussion record when they emerged from one discussion or research thread
 - When making a new decision, you can start immediately by checking only this file, without rereading all historical context first
+- Decision contracts must be explicit here because implementation should not require rereading discussion history
 - Category list at the top level
 - Each category contains an array of decision objects
 - Main properties of a decision object:
@@ -120,20 +131,15 @@ If the answer suggests that implementation could drift, the safe default is to s
 - Append-only in principle, preserving historical facts
 - Focus this file on discussion history: background, research, trade-offs, alternatives, and why the active decisions were formed
 - Do not use this file as the only place to store implementation constraints; decision objects belong in `DECISIONS.yml`
-- Keep the relevant decision contracts in this file for the decisions produced by the discussion:
-	- Invariants: what must always be preserved
-	- Non-goals: what will not be done
-	- Acceptance criteria: observable target values/behaviors
-	- Failure criteria: explicitly define what is unacceptable
+- Discussion records may describe how contracts were formed, but the current binding contracts must remain explicit in `DECISIONS.yml`
 
 This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
-In traditional SDD or ADR-style workflows, those concerns are often mixed together, so people must filter old noise before making new decisions. DOD addresses this problem at the root.
 
 ## Version Control
 
 **`main` branch**
 - Keep it consistent with `DECISIONS.yml` at all times
-- Merge only when code passes tests and the decision is finalized
+- Merge only when code passes tests and the relevant decisions are finalized
 
 **Feature branch per implementation scope**
 - Branch name should reflect the implementation scope; include the related discussion ID or primary decision ID when useful
