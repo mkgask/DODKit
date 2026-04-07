@@ -7,15 +7,34 @@ decisions:
       title: Create a dedicated DOD custom agent in VS Code
       reason: A persistent persona with constrained tools is required to keep implementation aligned with DOD decisions.
       status: "✅️Implementation Approved"
-      updated_at: "2026-04-04"
+      updated_at: "2026-04-08"
       link: "records/agent-001-dod-custom-agent.md"
+      sub_decisions:
+        - id: agent-001-1-workspace-agent-location
+          title: Define the DOD custom agent as a workspace file under .github/agents
+          reason: The agent must be discoverable in the repository without relying on user-local configuration.
+          status: "✅️Implementation Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-001-dod-custom-agent.md"
+        - id: agent-001-2-phase-and-artifact-guidance
+          title: Require explicit DOD phase and artifact guidance in the custom agent
+          reason: The agent must explicitly enforce discussion and implementation behavior to reduce decision drift.
+          status: "✅️Implementation Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-001-dod-custom-agent.md"
+        - id: agent-001-3-shared-workspace-reusability
+          title: Keep the DOD custom agent reusable without contributor-local manual edits
+          reason: The agent should work as a shared workspace runtime rather than depending on machine-specific setup.
+          status: "✅️Implementation Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-001-dod-custom-agent.md"
 
   Installer:
     - id: agent-002-installer-delivery
       title: Provide a repository installer for the DOD agent package
       reason: Provide the installer delivery mechanism and keep its active sub-decisions explicit in this list.
       status: "⚠️Discussion Approved"
-      updated_at: "2026-04-04"
+      updated_at: "2026-04-08"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
@@ -30,20 +49,57 @@ decisions:
           status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
           link: "records/agent-002-installer-delivery.md"
+        - id: agent-002-3-idempotent-reruns
+          title: Keep the installer safe to run repeatedly
+          reason: Re-running the installer must not duplicate configuration or corrupt existing installed assets.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-002-installer-delivery.md"
+        - id: agent-002-4-workspace-scope-only
+          title: Limit installer writes to intended workspace customization paths
+          reason: The installer must stay inside declared workspace scope instead of modifying broader user or system locations.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-002-installer-delivery.md"
+        - id: agent-002-5-explicit-cli-target-validation
+          title: Require an explicit CLI target and reject unsupported targets
+          reason: Installer behavior must stay predictable and must not silently accept unsupported target modes.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-002-installer-delivery.md"
+        - id: agent-002-6-fail-fast-and-validation-guidance
+          title: Fail fast with explicit errors and print post-install validation steps
+          reason: Installation must stop clearly on invalid state and tell the user how to verify success afterward.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe to bash
       reason: GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
       status: "⚠️Discussion Approved"
-      updated_at: "2026-04-03"
+      updated_at: "2026-04-08"
       link: "records/agent-003-raw-github-install.md"
+      sub_decisions:
+        - id: agent-003-1-curl-fssl-command
+          title: Use curl -fsSL for the installer one-line command
+          reason: The command must fail on HTTP errors while staying quiet and diagnosable for shell-based installation.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-003-raw-github-install.md"
+        - id: agent-003-2-stable-ref-guidance
+          title: Default installer URLs to a stable ref and allow commit pinning for reproducibility
+          reason: Install instructions need a stable default while preserving a deterministic option when stronger reproducibility is required.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
+          link: "records/agent-003-raw-github-install.md"
 
   Template:
     - id: agent-004-installer-template-details
       title: Define installer template file layout and output mapping
       reason: Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.
       status: "⚠️Implementing"
-      updated_at: "2026-04-05"
+      updated_at: "2026-04-08"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
@@ -63,4 +119,10 @@ decisions:
           reason: Source and destination resolution must stay explicit and consistent for installer execution.
           status: "⚠️Discussion Approved"
           updated_at: "2026-04-04"
+          link: "records/agent-004-installer-template-details.md"
+        - id: agent-004-4-separate-template-sources-and-outputs
+          title: Keep template source files separate from installed output files
+          reason: Template assets and installed customization outputs must not be mixed if file mapping is to remain stable and understandable.
+          status: "⚠️Discussion Approved"
+          updated_at: "2026-04-08"
           link: "records/agent-004-installer-template-details.md"
