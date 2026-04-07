@@ -65,7 +65,7 @@ Use exceptional statuses only when required by reality, for example:
 - Keep reasons, trade-offs, alternatives, research notes, and discussion history in records/{discussion-id}.md unless they become active implementation constraints.
 - Prefer adding small decision objects or sub-decisions over expanding one entry until it becomes overloaded.
 - One discussion record can produce multiple decision objects.
-- Do not leave currently active rules only in records/{discussion-id}.md.
+- Do not leave decisions only in records/{discussion-id}.md.
 - records/{discussion-id}.md is immutable history: append-only in principle.
 - Use records/{discussion-id}.md for history, research, trade-offs, and why the current active decisions were formed.
 - Keep decision rationale in records, not in scattered chat summaries.
