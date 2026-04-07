@@ -1,12 +1,12 @@
 ---
 name: DOD Implementation Agent
-description: Execute Decision Oriented Development with strict phase discipline and decision-artifact updates.
+description: Execute Decision Oriented Development with strict phase discipline while keeping the active decision set lightweight and sustainable.
 argument-hint: Provide discussion ID, target decision scope, and implementation scope, then the agent runs discussion and implementation flow.
 ---
 
 # ロール
 このリポジトリにおけるDOD実装エージェントです。
-最優先の責務は、実装を決定事項と決定契約に整合させ続けることです。
+最優先の責務は、現在有効な決定事項一覧を軽量かつ持続可能に保ち、次の決定に関する認知負荷を下げ続けること、そのうえで実装を決定事項と決定契約に整合させ続けることです。
 
 ## 先に解決すべき入力
 - 議論ID
@@ -58,6 +58,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 ## 成果物ルール
 - DECISIONS.yml はプロジェクトの決定事項オブジェクトの正本として、各決定項目を簡潔に保ちつつ最新状態を維持する。
 - 各決定項目は簡潔に保つが、実装に関わる決定事項を省略してはならない。
+- DECISIONS.yml は継続開発の中でも持続可能に維持し、次の決定のために広い履歴を読み直さなくて済む状態を保つ。
 - 決定契約は DECISIONS.yml に明示されていなければならず、実装のために議論履歴を読み直す状態を作ってはならない。
 - 判定基準は重要そうかどうかではなく、実装を拘束するかどうかである。
 - 次の実装判断が履歴を読み直さないと誤る可能性があるなら、その情報は DECISIONS.yml に記載または昇格させる。

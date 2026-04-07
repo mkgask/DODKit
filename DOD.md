@@ -4,23 +4,23 @@
 
 A lightweight continuous development method centered on the sustainable accumulation of decisions.
 
-DOD places decisions at the center of continuous development. By repeating only the **discussion phase** and the **implementation phase**, teams keep implementation aligned with real goals while preserving traceability for later review.
+DOD places decisions at the center of continuous development. By repeating the **discussion phase** and the **implementation phase**, and by separately maintaining the current decision list, the implementation that follows those decisions, and the history behind them, teams can search for what the software should truly become while staying lightweight.
 
 ## Purpose, Background, and Why DOD
 
-The purpose of DOD is to reduce cognitive load during development by keeping implementation aligned with explicit project decisions instead of informal memory, scattered chat, or partially outdated documents.
+The purpose of DOD is to keep a lightweight decision list sustainable even across medium- and long-term development, and thereby keep the cognitive load for the next decision as low as possible.
 
 The background is a common failure in software projects: the current decisions, the history behind them, and the implementation details often get mixed together. When that happens, people must repeatedly dig through old context just to answer two basic questions: "What is decided now?" and "Why was it decided?"
 
-DOD solves this by separating active decisions from discussion history and by making the active decision set the canonical source for implementation.
+DOD solves this by separating active decisions from discussion history and by making the source of truth for implementation explicit.
 
 ## Core Principle
 
 The core distinction in DOD is not whether a piece of information is important. The real distinction is whether that information constrains the next implementation decision.
 
 DOD must keep discussion, decision, and implementation separate.
-- Discussion is where research, questions, trade-offs, and evolving understanding accumulate.
-- Decision is the binding output produced from discussion.
+- Discussion is where investigation, research, questions, trade-offs, and evolving understanding accumulate.
+- Decision is the binding definition produced from discussion.
 - Implementation is the act of turning those decisions into tests and working code.
 
 For this reason, DOD separates the following two artifacts.
@@ -33,7 +33,7 @@ Stores the reasons, research, trade-offs, alternatives, and discussion history f
 
 One discussion can produce zero, one, or many decision objects.
 
-If leaving a fact only in the discussion record file would force the next implementer to reread history in order to implement correctly, that fact should be managed in the decision list file.
+If leaving a fact only in the discussion record file would force the next decision to require rereading discussion history, that fact should be managed in the decision list file.
 
 ## How DOD Works
 
