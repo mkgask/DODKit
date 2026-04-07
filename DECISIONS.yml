@@ -1,5 +1,5 @@
 version: "1.0"
-last_updated: "2026-04-05"
+last_updated: "2026-04-08"
 decisions:
 
   Copilot Customization:
@@ -10,6 +10,7 @@ decisions:
       updated_at: "2026-04-04"
       link: "records/agent-001-dod-custom-agent.md"
 
+  Installer:
     - id: agent-002-installer-delivery
       title: Provide a repository installer for the DOD agent package
       reason: Provide the installer delivery mechanism and keep its active sub-decisions explicit in this list.
@@ -37,6 +38,7 @@ decisions:
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"
 
+  Template:
     - id: agent-004-installer-template-details
       title: Define installer template file layout and output mapping
       reason: Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.

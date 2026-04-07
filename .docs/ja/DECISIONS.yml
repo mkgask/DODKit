@@ -1,8 +1,8 @@
 version: "1.0"
-last_updated: "2026-04-05"
+last_updated: "2026-04-08"
 decisions:
 
-  Copilot Customization:
+  Copilot カスタマイズ:
     - id: agent-001-dod-custom-agent
       title: DOD専用のVS Codeカスタムエージェントを作成する
       reason: DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
@@ -10,6 +10,7 @@ decisions:
       updated_at: "2026-04-04"
       link: "records/agent-001-dod-custom-agent.md"
 
+  インストーラー:
     - id: agent-002-installer-delivery
       title: DODエージェントパッケージ用のリポジトリインストーラーを提供する
       reason: インストーラー提供の決定を置き、その下の現在有効なサブ決定もこの一覧に明示する。
@@ -37,6 +38,7 @@ decisions:
       updated_at: "2026-04-03"
       link: "records/agent-003-raw-github-install.md"
 
+  テンプレート:
     - id: agent-004-installer-template-details
       title: インストーラーテンプレートファイルの構成と出力マッピングを定義する
       reason: テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
