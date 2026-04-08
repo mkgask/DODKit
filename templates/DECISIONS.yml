@@ -1,0 +1,46 @@
+# DECISIONS.yml
+# Current active decision list (mutable) for DOD (Decision Oriented Development)
+# Use this file as the canonical list of active project decisions and implementation constraints.
+# Keep each entry concise so the next decision can be made without rereading broad history.
+# Put background, trade-offs, rejected options, and research notes in records/{discussion-id}.md.
+
+version: "1.0"
+decisions:
+
+  # Replace this category name with a domain that groups related decisions.
+  Category Name:
+    - # Required. Use a stable ID such as {category}-{sequence}-{shortname}.
+      id: category-001-short-name
+      # Required. Describe the decision in one line.
+      title: Describe the decision in one line
+      # Required. Describe the current binding reason in 1 to 3 concise lines.
+      # Write the reason that constrains implementation now, not the full discussion history.
+      reason: Explain why this decision currently constrains implementation
+      # Optional. Prefer one of the default statuses below.
+      # - ⚠️Discussion In Progress
+      # - ⚠️Discussion Approved
+      # - ⚠️Implementing
+      # - ✅️Implementation Approved
+      # Use exceptional states such as ⛔️On Hold or ⛔️Cancelled only when needed.
+      status: "⚠️Discussion In Progress"
+      # Optional. Point to the related discussion record when this decision family comes from one discussion.
+      link: "records/category-001-discussion-topic.md"
+      # Optional. Add children only when independently active rules should remain readable on their own.
+      sub_decisions:
+        - # Required. Use a stable child ID derived from the parent decision.
+          id: category-001-1-sub-decision
+          # Required. Describe one independently active rule in one line.
+          title: Describe one independently active rule
+          # Required. Explain why this rule currently constrains implementation.
+          reason: Explain why this rule currently constrains implementation
+          # Optional. Use the same status vocabulary as top-level decisions.
+          status: "⚠️Discussion Approved"
+          # Omit link when this child shares the parent's discussion record.
+          # Add link only when this child points to a different discussion record.
+          # link: "records/category-002-another-discussion.md"
+          # Optional. Leave [] when there are no deeper independently active rules.
+          sub_decisions: []
+
+  # Add more categories and decision objects as needed.
+  # Prefer many small decisions over one overloaded entry.
+  # Every rule that can change the next implementation decision should exist here.
