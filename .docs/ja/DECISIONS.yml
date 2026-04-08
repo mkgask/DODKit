@@ -1,5 +1,4 @@
 version: "1.0"
-last_updated: "2026-04-08"
 decisions:
 
   Copilot カスタマイズ:
@@ -7,122 +6,88 @@ decisions:
       title: DOD専用のVS Codeカスタムエージェントを作成する
       reason: DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
       status: "✅️Implementation Approved"
-      updated_at: "2026-04-08"
       link: "records/agent-001-dod-custom-agent.md"
       sub_decisions:
         - id: agent-001-1-workspace-agent-location
           title: DODカスタムエージェントを .github/agents 配下のワークスペースファイルとして定義する
           reason: ユーザー固有設定に依存せず、リポジトリ内でエージェントを発見可能にするため。
           status: "✅️Implementation Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-001-dod-custom-agent.md"
         - id: agent-001-2-phase-and-artifact-guidance
           title: カスタムエージェントにDODフェーズと成果物の明示的な指示を持たせる
           reason: 議論と実装の振る舞いを明示的に強制し、決定ドリフトを減らすため。
           status: "✅️Implementation Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-001-dod-custom-agent.md"
         - id: agent-001-3-shared-workspace-reusability
           title: ローカル手作業なしで再利用できる共有ワークスペースエージェントにする
           reason: マシン固有の設定に依存せず、共有ランタイムとして扱える必要があるため。
           status: "✅️Implementation Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-001-dod-custom-agent.md"
 
   インストーラー:
     - id: agent-002-installer-delivery
       title: DODエージェントパッケージ用のリポジトリインストーラーを提供する
       reason: インストーラー提供の決定を置き、その下の現在有効なサブ決定もこの一覧に明示する。
       status: "⚠️Discussion Approved"
-      updated_at: "2026-04-08"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
           title: インストーラー入力としてテンプレートファイルを使用する
           reason: ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-04"
-          link: "records/agent-002-installer-delivery.md"
         - id: agent-002-2-github-copilot-chat-only
           title: 初期のインストーラーCLI対応をGitHub Copilot Chatのみに限定する
           reason: 将来拡張の余地を残しつつ、初期リリースのリスクを下げるため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-04"
-          link: "records/agent-002-installer-delivery.md"
         - id: agent-002-3-idempotent-reruns
           title: インストーラーは繰り返し実行しても安全にする
           reason: 再実行時に設定の重複や既存成果物の破損を起こしてはならないため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-002-installer-delivery.md"
         - id: agent-002-4-workspace-scope-only
           title: インストーラーの書き込み先を意図したワークスペースカスタマイズパスに限定する
           reason: ユーザー全体やシステム全体の場所ではなく、宣言したワークスペース範囲のみに留める必要があるため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-002-installer-delivery.md"
         - id: agent-002-5-explicit-cli-target-validation
           title: 明示的なCLIターゲット指定を必須にし、未対応ターゲットを拒否する
           reason: インストーラーの挙動を予測可能に保ち、未対応モードの黙認を防ぐため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-002-installer-delivery.md"
         - id: agent-002-6-fail-fast-and-validation-guidance
           title: 明示的なエラーで早期失敗し、インストール後の確認手順を出力する
           reason: 異常時は明確に停止し、成功後の検証方法も案内する必要があるため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstaller.sh | bashの導線を提供する
       reason: GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
       status: "⚠️Discussion Approved"
-      updated_at: "2026-04-08"
       link: "records/agent-003-raw-github-install.md"
       sub_decisions:
         - id: agent-003-1-curl-fssl-command
           title: インストーラーのワンライナーは curl -fsSL を使用する
           reason: HTTPエラーで失敗しつつ、シェル導入時に静かで診断可能な挙動を保つ必要があるため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-003-raw-github-install.md"
         - id: agent-003-2-stable-ref-guidance
           title: インストールURLは安定した ref を既定とし、再現性のためにコミット固定を許可する
           reason: 安定した既定値を持たせつつ、必要時には決定的な導入も選べるようにするため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-003-raw-github-install.md"
 
   テンプレート:
     - id: agent-004-installer-template-details
       title: インストーラーテンプレートファイルの構成と出力マッピングを定義する
       reason: テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
       status: "⚠️Implementing"
-      updated_at: "2026-04-08"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
           title: 初期テンプレートは templates/agent.md に置く
           reason: トップレベルの配置は当面シンプルで、将来拡張の余地も残せるため。
           status: "✅️Implementation Approved"
-          updated_at: "2026-04-05"
-          link: "records/agent-004-installer-template-details.md"
         - id: agent-004-2-copy-manifest
           title: インストーラー内にコピー対象リストを保持する
           reason: 1ファイル構成でも将来拡張に備えて、明示的な対応表を持つ必要があるため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-04"
-          link: "records/agent-004-installer-template-details.md"
         - id: agent-004-3-source-destination-rule
           title: コピー元は raw.githubusercontent.com、コピー先はカレントディレクトリ相対パスとする
           reason: インストーラー実行時の入出力解決を明示的かつ一貫して扱うため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-04"
-          link: "records/agent-004-installer-template-details.md"
         - id: agent-004-4-separate-template-sources-and-outputs
           title: テンプレートのソースファイルとインストール先の出力ファイルを分離する
           reason: ファイル対応を安定かつ理解可能に保つには、テンプレート資産と出力結果を混在させてはならないため。
           status: "⚠️Discussion Approved"
-          updated_at: "2026-04-08"
-          link: "records/agent-004-installer-template-details.md"

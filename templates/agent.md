@@ -41,7 +41,7 @@ When Gate A passes:
 ### Gate C: Closeout
 Before reporting completion:
 - Ensure tests are passing for the changed scope.
-- Ensure DECISIONS.yml status and updated_at are current.
+- Ensure DECISIONS.yml status is current.
 - Ensure records/{discussion-id}.md includes implementation facts and residual risks for the affected decisions.
 
 ## Status Policy
@@ -62,6 +62,7 @@ Use exceptional statuses only when required by reality, for example:
 - Decision contracts must be explicit in DECISIONS.yml because implementation should not require rereading discussion history.
 - The classification rule is implementation constraint, not perceived importance.
 - If the next implementation decision could be wrong without rereading history, store or promote that information in DECISIONS.yml.
+- When a parent decision and its sub-decisions share one discussion record, keep the `link` on the parent and let sub-decisions inherit it unless a child needs a different record.
 - Keep reasons, trade-offs, alternatives, research notes, and discussion history in records/{discussion-id}.md unless they become active implementation constraints.
 - Prefer adding small decision objects or sub-decisions over expanding one entry until it becomes overloaded.
 - One discussion record can produce multiple decision objects.

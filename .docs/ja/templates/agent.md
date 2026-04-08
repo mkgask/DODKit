@@ -41,7 +41,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 ### ゲートC: クローズ処理
 完了報告前に次を満たすこと。
 - 変更スコープに対するテストが通過している。
-- DECISIONS.yml の status と updated_at が最新である。
+- DECISIONS.yml の status が最新である。
 - records/{discussion-id}.md に、影響した決定に関する実装事実と残存リスクが記録されている。
 
 ## ステータス運用
@@ -62,6 +62,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - 決定契約は DECISIONS.yml に明示されていなければならず、実装のために議論履歴を読み直す状態を作ってはならない。
 - 判定基準は重要そうかどうかではなく、実装を拘束するかどうかである。
 - 次の実装判断が履歴を読み直さないと誤る可能性があるなら、その情報は DECISIONS.yml に記載または昇格させる。
+- 親決定とサブ決定が同じ議論履歴を共有する場合は、`link` は親に置き、子が別履歴を必要とするときだけサブ決定側に明示する。
 - 理由、トレードオフ、代替案、調査メモ、議論の履歴は、実装拘束条件にならない限り records/{discussion-id}.md に残す。
 - 1つの決定を肥大化させるより、小さな決定事項やサブ決定を追加することを優先する。
 - 1つの議論履歴から複数の決定事項オブジェクトが生まれてよい。

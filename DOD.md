@@ -103,7 +103,7 @@ If the answer suggests that implementation could drift, the safe default is to s
 - The canonical set of decision objects for this project
 - The set of binding constraints required to make the next implementation decision correctly without rereading history
 - All project decisions should be expressed here as decision objects or sub-decisions, with `status` showing whether they are active, on hold, cancelled, or otherwise
-- Multiple decision objects may point to the same discussion record when they emerged from one discussion or research thread
+- A parent decision can point to the shared discussion record for one discussion or research thread, and sub-decisions can inherit that `link` unless they need a different record
 - When making a new decision, you can start immediately by checking only this file, without rereading all historical context first
 - Decision contracts must be explicit here because implementation should not require rereading discussion history
 - Category list at the top level
@@ -113,8 +113,7 @@ If the answer suggests that implementation could drift, the safe default is to s
 	- `title`: required
 	- `reason`: required. Up to around 3 lines is acceptable
 	- `status`: optional. Use these as defaults: `⚠️Discussion In Progress`, `⚠️Discussion Approved`, `⚠️Implementing`, `✅️Implementation Approved`. Use others only when necessary, for example `⛔️On Hold` or `⛔️Cancelled`.
-	- `updated_at`: optional
-	- `link`: optional. Pointer to the related discussion record file
+	- `link`: optional. Pointer to the related discussion record file. Sub-decisions inherit the nearest parent `link` unless they point to a different discussion record
 - Decision objects can be nested up to 5 levels (3 levels recommended)
 - Keep each decision entry as concise as possible
 - Concise means concise per entry, not a small number of entries

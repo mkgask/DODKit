@@ -3,9 +3,9 @@
 # Structure: category -> main decisions -> sub-decisions (up to 5 levels)
 # Start by checking only this file when making a new decision.
 # See the corresponding record file for detailed decision history.
+# Sub-decisions inherit the nearest parent link unless they point to a different record.
 
 version: "1.0"
-last_updated: "2026-04-04"
 decisions:
 
   Architecture:
@@ -13,7 +13,6 @@ decisions:
       title: Frontend framework selection
       status: "✅️Implementation Approved"
       reason: App Router issues remained unresolved; prioritize simple data loading and performance
-      updated_at: "2026-02-20"
       sub_decisions:
         - id: r-007-1
           title: Routing strategy
@@ -34,7 +33,6 @@ decisions:
       title: Primary database adoption
       status: "✅️Implementation Approved"
       reason: Prioritize strong ACID transactions and scalability
-      updated_at: "2025-10-15"
       sub_decisions:
         - id: r-001-1
           title: Read scaling
@@ -50,7 +48,6 @@ decisions:
       title: Authentication approach selection
       status: "⚠️Discussion In Progress"
       reason: Best balance between security and development speed
-      updated_at: "2026-01-10"
       sub_decisions:
         - id: r-012-1
           title: Session storage strategy
@@ -66,7 +63,6 @@ decisions:
       title: Automated dependency updates
       status: "⚠️Implementing"
       reason: Enable rapid response to security patches
-      updated_at: "2026-03-15"
       sub_decisions:
         - id: r-015-1
           title: Update frequency and review policy

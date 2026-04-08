@@ -1,10 +1,10 @@
 # DECISIONS.yml
 # DOD（決定指向開発）用 現在有効な決定事項一覧（可変）
 # 構造：カテゴリ → メイン決定事項 → サブ決定事項（最大5層まで許容）
-# 新しい決定時はこのファイルだけをまず参照。詳細経緯は対応するADRを参照。
+# 新しい決定時はこのファイルだけをまず参照。詳細経緯は対応する records ファイルを参照。
+# サブ決定は別の履歴を指す必要がない限り、最も近い親の link を継承する。
 
 version: "1.0"
-last_updated: "2026-04-04"
 decisions:
 
   アーキテクチャ:
@@ -12,7 +12,6 @@ decisions:
       title: フロントエンドフレームワークの選定
       status: "✅️Implementation Approved"
       reason: App Routerの問題が解決されず、データロードのシンプルさとパフォーマンスを優先
-      updated_at: "2026-02-20"
       sub_decisions:
         - id: r-007-1
           title: ルーティング方式
@@ -33,7 +32,6 @@ decisions:
       title: プライマリデータベースの採用
       status: "✅️Implementation Approved"
       reason: ACIDトランザクションの強さと拡張性を重視
-      updated_at: "2025-10-15"
       sub_decisions:
         - id: r-001-1
           title: 読み取りスケーリング
@@ -49,7 +47,6 @@ decisions:
       title: 認証方式の選択
       status: "⚠️Discussion In Progress"
       reason: セキュリティと開発速度のバランスが最適
-      updated_at: "2026-01-10"
       sub_decisions:
         - id: r-012-1
           title: セッション保存戦略
@@ -65,7 +62,6 @@ decisions:
       title: 依存関係更新の自動化
       status: "⚠️Implementing"
       reason: セキュリティパッチの迅速対応のため
-      updated_at: "2026-03-15"
       sub_decisions:
         - id: r-015-1
           title: 更新頻度とレビュー
