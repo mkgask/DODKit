@@ -99,3 +99,9 @@ Positive:
 Trade-offs:
 - Script maintenance cost increases as customization surface grows.
 - Cross-shell compatibility must be verified in CI or manual checks.
+
+## Implementation Update (2026-04-10)
+- Implemented root-level `install.sh` with a no-argument default flow (`copilot`) and conflict-time overwrite confirmation.
+- Locked installer source to `mkgask/DODKit@main` for safety and reproducibility of official installation behavior.
+- Removed source override paths (`--repo`, `--ref`) so installation cannot pull assets from arbitrary repositories or refs.
+- Added function-level shell tests (`tests/install.test.sh`) that source `install.sh` and validate parser, target validation, and copy behavior.

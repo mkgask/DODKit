@@ -25,45 +25,45 @@ decisions:
     - id: agent-002-installer-delivery
       title: DODエージェントパッケージ用のリポジトリインストーラーを提供する
       reason: インストーラー提供の決定を置き、その下の現在有効なサブ決定もこの一覧に明示する。
-      status: "⚠️Discussion Approved"
+      status: "✅️Implementation Approved"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
           title: インストーラー入力としてテンプレートファイルを使用する
           reason: ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-2-github-copilot-chat-only
           title: 初期のインストーラーCLI対応をGitHub Copilot Chatのみに限定する
           reason: 将来拡張の余地を残しつつ、初期リリースのリスクを下げるため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
           title: インストーラーは繰り返し実行しても安全にする
           reason: 再実行時に設定の重複や既存成果物の破損を起こしてはならないため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-4-workspace-scope-only
           title: インストーラーの書き込み先を意図したワークスペースカスタマイズパスに限定する
           reason: ユーザー全体やシステム全体の場所ではなく、宣言したワークスペース範囲のみに留める必要があるため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-5-explicit-cli-target-validation
           title: 明示的なCLIターゲット指定を必須にし、未対応ターゲットを拒否する
           reason: インストーラーの挙動を予測可能に保ち、未対応モードの黙認を防ぐため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-6-fail-fast-and-validation-guidance
           title: 明示的なエラーで早期失敗し、インストール後の確認手順を出力する
           reason: 異常時は明確に停止し、成功後の検証方法も案内する必要があるため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-7-copilot-target-name
           title: 初期インストーラーCLIターゲット値として `copilot` を使用する
           reason: 初期リリースで安定した明示ターゲット名を固定し、実行方法と検証方法のドリフトを防ぐため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-8-existing-file-overwrite-policy
           title: 既存ファイルは既定で維持し、バックアップなしで上書き前に確認する
           reason: 既存のワークスペースファイルをサイレントに置き換えず、余分なバックアップ成果物も増やさないようにするため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-9-initial-copilot-template-manifest
           title: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する
           reason: 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstaller.sh | bashの導線を提供する
@@ -84,7 +84,7 @@ decisions:
     - id: agent-004-installer-template-details
       title: インストーラーテンプレートファイルの構成と出力マッピングを定義する
       reason: テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
-      status: "⚠️Implementing"
+      status: "✅️Implementation Approved"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
@@ -94,12 +94,12 @@ decisions:
         - id: agent-004-2-copy-manifest
           title: インストーラー内にコピー対象リストを保持する
           reason: 1ファイル構成でも将来拡張に備えて、明示的な対応表を持つ必要があるため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-004-3-source-destination-rule
           title: コピー元は raw.githubusercontent.com、コピー先はカレントディレクトリ相対パスとする
           reason: インストーラー実行時の入出力解決を明示的かつ一貫して扱うため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-004-4-separate-template-sources-and-outputs
           title: テンプレートのソースファイルとインストール先の出力ファイルを分離する
           reason: ファイル対応を安定かつ理解可能に保つには、テンプレート資産と出力結果を混在させてはならないため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"

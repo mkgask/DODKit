@@ -25,45 +25,45 @@ decisions:
     - id: agent-002-installer-delivery
       title: Provide a repository installer for the DOD agent package
       reason: Provide the installer delivery mechanism and keep its active sub-decisions explicit in this list.
-      status: "⚠️Discussion Approved"
+      status: "✅️Implementation Approved"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
           title: Use template files as installer inputs
           reason: Templates keep source assets separate from target outputs and make future CLI expansion safer.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-2-github-copilot-chat-only
           title: Limit the initial installer CLI scope to GitHub Copilot Chat
           reason: A single-CLI first release reduces rollout risk while preserving a path for later expansion.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
           title: Keep the installer safe to run repeatedly
           reason: Re-running the installer must not duplicate configuration or corrupt existing installed assets.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-4-workspace-scope-only
           title: Limit installer writes to intended workspace customization paths
           reason: The installer must stay inside declared workspace scope instead of modifying broader user or system locations.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-5-explicit-cli-target-validation
           title: Require an explicit CLI target and reject unsupported targets
           reason: Installer behavior must stay predictable and must not silently accept unsupported target modes.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-6-fail-fast-and-validation-guidance
           title: Fail fast with explicit errors and print post-install validation steps
           reason: Installation must stop clearly on invalid state and tell the user how to verify success afterward.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-7-copilot-target-name
           title: Use `copilot` as the initial installer CLI target value
           reason: The first release needs a stable explicit target name so installer invocation and validation do not drift.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-8-existing-file-overwrite-policy
           title: Preserve existing files by default and ask before overwrite without backups
           reason: The installer must protect existing workspace files without silently replacing them or creating extra backup artifacts.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-002-9-initial-copilot-template-manifest
           title: Install templates/agent.md and templates/DECISIONS.yml into the initial Copilot workspace paths
           reason: The first release needs an explicit template file set and destination mapping so installer behavior stays deterministic.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe to bash
@@ -84,7 +84,7 @@ decisions:
     - id: agent-004-installer-template-details
       title: Define installer template file layout and output mapping
       reason: Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.
-      status: "⚠️Implementing"
+      status: "✅️Implementation Approved"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
@@ -94,12 +94,12 @@ decisions:
         - id: agent-004-2-copy-manifest
           title: Keep the installer copy-target list inside the installer
           reason: The installer needs an explicit mapping list even with only one file so future expansion stays deterministic.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-004-3-source-destination-rule
           title: Use raw.githubusercontent.com as source and current-directory-relative paths as destination
           reason: Source and destination resolution must stay explicit and consistent for installer execution.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-004-4-separate-template-sources-and-outputs
           title: Keep template source files separate from installed output files
           reason: Template assets and installed customization outputs must not be mixed if file mapping is to remain stable and understandable.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
