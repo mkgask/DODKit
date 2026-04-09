@@ -52,6 +52,18 @@ decisions:
           title: 明示的なエラーで早期失敗し、インストール後の確認手順を出力する
           reason: 異常時は明確に停止し、成功後の検証方法も案内する必要があるため。
           status: "⚠️Discussion Approved"
+        - id: agent-002-7-copilot-target-name
+          title: 初期インストーラーCLIターゲット値として `copilot` を使用する
+          reason: 初期リリースで安定した明示ターゲット名を固定し、実行方法と検証方法のドリフトを防ぐため。
+          status: "⚠️Discussion Approved"
+        - id: agent-002-8-existing-file-overwrite-policy
+          title: 既存ファイルは既定で維持し、バックアップなしで上書き前に確認する
+          reason: 既存のワークスペースファイルをサイレントに置き換えず、余分なバックアップ成果物も増やさないようにするため。
+          status: "⚠️Discussion Approved"
+        - id: agent-002-9-initial-copilot-template-manifest
+          title: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する
+          reason: 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
+          status: "⚠️Discussion Approved"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstaller.sh | bashの導線を提供する

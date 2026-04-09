@@ -52,6 +52,18 @@ decisions:
           title: Fail fast with explicit errors and print post-install validation steps
           reason: Installation must stop clearly on invalid state and tell the user how to verify success afterward.
           status: "⚠️Discussion Approved"
+        - id: agent-002-7-copilot-target-name
+          title: Use `copilot` as the initial installer CLI target value
+          reason: The first release needs a stable explicit target name so installer invocation and validation do not drift.
+          status: "⚠️Discussion Approved"
+        - id: agent-002-8-existing-file-overwrite-policy
+          title: Preserve existing files by default and ask before overwrite without backups
+          reason: The installer must protect existing workspace files without silently replacing them or creating extra backup artifacts.
+          status: "⚠️Discussion Approved"
+        - id: agent-002-9-initial-copilot-template-manifest
+          title: Install templates/agent.md and templates/DECISIONS.yml into the initial Copilot workspace paths
+          reason: The first release needs an explicit template file set and destination mapping so installer behavior stays deterministic.
+          status: "⚠️Discussion Approved"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe to bash

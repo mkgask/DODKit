@@ -45,7 +45,7 @@ The detailed history and rationale for those sub-decisions are recorded in this 
 ### Non-goals
 - Do not install system packages globally.
 - Do not alter user-level VS Code profile configuration automatically.
-- Do not silently overwrite user-modified files without backup or explicit mode.
+- Do not silently overwrite existing files; preserve them unless the user explicitly approves overwrite.
 - Do not implement multi-CLI behavior in the first release.
 
 ### Acceptance Criteria
@@ -53,13 +53,15 @@ The detailed history and rationale for those sub-decisions are recorded in this 
 - Running installer again does not duplicate entries or corrupt files.
 - Installer output clearly indicates success and next validation action.
 - Installer templates are separated from runtime output paths and can be extended for additional CLIs later.
-- When `github-copilot-chat` is selected, expected files are installed into workspace customization paths.
+- When `copilot` is selected, the current template set is installed into the expected workspace customization paths.
+- If a target file already exists, the installer preserves it unless the user explicitly approves overwrite.
 
 ### Failure Criteria
 - Re-running installer causes duplicate configuration artifacts.
 - Installer modifies files outside declared scope.
 - Installer exits successfully while required files are missing.
 - Unsupported CLI values are accepted silently.
+- Installer overwrites an existing target file without explicit user approval.
 
 ## Research Update (2026-04-04)
 Additional findings used for this decision refinement:
@@ -76,6 +78,18 @@ Sources:
 - https://code.visualstudio.com/docs/copilot/customization/custom-agents
 - https://code.visualstudio.com/docs/copilot/customization/overview
 - https://code.visualstudio.com/docs/copilot/customization/prompt-files
+
+## Implementation Specification Snapshot (2026-04-10)
+- The accepted CLI target selector for the first release is `copilot`.
+- For `copilot`, the initial manifest is:
+	- `templates/agent.md` -> `.github/agents/dod.agent.md`
+	- `templates/DECISIONS.yml` -> `DECISIONS.yml`
+- The installer creates missing parent directories required by that manifest, including `.github/agents`.
+- Existing target files take precedence by default; when a target already exists, the installer should ask before overwriting it.
+- The first release does not create backup files when handling existing targets.
+
+Promotion outcome:
+- The CLI target name, existing-file handling rule, and first-release template file set are now active binding constraints and should be tracked in `DECISIONS.yml`.
 
 ## Consequences
 Positive:
