@@ -1,5 +1,7 @@
 # DODKit
 
+[English](../../README.md) | [日本語版](README.md)
+
 DODKit は Decision Oriented Development（DOD）を軽量に運用するためのツールキットです。
 現在有効な決定事項を明示し、決定の履歴と現在の拘束条件を分離し、再利用可能な Copilot カスタマイズアセットをワークスペースへ導入できる実践的な構成を提供します。
 
@@ -30,6 +32,8 @@ curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bas
 ## DOD とは
 
 Decision Oriented Development（DOD）は、決定事項を持続可能に蓄積し続けることを中心に据えた軽量な開発手法です。
+
+詳細仕様は [DOD.md](DOD.md) を参照してください。
 
 中核となる考え方:
 - `DECISIONS.yml` は、現在有効な決定事項と実装拘束条件の正本。
