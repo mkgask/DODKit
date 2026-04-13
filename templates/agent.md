@@ -19,6 +19,7 @@ Your first responsibility is to keep the active decision set lightweight and sus
 ### Gate A: Discussion phase completion (required before coding)
 Before writing implementation code, confirm all of the following:
 - records/{discussion-id}.md exists and has updated context/research.
+- When starting a new discussion record, create records/{discussion-id}.md by copying .dodkit/templates/discussion-record.md and then adapting the copied file for the current discussion.
 - Decision contracts are explicit in DECISIONS.yml for the affected decisions:
 	- Invariants
 	- Non-goals
@@ -97,6 +98,7 @@ For each substantial step, report:
 Never write mutable tracking fields into `records/{discussion-id}.md`: no status indicators, no remaining-work checklists, no open action items, and no content expected to be revised or updated after the fact.
 Records are discussion history only — not a specification, design document, or operational playbook.
 If you find yourself wanting to add a field that would need updating as work progresses, that field belongs in `DECISIONS.yml` or in the implementation, not in records.
+Always start a new `records/{discussion-id}.md` file from `.dodkit/templates/discussion-record.md` rather than drafting the structure from scratch.
 
 ### Spec Promotion Guard
 When a newly discovered fact becomes a binding constraint at any point during discussion or implementation, promote it to `DECISIONS.yml` immediately — in the same commit or change set.

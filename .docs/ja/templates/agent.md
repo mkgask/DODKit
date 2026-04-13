@@ -19,6 +19,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 ### ゲートA: 議論フェーズ完了（実装前に必須）
 実装コードに着手する前に、次をすべて満たすこと。
 - records/{discussion-id}.md が存在し、背景・調査が更新されている。
+- 新しい議論記録を開始する場合は、.dodkit/templates/discussion-record.md をコピーして records/{discussion-id}.md を作成し、その複製を今回の議論向けに改変する。
 - 影響対象の決定について、DECISIONS.yml に決定契約が明示されている。
 	- 不変条件
 	- 非目標
@@ -97,6 +98,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 `records/{discussion-id}.md` に更新が前提となるフィールドを記述してはならない。ステータス表示、残作業チェックリスト、未完了アクションアイテム、後から修正・更新することを想定したいかなる内容も禁止。
 議論履歴ファイルは議論の経緯のみを記録するものであり、仕様書・設計書・運用プレイブックではない。
 作業が進むにつれて更新が必要になるフィールドを追加したくなった場合、そのフィールドは `DECISIONS.yml` または実装に属するものであり、records には属さない。
+新しい `records/{discussion-id}.md` は、構造をゼロから書き起こさず、必ず `.dodkit/templates/discussion-record.md` を起点に作成すること。
 
 ### 仕様昇格ガード
 議論・実装のいずれの段階であっても、新たに判明した事実が拘束条件になった時点で、同じコミットまたは変更セットで即座に `DECISIONS.yml` に昇格させる。

@@ -23,7 +23,7 @@ decisions:
         - id: agent-001-4-discussion-record-template-usage
           title: 新しい records ファイルはインストール済み discussion-record テンプレートから作成することを必須にする
           reason: テンプレート利用を必須化することで記録構造の一貫性を保ち、場当たり的な形式の記録作成を防ぐため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
 
   インストーラー:
     - id: agent-002-installer-delivery

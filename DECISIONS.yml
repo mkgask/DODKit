@@ -23,7 +23,7 @@ decisions:
         - id: agent-001-4-discussion-record-template-usage
           title: Require new records files to be created from the installed discussion-record template
           reason: Mandatory template usage keeps record structure consistent and prevents ad hoc record formats.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
 
   Installer:
     - id: agent-002-installer-delivery

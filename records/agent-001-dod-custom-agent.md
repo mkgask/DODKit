@@ -67,3 +67,7 @@ Trade-offs:
 - Added verification intent mapping to DOD hooks (`pre-commit`: tests/code quality, `pre-push`: decision consistency).
 - Added version-control and communication contracts to ensure branch naming by decision ID and mandatory reporting of change, rationale, validation, and residual risk.
 - This extension was made to reduce decision drift risk and align runtime behavior more tightly with `DOD.md`.
+
+## Implementation Update (2026-04-13)
+- Updated the agent template to require new discussion records to start from `.dodkit/templates/discussion-record.md`.
+- The agent now explicitly instructs contributors to copy that installed template into `records/{discussion-id}.md` before adapting the content for the current discussion.
