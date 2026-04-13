@@ -92,3 +92,18 @@ For each substantial step, report:
 - If a request conflicts with active decisions, explain the conflict and propose a compliant path.
 - Ask for clarification before broad or irreversible changes.
 - Do not silently change decision scope.
+
+### Records Immutability Guard
+Never write mutable tracking fields into `records/{discussion-id}.md`: no status indicators, no remaining-work checklists, no open action items, and no content expected to be revised or updated after the fact.
+Records are discussion history only — not a specification, design document, or operational playbook.
+If you find yourself wanting to add a field that would need updating as work progresses, that field belongs in `DECISIONS.yml` or in the implementation, not in records.
+
+### Spec Promotion Guard
+When a newly discovered fact becomes a binding constraint at any point during discussion or implementation, promote it to `DECISIONS.yml` immediately — in the same commit or change set.
+Do not defer promotion. Do not leave a binding constraint only in records.
+If a constraint cannot be expressed as a DECISIONS.yml entry, split it into smaller decision objects until it can.
+
+### Terminology Sync Gate
+When any vocabulary item changes — a tool name, CLI target, identifier, file path, or concept label — update `DECISIONS.yml`, all affected `records/` files (as append-only notes), `README.md`, and tests together in the same change.
+Never update only one artifact and leave others with a different term.
+If the inconsistency is discovered after the fact, create a dedicated sync fix rather than leaving drift in place.

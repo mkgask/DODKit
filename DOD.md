@@ -20,7 +20,7 @@ The core distinction in DOD is not whether a piece of information is important. 
 
 DOD must keep discussion, decision, and implementation separate.
 - Discussion is where investigation, research, questions, trade-offs, and evolving understanding accumulate.
-- Decision is the binding definition produced from discussion.
+- Decision is the binding definition produced from discussion. In DOD, "decision" is not limited to resolved disputes — specifications, design constraints, interface contracts, technology selections, behavioral invariants, and non-goals are all decisions and must be managed in `DECISIONS.yml`.
 - Implementation is the act of turning those decisions into tests and working code.
 
 For this reason, DOD separates the following two artifacts.
@@ -122,15 +122,18 @@ If the answer suggests that implementation could drift, the safe default is to s
 - If a new binding rule emerges, add it here instead of burying it only in records
 - Keep YAML readable in table-view tools
 
-**Discussion Record File (`records/{discussion-id}.md`)**: immutable, discussion history
+**Discussion Record File (`records/{discussion-id}.md`)**: immutable, discussion history only
+- **This file is discussion history only — it is not a specification document, design document, or operational playbook**
 - The background, investigation, trade-offs, and discussion process behind one discussion or research thread
-- Append-only updates are the default, so it remains a reliable history for answering, "What was discussed, discovered, and concluded at that time?"
+- Append-only: new observations can be appended as they emerge, but existing entries are never edited or updated in place
 - One discussion record can produce zero, one, or many decision objects in `DECISIONS.yml`
 - Free-form format (MADR-like or plain text)
-- Append-only in principle, preserving historical facts
 - Focus this file on discussion history: background, research, trade-offs, alternatives, and why the active decisions were formed
+- **Do not write mutable tracking fields here: status indicators, remaining-work checklists, open action items, or any content that is expected to be updated after the fact.** That content belongs in `DECISIONS.yml` or in the implementation
+- Quick check: if any field in this file would need to be updated as work progresses, that field is in the wrong place
 - Do not use this file as the only place to store implementation constraints; decision objects belong in `DECISIONS.yml`
 - Discussion records may describe how contracts were formed, but the current binding contracts must remain explicit in `DECISIONS.yml`
+- If a fact captured here later becomes a binding constraint, it must be promoted to `DECISIONS.yml` immediately — do not update the record in place
 
 This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
 
