@@ -64,6 +64,14 @@ decisions:
           title: Install templates/agent.md and templates/DECISIONS.yml into the initial Copilot workspace paths
           reason: The first release needs an explicit template file set and destination mapping so installer behavior stays deterministic.
           status: "✅️Implementation Approved"
+        - id: agent-002-10-decisions-yml-never-overwrite
+          title: Never overwrite an existing DECISIONS.yml regardless of --force
+          reason: DECISIONS.yml contains project-specific decision records that would be permanently lost on overwrite; the installer must always preserve it.
+          status: "✅️Implementation Approved"
+        - id: agent-002-11-no-template-fallback-copy
+          title: Do not save a fallback copy such as DECISIONS.template.yml when DECISIONS.yml already exists
+          reason: A fallback copy adds filesystem noise without clear benefit; the upstream template is always available via the source repository.
+          status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash

@@ -64,6 +64,14 @@ decisions:
           title: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する
           reason: 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
           status: "✅️Implementation Approved"
+        - id: agent-002-10-decisions-yml-never-overwrite
+          title: --force 指定時を含め、既存の DECISIONS.yml は絶対に上書きしない
+          reason: DECISIONS.yml にはプロジェクト固有の決定記録が含まれており、上書きすると永久に失われるため、インストーラーは常に保護しなければならない。
+          status: "✅️Implementation Approved"
+        - id: agent-002-11-no-template-fallback-copy
+          title: DECISIONS.yml が既に存在する場合に DECISIONS.template.yml のような別名コピーを残さない
+          reason: 別名コピーはファイルシステムの余分なノイズになるだけで実質的な価値がなく、元のテンプレートはソースリポジトリから常に参照可能なため。
+          status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する

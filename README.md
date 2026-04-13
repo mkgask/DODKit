@@ -2,6 +2,8 @@
 
 [English](README.md) | [日本語版](.docs/ja/README.md)
 
+> **Alpha software.** DODKit is in early development. It may contain bugs or breaking changes. Use at your own risk.
+
 DODKit is a lightweight toolkit for Decision Oriented Development (DOD).
 It provides a practical structure for keeping active decisions explicit, separating decision history from current constraints, and installing reusable Copilot customization assets into a workspace.
 
