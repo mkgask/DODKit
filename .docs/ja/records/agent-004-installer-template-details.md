@@ -89,3 +89,15 @@
 	- コピー先解決は、カレントディレクトリ相対パスとして実装済みです。
 - 現在の決定ステータスは `DECISIONS.yml` を正本として管理し、この決定群は `✅️Implementation Approved` です。
 - このファイルは議論履歴であり、継続的なステータス管理は `DECISIONS.yml` に置きます。
+
+## テンプレート配置先の最終化（2026-04-13）
+- `templates/discussion-record.md` のインストール先を `.dodkit/templates/discussion-record.md` に最終確定しました。
+- `.dodkit/templates` はツール中立で、DODKit が管理するテンプレート資産の配置先として扱います。
+
+## 配置先命名の更新（2026-04-13）
+- 現在有効な配置先命名を、可視ディレクトリである `DODKit/templates/discussion-record.md` へ更新しました。
+- 配置先は引き続き DODKit 専用スコープとし、インストーラー管理テンプレート資産の予約領域として扱います。
+
+## 配置先命名の更新（2026-04-13）
+- 現在有効な配置先命名を、ドット始まりディレクトリとの整合のため `.dodkit/templates/discussion-record.md` へ戻しました。
+- 配置先は引き続き DODKit 専用スコープとし、インストーラー管理テンプレート資産の予約領域として扱います。

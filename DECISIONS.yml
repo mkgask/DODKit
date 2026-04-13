@@ -20,6 +20,10 @@ decisions:
           title: Keep the DOD custom agent reusable without contributor-local manual edits
           reason: The agent should work as a shared workspace runtime rather than depending on machine-specific setup.
           status: "✅️Implementation Approved"
+        - id: agent-001-4-discussion-record-template-usage
+          title: Require new records files to be created from the installed discussion-record template
+          reason: Mandatory template usage keeps record structure consistent and prevents ad hoc record formats.
+          status: "⚠️Discussion Approved"
 
   Installer:
     - id: agent-002-installer-delivery
@@ -72,6 +76,10 @@ decisions:
           title: Do not save a fallback copy such as DECISIONS.template.yml when DECISIONS.yml already exists
           reason: A fallback copy adds filesystem noise without clear benefit; the upstream template is always available via the source repository.
           status: "✅️Implementation Approved"
+        - id: agent-002-12-discussion-record-template-install
+          title: Include templates/discussion-record.md in installer-managed template assets
+          reason: New decision records should start from a consistent template so the installer must distribute this asset alongside other templates.
+          status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash
@@ -110,4 +118,8 @@ decisions:
         - id: agent-004-4-separate-template-sources-and-outputs
           title: Keep template source files separate from installed output files
           reason: Template assets and installed customization outputs must not be mixed if file mapping is to remain stable and understandable.
+          status: "✅️Implementation Approved"
+        - id: agent-004-5-discussion-record-template-destination
+          title: Install discussion-record template at .dodkit/templates/discussion-record.md
+          reason: A DODKit-scoped hidden directory keeps workspace root clean while providing a stable, tool-neutral location for future template expansion.
           status: "✅️Implementation Approved"

@@ -109,3 +109,8 @@ Trade-offs:
 ## Terminology Synchronization Update (2026-04-13)
 - Active terminology is unified to `copilot` as the installer target value.
 - Historical mentions of "GitHub Copilot Chat" in this record are retained as discussion context, while active constraints are tracked in `DECISIONS.yml`.
+
+## Implementation Update (2026-04-13)
+- Extended the installer manifest to include `templates/discussion-record.md`.
+- Added destination mapping for that template: `.dodkit/templates/discussion-record.md`.
+- Existing `DECISIONS.yml` preservation behavior remains unchanged and takes precedence over overwrite options.

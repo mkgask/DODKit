@@ -11,11 +11,13 @@ SOURCE_REF="main"
 COPILOT_SOURCES=(
   "templates/agent.md"
   "templates/DECISIONS.yml"
+  "templates/discussion-record.md"
 )
 
 COPILOT_DESTINATIONS=(
   ".github/agents/dod.agent.md"
   "DECISIONS.yml"
+  ".dodkit/templates/discussion-record.md"
 )
 
 # Files that must never be overwritten, even with --force.
@@ -236,6 +238,7 @@ print_validation_steps() {
 Validation steps:
 1. Confirm the installed files exist:
    - .github/agents/dod.agent.md
+  - .dodkit/templates/discussion-record.md
    - DECISIONS.yml
 2. Review local changes before commit:
    - git status

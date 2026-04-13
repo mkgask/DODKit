@@ -89,3 +89,7 @@ Both returned HTTP 200 in validation. For deterministic installation, a commit-p
 	- Destination resolution applies current-working-directory-relative output paths.
 - Current decision status is maintained in `DECISIONS.yml` and is now `✅️Implementation Approved` for this decision family.
 - This record remains discussion history; ongoing status tracking belongs to `DECISIONS.yml`.
+
+## Template Destination Finalization (2026-04-13)
+- Finalized the installed destination of `templates/discussion-record.md` as `.dodkit/templates/discussion-record.md`.
+- The `.dodkit/templates` location is kept tool-neutral and reserved for DODKit-managed template assets.

@@ -109,3 +109,16 @@ Trade-offs:
 ## 用語同期更新（2026-04-13）
 - 有効な用語は、インストーラーターゲット値 `copilot` に統一します。
 - 本履歴中に残る「GitHub Copilot Chat」表記は議論文脈として保持し、現在有効な拘束条件は `DECISIONS.yml` で管理します。
+
+## 実装更新（2026-04-13）
+- インストーラーのマニフェストに `templates/discussion-record.md` を追加しました。
+- そのテンプレートの配置先マッピングとして `.dodkit/templates/discussion-record.md` を追加しました。
+- 既存の `DECISIONS.yml` 保護挙動は変更せず維持し、上書きオプションより優先されます。
+
+## 用語同期更新（2026-04-13）
+- discussion-record テンプレートの配置先を `.dodkit/templates/discussion-record.md` から `DODKit/templates/discussion-record.md` へ更新しました。
+- 配置先ディレクトリは隠しではなく可視とし、DODKit 管理資産の予約領域として扱います。
+
+## 用語同期更新（2026-04-13）
+- 現在有効な配置先を `DODKit/templates/discussion-record.md` から `.dodkit/templates/discussion-record.md` へ戻しました。
+- `.dodkit` は他のドット始まりのツール管理ディレクトリと整合するため、DODKit 管理資産の予約領域として維持します。

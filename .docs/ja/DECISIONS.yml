@@ -20,6 +20,10 @@ decisions:
           title: ローカル手作業なしで再利用できる共有ワークスペースエージェントにする
           reason: マシン固有の設定に依存せず、共有ランタイムとして扱える必要があるため。
           status: "✅️Implementation Approved"
+        - id: agent-001-4-discussion-record-template-usage
+          title: 新しい records ファイルはインストール済み discussion-record テンプレートから作成することを必須にする
+          reason: テンプレート利用を必須化することで記録構造の一貫性を保ち、場当たり的な形式の記録作成を防ぐため。
+          status: "⚠️Discussion Approved"
 
   インストーラー:
     - id: agent-002-installer-delivery
@@ -72,6 +76,10 @@ decisions:
           title: DECISIONS.yml が既に存在する場合に DECISIONS.template.yml のような別名コピーを残さない
           reason: 別名コピーはファイルシステムの余分なノイズになるだけで実質的な価値がなく、元のテンプレートはソースリポジトリから常に参照可能なため。
           status: "✅️Implementation Approved"
+        - id: agent-002-12-discussion-record-template-install
+          title: インストーラー管理のテンプレート資産に templates/discussion-record.md を含める
+          reason: 新しい決定記録は一貫したテンプレートから開始されるべきであり、インストーラーが他のテンプレートと同様にこの資産を配布する必要があるため。
+          status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する
@@ -110,4 +118,8 @@ decisions:
         - id: agent-004-4-separate-template-sources-and-outputs
           title: テンプレートのソースファイルとインストール先の出力ファイルを分離する
           reason: ファイル対応を安定かつ理解可能に保つには、テンプレート資産と出力結果を混在させてはならないため。
+          status: "✅️Implementation Approved"
+        - id: agent-004-5-discussion-record-template-destination
+          title: discussion-record テンプレートを .dodkit/templates/discussion-record.md にインストールする
+          reason: DODKit 専用の隠しディレクトリでワークスペース直下のノイズを抑えつつ、将来のテンプレート拡張でも安定したツール中立の配置先を確保できるため。
           status: "✅️Implementation Approved"

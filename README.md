@@ -12,6 +12,11 @@ It provides a practical structure for keeping active decisions explicit, separat
 The installer is a single shell script at the repository root (`install.sh`).
 It currently supports GitHub Copilot only and installs the current DOD assets into your current workspace directory.
 
+Installed/copied assets:
+- `.github/agents/dod.agent.md`
+- `.dodkit/templates/discussion-record.md`
+- `DECISIONS.yml` (installed only when missing; existing file is preserved even with `--force`)
+
 ### Install with curl
 
 ```bash
