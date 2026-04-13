@@ -32,9 +32,9 @@ decisions:
           title: インストーラー入力としてテンプレートファイルを使用する
           reason: ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
           status: "✅️Implementation Approved"
-        - id: agent-002-2-github-copilot-chat-only
-          title: 初期のインストーラーCLI対応をGitHub Copilot Chatのみに限定する
-          reason: 将来拡張の余地を残しつつ、初期リリースのリスクを下げるため。
+        - id: agent-002-2-copilot-only
+          title: 初期のインストーラーCLI対応を copilot のみに限定する
+          reason: 将来のCLI拡張余地を残しつつ、初期リリースのリスクを下げるため。
           status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
           title: インストーラーは繰り返し実行しても安全にする
@@ -66,19 +66,19 @@ decisions:
           status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
-      title: raw.githubusercontent.com経由でinstaller.sh | bashの導線を提供する
+      title: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する
       reason: GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
-      status: "⚠️Discussion Approved"
+      status: "✅️Implementation Approved"
       link: "records/agent-003-raw-github-install.md"
       sub_decisions:
         - id: agent-003-1-curl-fssl-command
-          title: インストーラーのワンライナーは curl -fsSL を使用する
+          title: install.sh のワンライナーは curl -fsSL を使用する
           reason: HTTPエラーで失敗しつつ、シェル導入時に静かで診断可能な挙動を保つ必要があるため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-003-2-stable-ref-guidance
           title: インストールURLは安定した ref を既定とし、再現性のためにコミット固定を許可する
           reason: 安定した既定値を持たせつつ、必要時には決定的な導入も選べるようにするため。
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
 
   テンプレート:
     - id: agent-004-installer-template-details

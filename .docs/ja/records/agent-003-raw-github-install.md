@@ -55,3 +55,10 @@ Positive:
 
 Trade-offs:
 - `curl | bash` はサプライチェーンリスクがあるため、将来的に固定参照・レビュー・チェックサム/署名の補強が必要です。
+
+## 実装整合更新（2026-04-13）
+- 実装済みのインストーラーエントリポイントは、リポジトリルートの `install.sh` です。
+- 本履歴に残る `installer.sh` 表記は議論時点の履歴として保持し、実装上の正しいファイル名は `install.sh` です。
+- 公開ワンライナーは次を採用します。
+	- `curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash`
+- `agent-003-raw-github-install` とそのサブ決定の有効ステータスは、`DECISIONS.yml` 側で `✅️Implementation Approved` として管理します。

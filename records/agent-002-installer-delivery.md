@@ -105,3 +105,7 @@ Trade-offs:
 - Locked installer source to `mkgask/DODKit@main` for safety and reproducibility of official installation behavior.
 - Removed source override paths (`--repo`, `--ref`) so installation cannot pull assets from arbitrary repositories or refs.
 - Added function-level shell tests (`tests/install.test.sh`) that source `install.sh` and validate parser, target validation, and copy behavior.
+
+## Terminology Synchronization Update (2026-04-13)
+- Active terminology is unified to `copilot` as the installer target value.
+- Historical mentions of "GitHub Copilot Chat" in this record are retained as discussion context, while active constraints are tracked in `DECISIONS.yml`.

@@ -81,3 +81,11 @@ Both returned HTTP 200 in validation. For deterministic installation, a commit-p
 - Remaining work for this parent decision:
 	- Implement and verify installer-internal copy-target list management.
 	- Apply source/destination resolution rules during installer execution.
+
+## Implementation Closure Update (2026-04-13)
+- The remaining implementation items listed above are completed by `install.sh`:
+	- Installer-internal copy-target list management is implemented with explicit manifest arrays.
+	- Source resolution uses `raw.githubusercontent.com` with fixed repository/ref constants.
+	- Destination resolution applies current-working-directory-relative output paths.
+- Current decision status is maintained in `DECISIONS.yml` and is now `✅️Implementation Approved` for this decision family.
+- This record remains discussion history; ongoing status tracking belongs to `DECISIONS.yml`.

@@ -55,3 +55,10 @@ Positive:
 
 Trade-offs:
 - `curl | bash` has supply-chain risk; mitigations should be documented (pinning, code review, checksum/signature in future).
+
+## Implementation Alignment Update (2026-04-13)
+- The implemented installer entrypoint is `install.sh` at repository root.
+- Historical mentions of `installer.sh` in this record are preserved as discussion history and are superseded by the implemented filename `install.sh`.
+- The published one-line command is:
+	- `curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash`
+- Active implementation status for `agent-003-raw-github-install` and its sub-decisions is now tracked in `DECISIONS.yml` as `✅️Implementation Approved`.

@@ -32,9 +32,9 @@ decisions:
           title: Use template files as installer inputs
           reason: Templates keep source assets separate from target outputs and make future CLI expansion safer.
           status: "✅️Implementation Approved"
-        - id: agent-002-2-github-copilot-chat-only
-          title: Limit the initial installer CLI scope to GitHub Copilot Chat
-          reason: A single-CLI first release reduces rollout risk while preserving a path for later expansion.
+        - id: agent-002-2-copilot-only
+          title: Limit the initial installer CLI scope to copilot
+          reason: A single-target first release reduces rollout risk while preserving a path for later CLI expansion.
           status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
           title: Keep the installer safe to run repeatedly
@@ -66,19 +66,19 @@ decisions:
           status: "✅️Implementation Approved"
 
     - id: agent-003-raw-github-install
-      title: Deliver installer entrypoint through raw.githubusercontent.com and pipe to bash
+      title: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash
       reason: GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
-      status: "⚠️Discussion Approved"
+      status: "✅️Implementation Approved"
       link: "records/agent-003-raw-github-install.md"
       sub_decisions:
         - id: agent-003-1-curl-fssl-command
-          title: Use curl -fsSL for the installer one-line command
+          title: Use curl -fsSL for the install.sh one-line command
           reason: The command must fail on HTTP errors while staying quiet and diagnosable for shell-based installation.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
         - id: agent-003-2-stable-ref-guidance
           title: Default installer URLs to a stable ref and allow commit pinning for reproducibility
           reason: Install instructions need a stable default while preserving a deterministic option when stronger reproducibility is required.
-          status: "⚠️Discussion Approved"
+          status: "✅️Implementation Approved"
 
   Template:
     - id: agent-004-installer-template-details
