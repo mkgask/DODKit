@@ -114,3 +114,11 @@ Trade-offs:
 - Extended the installer manifest to include `templates/discussion-record.md`.
 - Added destination mapping for that template: `.dodkit/templates/discussion-record.md`.
 - Existing `DECISIONS.yml` preservation behavior remains unchanged and takes precedence over overwrite options.
+
+## Terminology Synchronization Update (2026-04-13)
+- Updated the discussion-record template destination from `.dodkit/templates/discussion-record.md` to `DODKit/templates/discussion-record.md`.
+- The destination directory is intentionally visible and reserved for DODKit-managed assets.
+
+## Terminology Synchronization Update (2026-04-13)
+- Reverted the active destination from `DODKit/templates/discussion-record.md` back to `.dodkit/templates/discussion-record.md`.
+- `.dodkit` is aligned with other dot-prefixed tool-managed directories and remains reserved for DODKit-managed assets.

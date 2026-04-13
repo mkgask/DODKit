@@ -163,6 +163,29 @@ FAKECURL
   fi
 }
 
+test_copilot_manifest_includes_discussion_record_template() {
+  local sources_count="${#COPILOT_SOURCES[@]}"
+  local destinations_count="${#COPILOT_DESTINATIONS[@]}"
+
+  assert_eq "$sources_count" "$destinations_count" "copilot manifest source/destination counts should match"
+
+  local found_source=0
+  local found_destination=0
+  local index=0
+
+  for index in "${!COPILOT_SOURCES[@]}"; do
+    if [[ "${COPILOT_SOURCES[$index]}" == "templates/discussion-record.md" ]]; then
+      found_source=1
+      if [[ "${COPILOT_DESTINATIONS[$index]}" == ".dodkit/templates/discussion-record.md" ]]; then
+        found_destination=1
+      fi
+    fi
+  done
+
+  assert_eq "$found_source" "1" "copilot manifest should include templates/discussion-record.md"
+  assert_eq "$found_destination" "1" "discussion-record template should map to .dodkit/templates/discussion-record.md"
+}
+
 run_tests() {
   test_parse_args_explicit_values
   test_parse_args_defaults_target_when_missing
@@ -171,6 +194,7 @@ run_tests() {
   test_validate_target_rejects_unknown
   test_copy_asset_installs_and_sets_permissions
   test_copy_asset_skips_when_unchanged
+  test_copilot_manifest_includes_discussion_record_template
   printf '[PASS] install.sh function-level tests passed\n'
 }
 

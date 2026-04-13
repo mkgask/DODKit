@@ -93,3 +93,11 @@ Both returned HTTP 200 in validation. For deterministic installation, a commit-p
 ## Template Destination Finalization (2026-04-13)
 - Finalized the installed destination of `templates/discussion-record.md` as `.dodkit/templates/discussion-record.md`.
 - The `.dodkit/templates` location is kept tool-neutral and reserved for DODKit-managed template assets.
+
+## Destination Naming Update (2026-04-13)
+- Updated the active destination naming to `DODKit/templates/discussion-record.md` (visible directory).
+- The destination remains DODKit-scoped and reserved for installer-managed template assets.
+
+## Destination Naming Update (2026-04-13)
+- Reverted the active destination naming to `.dodkit/templates/discussion-record.md` for consistency with dot-prefixed tool-managed directories.
+- The destination remains DODKit-scoped and reserved for installer-managed template assets.
