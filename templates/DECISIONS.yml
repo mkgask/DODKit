@@ -3,6 +3,8 @@
 # Use this file as the canonical list of active project decisions and implementation constraints.
 # Keep each entry concise so the next decision can be made without rereading broad history.
 # Put background, trade-offs, rejected options, and research notes in records/{discussion-id}.md.
+# records/{discussion-id}.md is discussion history only: do not put mutable tracking fields there
+# (status, remaining work, or open action items that require later updates).
 
 version: "1.0"
 decisions:
