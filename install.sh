@@ -18,6 +18,12 @@ COPILOT_DESTINATIONS=(
   "DECISIONS.yml"
 )
 
+# Files that must never be overwritten, even with --force.
+# These contain project-specific data that would be lost on overwrite.
+PROTECT_FROM_OVERWRITE=(
+  "DECISIONS.yml"
+)
+
 print_usage() {
   cat <<'USAGE'
 Usage:
@@ -201,6 +207,15 @@ copy_asset() {
       log_info "Already up-to-date: $destination_path"
       return 2
     fi
+
+    local protected_entry
+    for protected_entry in "${PROTECT_FROM_OVERWRITE[@]}"; do
+      if [[ "$destination_path" == "$protected_entry" ]]; then
+        rm -f "$temporary_file"
+        log_warning "Protected file preserved (project data must not be overwritten): $destination_path"
+        return 1
+      fi
+    done
 
     if [[ "$FORCE_OVERWRITE" -ne 1 ]] && ! confirm_overwrite "$destination_path"; then
       rm -f "$temporary_file"
