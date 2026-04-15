@@ -47,6 +47,19 @@ has_tty() {
   [[ -r /dev/tty ]] && [[ -w /dev/tty ]]
 }
 
+path_has_symlink_component() {
+  local target_path="$1"
+
+  while [[ "$target_path" != "." && "$target_path" != "/" ]]; do
+    if [[ -L "$target_path" ]]; then
+      return 0
+    fi
+    target_path="$(dirname "$target_path")"
+  done
+
+  return 1
+}
+
 supports_color() {
   [[ -t 1 ]] && [[ -z "${NO_COLOR:-}" ]]
 }
@@ -193,9 +206,15 @@ copy_asset() {
   source_url="https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${SOURCE_REF}/${source_path}"
   temporary_file="$(mktemp)"
 
-  if ! curl -fsSL "$source_url" -o "$temporary_file"; then
+  if ! curl --proto '=https' --tlsv1.2 -fsSL "$source_url" -o "$temporary_file"; then
     rm -f "$temporary_file"
     die "Failed to download source asset: $source_url"
+  fi
+
+  if path_has_symlink_component "$destination_path"; then
+    rm -f "$temporary_file"
+    log_warning "Refusing to write through symlink path: $destination_path"
+    return 1
   fi
 
   create_parent_directory "$destination_path"

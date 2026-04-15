@@ -163,6 +163,56 @@ FAKECURL
   fi
 }
 
+test_copy_asset_refuses_symlink_paths() {
+  local tmpdir=""
+  local faketools=""
+  local destination=""
+  local protected_file=""
+
+  tmpdir="$(mktemp -d)"
+  faketools="$tmpdir/faketools"
+  mkdir -p "$faketools"
+
+  cat >"$faketools/curl" <<'FAKECURL'
+#!/usr/bin/env bash
+set -euo pipefail
+output_file=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+printf 'downloaded-content' >"$output_file"
+FAKECURL
+  chmod +x "$faketools/curl"
+
+  PATH="$faketools:$PATH"
+  FORCE_OVERWRITE=1
+
+  mkdir -p "$tmpdir/real-output"
+  ln -s "$tmpdir/real-output" "$tmpdir/output"
+
+  destination="$tmpdir/output/file.txt"
+  protected_file="$tmpdir/real-output/file.txt"
+  printf 'protected-content' >"$protected_file"
+
+  if copy_asset "templates/test.txt" "$destination"; then
+    printf '[FAIL] copy_asset should refuse symlink paths\n' >&2
+    exit 1
+  else
+    local status="$?"
+    assert_eq "$status" "1" "copy_asset should return 1 when destination path uses a symlink"
+  fi
+
+  assert_file_content "$protected_file" "protected-content" "copy_asset should not overwrite through symlink paths"
+}
+
 test_copilot_manifest_includes_discussion_record_template() {
   local sources_count="${#COPILOT_SOURCES[@]}"
   local destinations_count="${#COPILOT_DESTINATIONS[@]}"
@@ -194,6 +244,7 @@ run_tests() {
   test_validate_target_rejects_unknown
   test_copy_asset_installs_and_sets_permissions
   test_copy_asset_skips_when_unchanged
+  test_copy_asset_refuses_symlink_paths
   test_copilot_manifest_includes_discussion_record_template
   printf '[PASS] install.sh function-level tests passed\n'
 }
