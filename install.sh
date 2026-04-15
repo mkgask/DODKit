@@ -51,34 +51,31 @@ supports_color() {
   [[ -t 1 ]] && [[ -z "${NO_COLOR:-}" ]]
 }
 
-colorize() {
-  local color_code="$1"
-  local message="$2"
-
-  if supports_color; then
-    printf '\033[%sm%s\033[0m\n' "$color_code" "$message"
-  else
-    printf '%s\n' "$message"
-  fi
-}
-
 log_info() {
   printf '[INFO] %s\n' "$1"
 }
 
 log_success() {
-  colorize "32" "[SUCCESS] $1"
+  if supports_color; then
+    printf '\033[32m[✅️SUCCESS] %s\033[0m\n' "$1"
+  else
+    printf '[✅️SUCCESS] %s\n' "$1"
+  fi
 }
 
 log_warning() {
-  colorize "33" "[WARNING] $1"
+  if supports_color; then
+    printf '\033[33m[⚠️WARNING] %s\033[0m\n' "$1"
+  else
+    printf '[⚠️WARNING] %s\n' "$1"
+  fi
 }
 
 log_error() {
   if supports_color; then
-    printf '\033[31m[ERROR] %s\033[0m\n' "$1" >&2
+    printf '\033[31m[❌ERROR] %s\033[0m\n' "$1" >&2
   else
-    printf '[ERROR] %s\n' "$1" >&2
+    printf '[❌ERROR] %s\n' "$1" >&2
   fi
 }
 
