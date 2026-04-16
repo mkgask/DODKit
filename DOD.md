@@ -66,16 +66,19 @@ In the discussion phase, the team investigates, records discussion history, and 
 ## Decision Contract
 
 Decision contracts are part of the active decision set, so they must be explicit in `DECISIONS.yml`.
+They must be explicit to the degree necessary to keep implementation from drifting, while keeping `DECISIONS.yml` lightweight and easy to scan.
 
 Discussion record files exist to preserve history and supporting context. They are not the canonical place for current implementation constraints.
 
-If a decision contract is too large for one decision entry, split it into multiple decision objects or sub-decisions rather than leaving the contract only in `records/{discussion-id}.md`.
+If contract details need their own active rule, split them into multiple decision objects or sub-decisions rather than leaving the contract only in `records/{discussion-id}.md`.
 
-At minimum, the relevant decision objects in `DECISIONS.yml` must make the following constraints explicit:
+At minimum, the relevant decision set in `DECISIONS.yml` must make the following kinds of constraints explicit when they materially constrain implementation:
 - Invariants
 - Non-goals
 - Acceptance criteria
 - Failure criteria
+
+These constraints do not need to appear as four dedicated fields on every decision object. Express them in the smallest set of decision objects or sub-decisions needed to keep the next implementation decision correct.
 
 ## Document Structure
 
@@ -106,6 +109,7 @@ If the answer suggests that implementation could drift, the safe default is to s
 - A parent decision can point to the shared discussion record for one discussion or research thread, and sub-decisions can inherit that `link` unless they need a different record
 - When making a new decision, you can start immediately by checking only this file, without rereading all historical context first
 - Decision contracts must be explicit here because implementation should not require rereading discussion history
+- Keep the default decision shape lightweight and human-scannable; add extra sub-decisions only when a contract detail becomes independently active
 - Category list at the top level
 - Each category contains an array of decision objects
 - Main properties of a decision object:

@@ -31,3 +31,7 @@ Append rules:
 - Updated templates/discussion-record.md and the installed workspace template at .dodkit/templates/discussion-record.md to reduce required entry fields and make evidence/promotion detail optional.
 - Synced templates/agent.md with the current DOD agent guidance so installed agents preserve the fixed discussion-to-decision artifact order.
 - Residual risk: repositories that already copied older templates keep their previous structure until the template asset is copied again or the installer is rerun.
+
+## Specification Sync Update (2026-04-16)
+- Aligned DOD.md with this decision family so decision contracts are described as explicit but still minimal and human-scannable.
+- Clarified that invariants, non-goals, acceptance criteria, and failure criteria must be explicit in the relevant decision set when they materially constrain implementation, but they do not need to appear as four dedicated fields on every decision object.
