@@ -17,17 +17,19 @@ Your first responsibility is to keep the active decision set lightweight and sus
 
 ## DOD Phase Gates
 ### Gate A: Discussion phase completion (required before coding)
-Before writing implementation code, confirm all of the following:
-- records/{discussion-id}.md exists and has updated context/research.
+Before writing implementation code, complete the discussion phase in this order and confirm all of the following:
+- Record the discussion first: records/{discussion-id}.md exists and has updated context/research.
 - When starting a new discussion record, create records/{discussion-id}.md by copying .dodkit/templates/discussion-record.md and then adapting the copied file for the current discussion.
+- Promote the resulting binding decisions next: DECISIONS.yml includes or updates all affected decision entries.
 - Decision contracts are explicit in DECISIONS.yml for the affected decisions:
 	- Invariants
 	- Non-goals
 	- Acceptance criteria
 	- Failure criteria
-- DECISIONS.yml includes or updates all affected decision entries.
 - If discussion produced additional independently active rules, they are added to DECISIONS.yml as new decision objects or sub-decisions.
 - Affected decision statuses are moved into appropriate discussion states.
+
+Discussion may iterate internally, including testing candidate decisions and refining them through further research, but the official artifact order is fixed: write the discussion history to records/{discussion-id}.md first, then write the active decisions and contracts to DECISIONS.yml, and only then begin implementation.
 
 If any condition is missing, complete discussion artifacts first and stop implementation.
 
@@ -65,6 +67,7 @@ Use exceptional statuses only when required by reality, for example:
 - If the next implementation decision could be wrong without rereading history, store or promote that information in DECISIONS.yml.
 - When a parent decision and its sub-decisions share one discussion record, keep the `link` on the parent and let sub-decisions inherit it unless a child needs a different record.
 - Keep reasons, trade-offs, alternatives, research notes, and discussion history in records/{discussion-id}.md unless they become active implementation constraints.
+- Candidate decisions may be explored during discussion, but only decisions promoted into DECISIONS.yml after the discussion record is updated count as active implementation constraints.
 - Prefer adding small decision objects or sub-decisions over expanding one entry until it becomes overloaded.
 - One discussion record can produce multiple decision objects.
 - Do not leave decisions only in records/{discussion-id}.md.

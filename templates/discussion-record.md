@@ -9,6 +9,8 @@
 - Do not add mutable tracking fields here (status, remaining work, open action items).
 - Do not keep open-question backlogs here. If clarification is needed, ask in chat and append the resolved facts.
 - If a fact becomes a binding implementation constraint, promote it to DECISIONS.yml.
+- Keep each entry as short as the discussion allows.
+- Evidence and detailed promotion metadata are optional; omit them when the entry stays clear without them.
 
 Append rules:
 - Append at EOF only; do not edit earlier sections.
@@ -17,23 +19,17 @@ Append rules:
 ## Entry List
 
 ### Entry 0001 ({timestamp})
-- Trigger: Why this discussion entry is recorded
-- Context and Research: Background, constraints, references, alternatives considered
-- Discussion: Key trade-offs and reasoning discussed at this time
-- Outcome at this time: What was concluded in this entry
-- Decision impact: Which decision(s) are affected, if any
-- DECISIONS.yml promotion: promoted | not promoted
-- Promotion target IDs (if promoted): decision-id-1, decision-id-2
-- Evidence / references: Links, commands, outputs, or artifacts used as evidence
+- Why now: Why this entry is recorded
+- Findings / trade-offs: Background, constraints, research findings, or alternatives that mattered
+- Current conclusion: What was concluded at this time
+- Promotion to DECISIONS.yml: none | promoted -> decision-id-1, decision-id-2
+- Evidence / references (optional): Links, commands, outputs, or artifacts used as evidence
 
 ## Append Template (Copy and Append at EOF)
 
 ### Entry {next-sequence} ({timestamp})
-- Trigger:
-- Context and Research:
-- Discussion:
-- Outcome at this time:
-- Decision impact:
-- DECISIONS.yml promotion: promoted | not promoted
-- Promotion target IDs (if promoted):
-- Evidence / references:
+- Why now:
+- Findings / trade-offs:
+- Current conclusion:
+- Promotion to DECISIONS.yml:
+- Evidence / references (optional):

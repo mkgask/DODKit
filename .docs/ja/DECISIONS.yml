@@ -123,3 +123,30 @@ decisions:
           title: discussion-record テンプレートを .dodkit/templates/discussion-record.md にインストールする
           reason: DODKit 専用の隠しディレクトリでワークスペース直下のノイズを抑えつつ、将来のテンプレート拡張でも安定したツール中立の配置先を確保できるため。
           status: "✅️Implementation Approved"
+
+    - id: agent-005-lightweight-template-roles
+      title: 独立した決定フェーズを増やさずに軽量なテンプレート役割を定義する
+      reason: DOD は軽量性を保つ必要があり、現在のAI摩擦はフェーズ不足ではなく成果物の役割重複から生じているため。
+      status: "✅️Implementation Approved"
+      link: "records/agent-005-lightweight-template-roles.md"
+      sub_decisions:
+        - id: agent-005-1-two-phase-dod
+          title: 決定の文書化は第3フェーズを作らず議論フェーズ内で完了させる
+          reason: 議論フェーズは決定が明示されるまで終わらないため、独立した決定フェーズを増やしても実務上の価値は小さい。
+          status: "✅️Implementation Approved"
+        - id: agent-005-2-decisions-template-scanability
+          title: DECISIONS.yml テンプレートは人間の一覧性を優先して軽く保つ
+          reason: 正本の決定一覧は素早く走査できる必要があるため、既定の決定形は最小限に保つ。
+          status: "✅️Implementation Approved"
+        - id: agent-005-3-contract-details-as-needed
+          title: 契約詳細は必要な分だけ追加のサブ決定として表現する
+          reason: 決定契約は明示すべきだが、すべてのノードに同じ契約フィールドを強制すると一覧性が落ち、重複作業も増えるため。
+          status: "✅️Implementation Approved"
+        - id: agent-005-4-discussion-record-minimal-structure
+          title: discussion-record テンプレートは履歴に絞って軽量に保つ
+          reason: 記録テンプレートは最小限の議論履歴だけを必須にし、DECISIONS.yml 上の現在拘束条件を重複させないようにする必要があるため。
+          status: "✅️Implementation Approved"
+        - id: agent-005-5-optional-record-detail
+          title: discussion-record の根拠と詳細な昇格メタデータは任意にする
+          reason: 補助情報を任意にすることで、小さな議論でも使いやすさを保ちつつ、必要時の深い記録余地も確保できるため。
+          status: "✅️Implementation Approved"

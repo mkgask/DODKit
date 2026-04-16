@@ -1,10 +1,13 @@
 # DECISIONS.yml
 # Current active decision list (mutable) for DOD (Decision Oriented Development)
 # Use this file as the canonical list of active project decisions and implementation constraints.
-# Keep each entry concise so the next decision can be made without rereading broad history.
+# Keep the default decision shape lightweight so humans can scan the list quickly.
 # Put background, trade-offs, rejected options, and research notes in records/{discussion-id}.md.
 # records/{discussion-id}.md is discussion history only: do not put mutable tracking fields there
 # (status, remaining work, or open action items that require later updates).
+# Keep decision contracts explicit here only when they actively constrain implementation.
+# When contract details need their own active rule, add them as small sub-decisions instead of
+# forcing the same contract fields onto every decision node.
 
 version: "1.0"
 decisions:
@@ -27,21 +30,17 @@ decisions:
       status: "⚠️Discussion In Progress"
       # Optional. Point to the related discussion record when this decision family comes from one discussion.
       link: "records/category-001-discussion-topic.md"
-      # Optional. Add children only when independently active rules should remain readable on their own.
-      sub_decisions:
-        - # Required. Use a stable child ID derived from the parent decision.
-          id: category-001-1-sub-decision
-          # Required. Describe one independently active rule in one line.
-          title: Describe one independently active rule
-          # Required. Explain why this rule currently constrains implementation.
-          reason: Explain why this rule currently constrains implementation
-          # Optional. Use the same status vocabulary as top-level decisions.
-          status: "⚠️Discussion Approved"
-          # Omit link when this child shares the parent's discussion record.
-          # Add link only when this child points to a different discussion record.
-          # link: "records/category-002-another-discussion.md"
-          # Optional. Leave [] when there are no deeper independently active rules.
-          sub_decisions: []
+      # Optional. Add children only when a contract detail or rule becomes independently active.
+      # Use sub-decisions for invariants, non-goals, acceptance criteria, or failure conditions
+      # only when those details need to be referenced on their own.
+      # Example:
+      # sub_decisions:
+      #   - id: category-001-1-contract-detail
+      #     title: Describe one independently active contract detail
+      #     reason: Explain why this detail currently constrains implementation
+      #     status: "⚠️Discussion Approved"
+      #     sub_decisions: []
+      sub_decisions: []
 
   # Add more categories and decision objects as needed.
   # Prefer many small decisions over one overloaded entry.

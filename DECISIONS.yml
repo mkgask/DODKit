@@ -123,3 +123,30 @@ decisions:
           title: Install discussion-record template at .dodkit/templates/discussion-record.md
           reason: A DODKit-scoped hidden directory keeps workspace root clean while providing a stable, tool-neutral location for future template expansion.
           status: "✅️Implementation Approved"
+
+    - id: agent-005-lightweight-template-roles
+      title: Define lightweight template roles without adding a separate decision phase
+      reason: DOD must stay lightweight, and current AI friction comes from artifact overlap rather than from a missing phase.
+      status: "✅️Implementation Approved"
+      link: "records/agent-005-lightweight-template-roles.md"
+      sub_decisions:
+        - id: agent-005-1-two-phase-dod
+          title: Keep decision recording inside the discussion phase rather than adding a third phase
+          reason: The discussion phase already runs until decisions are explicit, so a separate decision phase would add process weight with little new operational value.
+          status: "✅️Implementation Approved"
+        - id: agent-005-2-decisions-template-scanability
+          title: Keep the DECISIONS.yml template optimized for human scanability
+          reason: The canonical decision list must remain easy to scan, so the default decision shape should stay minimal.
+          status: "✅️Implementation Approved"
+        - id: agent-005-3-contract-details-as-needed
+          title: Express only necessary contract details as additional sub-decisions
+          reason: Decision contracts must be explicit, but forcing the same contract fields onto every node would reduce scanability and add redundant work.
+          status: "✅️Implementation Approved"
+        - id: agent-005-4-discussion-record-minimal-structure
+          title: Keep the discussion-record template lightweight and focused on history
+          reason: The record template should require only minimal discussion history so AI can preserve artifact order without duplicating current constraints from DECISIONS.yml.
+          status: "✅️Implementation Approved"
+        - id: agent-005-5-optional-record-detail
+          title: Make evidence and detailed promotion metadata optional in discussion records
+          reason: Optional detail keeps the template usable for small discussions while preserving room for deeper records when needed.
+          status: "✅️Implementation Approved"
