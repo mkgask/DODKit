@@ -71,3 +71,7 @@ Trade-offs:
 ## Implementation Update (2026-04-13)
 - Updated the agent template to require new discussion records to start from `.dodkit/templates/discussion-record.md`.
 - The agent now explicitly instructs contributors to copy that installed template into `records/{discussion-id}.md` before adapting the content for the current discussion.
+
+## Implementation Update (2026-04-16)
+- Clarified Gate A so the official discussion-phase artifact order is fixed: write discussion history to `records/{discussion-id}.md` first, then write binding decisions and contracts to `DECISIONS.yml`, and only then begin implementation.
+- Explicitly allowed iterative exploration of candidate decisions inside discussion while keeping the artifact gate order fixed.
