@@ -111,6 +111,9 @@ If the answer suggests that implementation could drift, the safe default is to s
 - Decision contracts must be explicit here because implementation should not require rereading discussion history
 - Keep the default decision shape lightweight and human-scannable; add extra sub-decisions only when a contract detail becomes independently active
 - Category list at the top level
+- Top-level categories should usually express a concern area or domain such as `Feature`, `Infrastructure`, `Business Logic`, `Security`, `Data`, or `CI/CD`
+- Do not default to splitting the top level by lifecycle axes such as specification, design, implementation, or test
+- When specification, design, implementation strategy, or test obligations independently constrain work, express them as decision objects or sub-decisions inside the relevant concern category
 - Each category contains an array of decision objects
 - Main properties of a decision object:
 	- `id`: required. `{category}-{sequence}-{shortname}`. Referred to as the decision ID

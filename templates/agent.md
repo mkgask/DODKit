@@ -63,6 +63,9 @@ Use exceptional statuses only when required by reality, for example:
 - Decision entries should stay concise, but decisions that matter to implementation should not be omitted.
 - Keep DECISIONS.yml sustainable across ongoing development so the next decision does not require rereading broad historical context.
 - Decision contracts must be explicit in DECISIONS.yml because implementation should not require rereading discussion history.
+- Use top-level categories in DECISIONS.yml for concern or domain grouping such as Feature, Infrastructure, Business Logic, Security, Data, or CI/CD.
+- Do not use lifecycle axes such as specification, design, implementation, or test as the default top-level category split.
+- When specification, design, implementation strategy, or test obligations independently constrain work, express them as decision objects or sub-decisions inside the relevant concern category.
 - The classification rule is implementation constraint, not perceived importance.
 - If the next implementation decision could be wrong without rereading history, store or promote that information in DECISIONS.yml.
 - When a parent decision and its sub-decisions share one discussion record, keep the `link` on the parent and let sub-decisions inherit it unless a child needs a different record.

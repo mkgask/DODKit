@@ -12,7 +12,11 @@
 version: "1.0"
 decisions:
 
-  # このカテゴリ名は、関連する決定事項をまとめるドメイン名に置き換えます。
+  # このカテゴリ名は、関連する決定事項をまとめる関心領域またはドメイン名に置き換えます。
+  # 既定の例としては Feature、Infrastructure、Business Logic、Security、Data、CI/CD が使えます。
+  # トップレベルは「どの領域の決定か」を表すために使います。
+  # 仕様・設計・実装・テストの関心は、それ自体が実装を拘束する場合に限り、
+  # その領域の中の決定事項またはサブ決定として表現します。
   カテゴリ名:
     - # 必須。{category}-{sequence}-{shortname} のような安定したIDを使います。
       id: category-001-short-name
@@ -41,6 +45,30 @@ decisions:
       #     status: "⚠️Discussion Approved"
       #     sub_decisions: []
       sub_decisions: []
+
+  # 例:
+  # Feature:
+  #   - id: feature-001-profile-editing
+  #     title: ユーザープロフィール編集機能
+  #     reason: この機能が現在の UI、API、バリデーション実装を横断して拘束している
+  #     status: "⚠️Implementing"
+  #     link: "records/feature-001-profile-editing.md"
+  #     sub_decisions:
+  #       - id: feature-001-1-spec-fields
+  #         title: 編集可能項目とバリデーション規則
+  #         reason: 実装前に API とフォームスキーマで許可項目を一致させる必要がある
+  #         status: "⚠️Discussion Approved"
+  #         sub_decisions: []
+  #       - id: feature-001-2-design-boundary
+  #         title: サーバーとクライアントの責務境界
+  #         reason: コンポーネント構成と更新フローがこの境界に依存する
+  #         status: "⚠️Implementing"
+  #         sub_decisions: []
+  #       - id: feature-001-3-test-acceptance
+  #         title: 正常系と拒否系の受け入れテスト範囲
+  #         reason: 正しい更新成功と不正入力拒否を検証しない限り、この機能は完了と見なせない
+  #         status: "⚠️Discussion Approved"
+  #         sub_decisions: []
 
   # 必要に応じてカテゴリや決定事項を増やします。
   # 大きな1件を肥大化させるより、小さな決定を複数並べるほうを優先します。

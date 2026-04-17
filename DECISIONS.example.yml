@@ -4,9 +4,35 @@
 # Start by checking only this file when making a new decision.
 # See the corresponding record file for detailed decision history.
 # Sub-decisions inherit the nearest parent link unless they point to a different record.
+# Use top-level categories for concern/domain grouping.
+# Express specification, design, implementation, and test concerns as decisions or sub-decisions
+# inside the relevant category when they independently constrain work.
 
 version: "1.0"
 decisions:
+
+  Feature:
+    - id: feature-001-profile-editing
+      title: User profile editing capability
+      status: "⚠️Implementing"
+      reason: This feature constrains current UI, API, and validation work across the app
+      link: "records/feature-001-profile-editing.md"
+      sub_decisions:
+        - id: feature-001-1-spec-fields
+          title: Editable fields and validation rules
+          status: "⚠️Discussion Approved"
+          reason: The API and form schema must agree on allowed fields before implementation
+          sub_decisions: []
+        - id: feature-001-2-design-boundary
+          title: Server and client responsibility boundary
+          status: "⚠️Implementing"
+          reason: Component structure and mutation flow depend on where state and actions live
+          sub_decisions: []
+        - id: feature-001-3-test-acceptance
+          title: Acceptance coverage for success and rejection paths
+          status: "⚠️Discussion Approved"
+          reason: The feature is incomplete unless valid updates succeed and invalid input is rejected
+          sub_decisions: []
 
   Architecture:
     - id: r-007

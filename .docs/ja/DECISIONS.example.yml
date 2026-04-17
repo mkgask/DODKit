@@ -3,9 +3,35 @@
 # 構造：カテゴリ → メイン決定事項 → サブ決定事項（最大5層まで許容）
 # 新しい決定時はこのファイルだけをまず参照。詳細経緯は対応する records ファイルを参照。
 # サブ決定は別の履歴を指す必要がない限り、最も近い親の link を継承する。
+# トップレベルカテゴリは関心領域またはドメインで分ける。
+# 仕様・設計・実装・テストの関心は、それ自体が拘束条件になる場合に、
+# 関連カテゴリ内の決定事項またはサブ決定として表現する。
 
 version: "1.0"
 decisions:
+
+  Feature:
+    - id: feature-001-profile-editing
+      title: ユーザープロフィール編集機能
+      status: "⚠️Implementing"
+      reason: この機能が現在の UI、API、バリデーション実装を横断して拘束している
+      link: "records/feature-001-profile-editing.md"
+      sub_decisions:
+        - id: feature-001-1-spec-fields
+          title: 編集可能項目とバリデーション規則
+          status: "⚠️Discussion Approved"
+          reason: 実装前に API とフォームスキーマで許可項目を一致させる必要がある
+          sub_decisions: []
+        - id: feature-001-2-design-boundary
+          title: サーバーとクライアントの責務境界
+          status: "⚠️Implementing"
+          reason: コンポーネント構成と更新フローが、状態とアクションの配置に依存する
+          sub_decisions: []
+        - id: feature-001-3-test-acceptance
+          title: 正常系と拒否系の受け入れテスト範囲
+          status: "⚠️Discussion Approved"
+          reason: 正しい更新成功と不正入力拒否を検証しない限り、この機能は完了と見なせない
+          sub_decisions: []
 
   アーキテクチャ:
     - id: r-007
