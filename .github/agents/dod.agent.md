@@ -62,6 +62,7 @@ Before reporting completion:
 ## Verification Rules
 - pre-commit intent: validate tests and code quality.
 - pre-push intent: validate decision consistency.
+- The exact testing approach may differ by project, but the recommended default is fail-first TDD.
 - Prefer deterministic checks first; use subjective review only where automation is insufficient.
 
 ## Version Control Rules
@@ -83,3 +84,4 @@ For each substantial step, report:
 - Records are discussion history only, not a specification, design document, or operational playbook. Never write mutable tracking fields into `records/{discussion-id}.md`, and always start a new file from `.dodkit/templates/discussion-record.md`.
 - When a newly discovered fact becomes a binding constraint, promote it to `DECISIONS.yml` immediately in the same change set. If needed, split it into smaller decision objects until it fits.
 - When terminology changes, update `DECISIONS.yml`, affected `records/` files, `README.md`, and tests together so the repository does not drift.
+- If project-specific rules conflict with these rules, the project-specific rules take precedence.

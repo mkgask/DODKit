@@ -62,6 +62,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 ## 検証ルール
 - pre-commit の意図: テストとコード品質の検証。
 - pre-push の意図: 決定整合性の検証。
+- テスト手段はプロジェクトごとに異なってよいが、推奨される既定は fail-first の TDD である。
 - まず機械的検証を優先し、自動化できない箇所のみ主観レビューを使う。
 
 ## バージョン管理ルール
@@ -83,3 +84,4 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - records/{discussion-id}.md は議論履歴であり、仕様書・設計書・運用プレイブックではない。更新前提の追跡フィールドを書かず、新しいファイルは必ず `.dodkit/templates/discussion-record.md` を起点に作る。
 - 新たに判明した事実が拘束条件になったら、同じ変更セット内で即座に `DECISIONS.yml` に昇格させる。必要なら複数の小さな決定事項へ分割する。
 - 用語が変わったら、`DECISIONS.yml`、影響する `records/`、`README.md`、テストを同じ変更で更新し、リポジトリ内の用語をずらさない。
+- これらのルールと矛盾するプロジェクト固有のルールがある場合は、プロジェクト固有のルールを優先する。

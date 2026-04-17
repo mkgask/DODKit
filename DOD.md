@@ -116,7 +116,19 @@ If the answer suggests that implementation could drift, the safe default is to s
 
 This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
 
-Concrete operating rules such as branch strategy, hooks, reporting style, and repository-specific automation are useful, but they are not the core definition of DOD. Keep those rules in project-specific instructions, agent files, or repository process documents.
+## Decision Enforcement
+
+DOD does not work if decisions remain only as remembered intent.
+They must be enforced in implementation.
+
+- Tests and working code enforce the behavioral side of active decisions.
+- Automated checks such as hooks can enforce consistency between `DECISIONS.yml`, tests, and implementation.
+- The exact enforcement mechanism is project-specific, but some enforcement mechanism is required; otherwise decisions remain advisory and implementation drift becomes likely.
+
+## Testing
+
+The exact testing approach may differ by project.
+The recommended default is fail-first TDD.
 
 ## Notes
 
