@@ -16,13 +16,17 @@ The background is a common failure in software projects: the current decisions, 
 
 DOD solves this by separating active decisions from discussion history and by making the source of truth for implementation explicit.
 
+Another part of the motivation is that the source of specification is rarely explicit at the start.
+It often exists as tacit understanding distributed across people, constraints, context, and prior discussion.
+DOD is a way to turn that tacit source into explicit decisions and reasons, so implementation can proceed from a shared and inspectable basis.
+
 ## Core Principle
 
 The core distinction in DOD is not whether a piece of information is important. The real distinction is whether that information constrains the next implementation decision.
 
 DOD must keep discussion, decision, and implementation separate.
 - Discussion is where investigation, research, questions, trade-offs, and evolving understanding accumulate.
-- Decision is the binding definition produced from discussion. In DOD, "decision" is not limited to resolved disputes — specifications, design constraints, interface contracts, technology selections, behavioral invariants, and non-goals are all decisions and must be managed in `DECISIONS.yml`.
+- Decision is the binding definition produced from discussion. In DOD, "decision" is not limited to resolved disputes — specifications, design constraints, interface contracts, technology selections, project constitution, philosophy, governing principles, behavioral invariants, and non-goals are all decisions and must be managed in `DECISIONS.yml`.
 - Implementation is the act of turning those decisions into tests and working code.
 
 For this reason, DOD separates the following two artifacts.
