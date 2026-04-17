@@ -47,21 +47,14 @@ In the discussion phase, the team investigates, records discussion history, and 
 ## Development Flow (Only Two Phases)
 
 **Discussion Phase** (until the relevant decisions for the current discussion scope are explicit)
-- Actions: Investigate, research, ask questions, and discuss in order to finalize decisions (not only product specs, but also technology choices and constraints)
-- Deliverables (always in this order):
-	1. Write the process in **Discussion Record File (`records/{discussion-id}.md`)** (immutable, append-only; newly discovered facts can be added as they appear)
-	2. Update **Decision List File (`DECISIONS.yml`)** with the active decision objects, and add one or more new decision objects or sub-decisions when the discussion produces independently active rules
-- Constraint: Do not enter the implementation phase or start writing code until the relevant decisions and their decision contracts are explicit in `DECISIONS.yml`; use the discussion record file for history and supporting context.
+- Repeat investigation, research, questions, and discussion until the active constraints for the current scope are explicit.
+- Always write the discussion history to `records/{discussion-id}.md` first, then promote the resulting active decisions to `DECISIONS.yml`.
+- Do not enter implementation until the relevant decisions and decision contracts are explicit in `DECISIONS.yml`.
 
 **Implementation Phase** (until tests pass)
-- Actions: Design, test implementation, and code implementation
-- Deliverables:
-	- Test code that enforces the decision
-	- Working code (all tests pass)
-- Constraints:
-	- Do not deviate from the relevant decisions.
-	- Fully respect `DECISIONS.yml`, existing test code, and existing implementation code
-	- If new facts are discovered, append them to the related discussion record file, and promote them to `DECISIONS.yml` if they become binding constraints
+- Design, test, and implement against the active decisions.
+- Do not deviate from the relevant decisions.
+- If new facts are discovered, append them to the related discussion record file, and promote them to `DECISIONS.yml` if they become binding constraints.
 
 ## Decision Contract
 
@@ -103,68 +96,27 @@ Operational rule:
 If the answer suggests that implementation could drift, the safe default is to store or promote the information in `DECISIONS.yml`.
 
 **Decision List File (`DECISIONS.yml`)**: mutable, project decision register
-- The canonical set of decision objects for this project
-- The set of binding constraints required to make the next implementation decision correctly without rereading history
-- All project decisions should be expressed here as decision objects or sub-decisions, with `status` showing whether they are active, on hold, cancelled, or otherwise
-- A parent decision can point to the shared discussion record for one discussion or research thread, and sub-decisions can inherit that `link` unless they need a different record
-- When making a new decision, you can start immediately by checking only this file, without rereading all historical context first
-- Decision contracts must be explicit here because implementation should not require rereading discussion history
-- Keep the default decision shape lightweight and human-scannable; add extra sub-decisions only when a contract detail becomes independently active
-- Category list at the top level
-- Top-level categories should usually express a concern area or domain such as `Feature`, `Infrastructure`, `Business Logic`, `Security`, `Data`, or `CI/CD`
-- Do not default to splitting the top level by lifecycle axes such as specification, design, implementation, or test
-- When specification, design, implementation strategy, or test obligations independently constrain work, express them as decision objects or sub-decisions inside the relevant concern category
-- Each category contains an array of decision objects
-- Main properties of a decision object:
-	- `id`: required. `{category}-{sequence}-{shortname}`. Referred to as the decision ID
-	- `title`: required
-	- `reason`: required. Up to around 3 lines is acceptable
-	- `status`: optional. Use these as defaults: `⚠️Discussion In Progress`, `⚠️Discussion Approved`, `⚠️Implementing`, `✅️Implementation Approved`. Use others only when necessary, for example `⛔️On Hold` or `⛔️Cancelled`.
-	- `link`: optional. Pointer to the related discussion record file. Sub-decisions inherit the nearest parent `link` unless they point to a different discussion record
-- Decision objects can be nested up to 5 levels (3 levels recommended)
-- Keep each decision entry as concise as possible
-- Concise means concise per entry, not a small number of entries
-- Prefer many small decision objects over a few overloaded decision objects
-- Every decision that matters to implementation should exist here as a decision object or sub-decision
-- If a new binding rule emerges, add it here instead of burying it only in records
-- Keep YAML readable in table-view tools
+- This is the canonical set of active decision objects and binding constraints for the project.
+- A new implementer should be able to start here without rereading broad history.
+- Keep entries concise, but do not omit any active rule that can change implementation.
+- Prefer many small decisions or sub-decisions over a few overloaded entries.
+- Top-level categories should usually express a concern area or domain such as `Feature`, `Infrastructure`, `Business Logic`, `Security`, `Data`, or `CI/CD`.
+- Do not default to splitting the top level by lifecycle axes such as specification, design, implementation, or test. When those axes independently constrain work, express them as decisions or sub-decisions inside the relevant concern category.
+- The core fields are `id`, `title`, and `reason`. `status` and `link` are optional but recommended when they help keep the active set understandable.
+- A parent decision can point to the shared discussion record for one discussion or research thread, and sub-decisions can inherit that `link` unless they need a different record.
+- Decision objects can be nested up to 5 levels, though 3 levels is usually enough.
 
 **Discussion Record File (`records/{discussion-id}.md`)**: immutable, discussion history only
 - **This file is discussion history only — it is not a specification document, design document, or operational playbook**
-- The background, investigation, trade-offs, and discussion process behind one discussion or research thread
-- Append-only: new observations can be appended as they emerge, but existing entries are never edited or updated in place
-- One discussion record can produce zero, one, or many decision objects in `DECISIONS.yml`
-- Free-form format (MADR-like or plain text)
-- Focus this file on discussion history: background, research, trade-offs, alternatives, and why the active decisions were formed
-- **Do not write mutable tracking fields here: status indicators, remaining-work checklists, open action items, or any content that is expected to be updated after the fact.** That content belongs in `DECISIONS.yml` or in the implementation
-- Quick check: if any field in this file would need to be updated as work progresses, that field is in the wrong place
-- Do not use this file as the only place to store implementation constraints; decision objects belong in `DECISIONS.yml`
-- Discussion records may describe how contracts were formed, but the current binding contracts must remain explicit in `DECISIONS.yml`
-- If a fact captured here later becomes a binding constraint, it must be promoted to `DECISIONS.yml` immediately — do not update the record in place
+- It stores the background, investigation, trade-offs, alternatives, and discussion process behind one discussion or research thread.
+- It is append-only: new observations can be appended as they emerge, but existing entries are not rewritten to track progress.
+- It may include implementation-discovered facts when those facts are part of the history of how the decision evolved.
+- **Do not write mutable tracking fields here: status indicators, remaining-work checklists, open action items, or any content expected to be updated after the fact.** That content belongs in `DECISIONS.yml` or in implementation artifacts.
+- Do not use this file as the only place to store active implementation constraints. If a fact becomes binding, promote it to `DECISIONS.yml` immediately.
 
 This separation makes it possible to get both **what the project decisions are** and **why they became that way** with minimal effort at the right time.
 
-## Version Control
-
-**`main` branch**
-- Keep it consistent with `DECISIONS.yml` at all times
-- Merge only when code passes tests and the relevant decisions are finalized
-
-**Feature branch per implementation scope**
-- Branch name should reflect the implementation scope; include the related discussion ID or primary decision ID when useful
-- Keep work isolated in that branch until tests pass and the relevant decisions are finalized
-
-## Verification
-
-Verification is not a separate phase. Enforce it through hooks.
-
-**`pre-commit` hook**: validation for tests and code quality
-- High-level e2e specification tests and unit tests
-- Type checks, lint, and coding-standard checks
-
-**`pre-push` hook**: early correction for decision consistency
-- Consistency checks for `DECISIONS.yml`
-- Consistency checks between `DECISIONS.yml` and high-level specification tests
+Concrete operating rules such as branch strategy, hooks, reporting style, and repository-specific automation are useful, but they are not the core definition of DOD. Keep those rules in project-specific instructions, agent files, or repository process documents.
 
 ## Notes
 
