@@ -2,13 +2,15 @@
 
 **Decision Oriented Development: DOD**
 
-A lightweight continuous development method centered on the sustainable accumulation of decisions.
+A lightweight continuous development method for discovering and obtaining the true form of software that should truly exist.
 
-DOD places decisions at the center of continuous development. By repeating the **discussion phase** and the **implementation phase**, and by separately maintaining the current decision list, the implementation that follows those decisions, and the history behind them, teams can search for what the software should truly become while staying lightweight.
+DOD places decisions at the center of continuous development. By repeating the **discussion phase** and the **implementation phase**, and by separately maintaining the current decision list, the implementation that follows those decisions, and the history behind them, teams can search for what the software should truly become while keeping the active decision set lightweight and sustainable.
 
 ## Purpose, Background, and Why DOD
 
-The purpose of DOD is to keep a lightweight decision list sustainable even across medium- and long-term development, and thereby keep the cognitive load for the next decision as low as possible.
+The purpose of DOD is to discover what the software should truly be, and to obtain that software through continuous development.
+
+To make that sustainable across medium- and long-term development, DOD keeps the active decision list lightweight and sustainable, so the cognitive load for the next decision stays as low as possible.
 
 The background is a common failure in software projects: the current decisions, the history behind them, and the implementation details often get mixed together. When that happens, people must repeatedly dig through old context just to answer two basic questions: "What is decided now?" and "Why was it decided?"
 
