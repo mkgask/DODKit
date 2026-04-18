@@ -81,7 +81,8 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - 要求が有効な決定と衝突する場合は、衝突理由と準拠案を提示する。
 - 広範囲または不可逆な変更前には確認を取る。
 - 決定スコープを黙って変更しない。
+- 作業完了後、開始前に想定していた修正がすべて完了できているかを必ず再確認する。
 - records/{discussion-id}.md は議論履歴であり、仕様書・設計書・運用プレイブックではない。更新前提の追跡フィールドを書かず、新しいファイルは必ず `.dodkit/templates/discussion-record.md` を起点に作る。
 - 新たに判明した事実が拘束条件になったら、同じ変更セット内で即座に `DECISIONS.yml` に昇格させる。必要なら複数の小さな決定事項へ分割する。
-- 用語が変わったら、`DECISIONS.yml`、影響する `records/`、`README.md`、テストを同じ変更で更新し、リポジトリ内の用語をずらさない。
+- 用語が変わったら、現在有効な拘束条件や利用者向けの用語がずれる箇所に限って `DECISIONS.yml`、`README.md`、テストを同じ変更で更新する。用語同期だけを理由に `records/{discussion-id}.md` を書き換えてはならない。
 - これらのルールと矛盾するプロジェクト固有のルールがある場合は、プロジェクト固有のルールを優先する。

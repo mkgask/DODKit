@@ -1,7 +1,7 @@
 version: "1.0"
 decisions:
 
-  Copilot Customization:
+  DOD Agent:
     - id: agent-001-dod-custom-agent
       title: Create a dedicated DOD custom agent in VS Code
       reason: A persistent persona with constrained tools is required to keep implementation aligned with DOD decisions.
@@ -24,6 +24,29 @@ decisions:
           title: Require new records files to be created from the installed discussion-record template
           reason: Mandatory template usage keeps record structure consistent and prevents ad hoc record formats.
           status: "✅️Implementation Approved"
+
+    - id: agent-006-agent-orchestration-model
+      title: Use one main DOD agent with phase skills and conditional audit-agent escalation
+      reason: DOD phase gates require one accountable controller, while phase procedures and audit logic still benefit from modular reuse.
+      status: "⚠️Discussion Approved"
+      link: "records/agent-006-agent-orchestration-model.md"
+      sub_decisions:
+        - id: agent-006-1-main-agent-governance
+          title: Keep one main DOD agent responsible for flow control and final gate judgment
+          reason: Gate A, Gate B, and Gate C need a single authority for artifact order, status progression, and completion judgment.
+          status: "⚠️Discussion Approved"
+        - id: agent-006-2-phase-skills-default
+          title: Execute discussion and implementation through dedicated skills by default
+          reason: Skills modularize phase-specific procedure without splitting ownership of the active decision set across peer agents.
+          status: "⚠️Discussion Approved"
+        - id: agent-006-3-audit-skill-default
+          title: Run artifact audit as a reusable skill under the main agent by default
+          reason: Most audit checks are deterministic artifact consistency checks and do not require a separate peer agent to stay reliable.
+          status: "⚠️Discussion Approved"
+        - id: agent-006-4-audit-agent-exception
+          title: Introduce a separate read-only audit agent only when independence or scale justifies it
+          reason: A dedicated audit agent adds orchestration cost and should be reserved for cases where audit independence or workload justifies the extra runtime separation.
+          status: "⚠️Discussion Approved"
 
   Installer:
     - id: agent-002-installer-delivery
@@ -150,3 +173,4 @@ decisions:
           title: Make evidence and detailed promotion metadata optional in discussion records
           reason: Optional detail keeps the template usable for small discussions while preserving room for deeper records when needed.
           status: "✅️Implementation Approved"
+

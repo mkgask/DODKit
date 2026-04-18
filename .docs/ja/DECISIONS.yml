@@ -1,7 +1,7 @@
 version: "1.0"
 decisions:
 
-  Copilot カスタマイズ:
+  DOD エージェント:
     - id: agent-001-dod-custom-agent
       title: DOD専用のVS Codeカスタムエージェントを作成する
       reason: DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
@@ -24,6 +24,29 @@ decisions:
           title: 新しい records ファイルはインストール済み discussion-record テンプレートから作成することを必須にする
           reason: テンプレート利用を必須化することで記録構造の一貫性を保ち、場当たり的な形式の記録作成を防ぐため。
           status: "✅️Implementation Approved"
+
+    - id: agent-006-agent-orchestration-model
+      title: 1つのメインDODエージェントとフェーズスキル、条件付き監査エージェント昇格を採用する
+      reason: DODのフェーズゲートには単一の責任主体が必要であり、一方でフェーズ手順と監査ロジックはモジュールとして再利用した方がよいため。
+      status: "⚠️Discussion Approved"
+      link: "records/agent-006-agent-orchestration-model.md"
+      sub_decisions:
+        - id: agent-006-1-main-agent-governance
+          title: フロー制御と最終ゲート判定は1つのメインDODエージェントに持たせる
+          reason: Gate A、Gate B、Gate C では成果物順序、status進行、完了判定を単一の主体が担う必要があるため。
+          status: "⚠️Discussion Approved"
+        - id: agent-006-2-phase-skills-default
+          title: 議論と実装は既定で専用スキルとして実行する
+          reason: 専用スキルによりフェーズごとの手順を分離しつつ、有効な決定集合の責任を複数の対等エージェントに分散させないため。
+          status: "⚠️Discussion Approved"
+        - id: agent-006-3-audit-skill-default
+          title: 成果物監査は既定でメインエージェント配下の再利用可能なスキルとして実行する
+          reason: 監査の大半は決定的な成果物整合チェックであり、信頼性確保のために別の対等エージェントを必須としないため。
+          status: "⚠️Discussion Approved"
+        - id: agent-006-4-audit-agent-exception
+          title: 独立性または規模が正当化する場合にのみ read-only の監査エージェントを導入する
+          reason: 専用監査エージェントはオーケストレーションコストを増やすため、監査独立性または負荷が追加コストを上回る場合に限定するため。
+          status: "⚠️Discussion Approved"
 
   インストーラー:
     - id: agent-002-installer-delivery

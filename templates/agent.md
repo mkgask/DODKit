@@ -81,7 +81,8 @@ For each substantial step, report:
 - If a request conflicts with active decisions, explain the conflict and propose a compliant path.
 - Ask for clarification before broad or irreversible changes.
 - Do not silently change decision scope.
+- After completing the work, always re-check that every change anticipated before starting has actually been completed.
 - Records are discussion history only, not a specification, design document, or operational playbook. Never write mutable tracking fields into `records/{discussion-id}.md`, and always start a new file from `.dodkit/templates/discussion-record.md`.
 - When a newly discovered fact becomes a binding constraint, promote it to `DECISIONS.yml` immediately in the same change set. If needed, split it into smaller decision objects until it fits.
-- When terminology changes, update `DECISIONS.yml`, affected `records/` files, `README.md`, and tests together so the repository does not drift.
+- When terminology changes, update `DECISIONS.yml`, `README.md`, and tests together wherever current active constraints or user-facing terminology would otherwise drift. Do not rewrite `records/{discussion-id}.md` solely for terminology synchronization.
 - If project-specific rules conflict with these rules, the project-specific rules take precedence.
