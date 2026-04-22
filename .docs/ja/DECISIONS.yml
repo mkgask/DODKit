@@ -173,3 +173,23 @@ decisions:
           title: discussion-record の根拠と詳細な昇格メタデータは任意にする
           reason: 補助情報を任意にすることで、小さな議論でも使いやすさを保ちつつ、必要時の深い記録余地も確保できるため。
           status: "✅️Implementation Approved"
+
+  DODプロセス:
+    - id: agent-007-phase-verification-model
+      title: DOD を 2 フェーズのまま保ちつつ、フェーズ別の検証を明示する
+      reason: DOD には決定昇格前の方向性検証と、クローズ前の実装検証が必要だが、独立した検証フェーズを追加すると価値に対して手順が重くなりすぎるため。
+      status: "✅️Implementation Approved"
+      link: "records/agent-007-phase-verification-model.md"
+      sub_decisions:
+        - id: agent-007-1-no-third-phase
+          title: 検証は第3フェーズにせず、既存の2フェーズ内で扱う
+          reason: 議論と実装ですでに必要なライフサイクル境界は揃っており、独立した検証フェーズは多くの場合、作業の重複と摩擦増加になるため。
+          status: "✅️Implementation Approved"
+        - id: agent-007-2-discussion-validation-before-promotion
+          title: 候補結論を DECISIONS.yml に昇格する前に軽量な議論検証を必須にする
+          reason: 決定自体が当初の目的に対して方向を外していれば、実装が正しくても全体として誤るため、拘束力を持たせる前に方向性を確認する必要がある。
+          status: "✅️Implementation Approved"
+        - id: agent-007-3-implementation-validation-before-closeout
+          title: 実装作業を閉じる前に有効な決定に対する実装検証を必須にする
+          reason: テスト、コード、関連成果物が昇格済み決定に照らして検証されない限り、決定は助言に留まりやすいため。
+          status: "✅️Implementation Approved"

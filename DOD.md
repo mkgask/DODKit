@@ -48,17 +48,19 @@ DOD works through three connected ideas:
 - Allow one discussion to produce multiple decisions when the resulting constraints are independently active
 - Move work through only two phases: discussion and implementation
 
-In the discussion phase, the team investigates, records discussion history, and updates one or more decision objects. In the implementation phase, the team writes tests and code that enforce the active decisions. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
+In the discussion phase, the team investigates, records discussion history, validates the current direction, and updates one or more decision objects. In the implementation phase, the team designs, writes tests and code that enforce the active decisions, and validates the resulting implementation against those decisions. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
 
 ## Development Flow (Only Two Phases)
 
 **Discussion Phase** (until the relevant decisions for the current discussion scope are explicit)
 - Repeat investigation, research, questions, and discussion until the active constraints for the current scope are explicit.
-- Always write the discussion history to `records/{discussion-id}.md` first, then promote the resulting active decisions to `DECISIONS.yml`.
+- A practical order inside this phase is: 1. discussion, 2. discussion-validation, 3. decision promotion.
+- Always write the discussion history to `records/{discussion-id}.md` first, then validate whether the recorded direction still fits the original purpose and active constraints, and then promote the resulting active decisions to `DECISIONS.yml`.
 - Do not enter implementation until the relevant decisions and decision contracts are explicit in `DECISIONS.yml`.
 
 **Implementation Phase** (until tests pass)
-- Design, test, and implement against the active decisions.
+- A practical order inside this phase is: 1. design, 2. test and implement, 3. validation.
+- Design, test, implement, and validate against the active decisions.
 - Do not deviate from the relevant decisions.
 - If new facts are discovered, append them to the related discussion record file, and promote them to `DECISIONS.yml` if they become binding constraints.
 
@@ -129,6 +131,7 @@ They must be enforced in implementation.
 
 - Tests and working code enforce the behavioral side of active decisions.
 - Automated checks such as hooks can enforce consistency between `DECISIONS.yml`, tests, and implementation.
+- Discussion-validation enforces that only directionally sound conclusions become active decisions.
 - The exact enforcement mechanism is project-specific, but some enforcement mechanism is required; otherwise decisions remain advisory and implementation drift becomes likely.
 
 ## Testing

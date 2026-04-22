@@ -174,3 +174,23 @@ decisions:
           reason: Optional detail keeps the template usable for small discussions while preserving room for deeper records when needed.
           status: "✅️Implementation Approved"
 
+  DOD Process:
+    - id: agent-007-phase-verification-model
+      title: Keep DOD as a two-phase method while making phase-specific verification explicit
+      reason: DOD needs directional validation before decision promotion and implementation validation before closeout, but adding a separate verification phase would add process weight without enough new value.
+      status: "✅️Implementation Approved"
+      link: "records/agent-007-phase-verification-model.md"
+      sub_decisions:
+        - id: agent-007-1-no-third-phase
+          title: Keep verification inside the existing two-phase model instead of adding a third phase
+          reason: Discussion and implementation already provide the needed lifecycle boundaries, so a separate verification phase would mostly duplicate work and increase friction.
+          status: "✅️Implementation Approved"
+        - id: agent-007-2-discussion-validation-before-promotion
+          title: Require lightweight discussion-validation before promoting candidate conclusions into DECISIONS.yml
+          reason: A decision can be implemented correctly yet still be directionally wrong, so the proposed direction must be checked against the original objective and active constraints before it becomes binding.
+          status: "✅️Implementation Approved"
+        - id: agent-007-3-implementation-validation-before-closeout
+          title: Require implementation-validation against active decisions before closing implementation work
+          reason: Decisions remain advisory unless tests, code, and related artifacts are checked against the promoted decision set before closeout.
+          status: "✅️Implementation Approved"
+
