@@ -36,17 +36,48 @@ decisions:
           reason: Gate A、Gate B、Gate C では成果物順序、status進行、完了判定を単一の主体が担う必要があるため。
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: 議論と実装は既定で専用スキルとして実行する
-          reason: 専用スキルによりフェーズごとの手順を分離しつつ、有効な決定集合の責任を複数の対等エージェントに分散させないため。
+          title: discussion、discussion-validation、implementation、implementation-validation を既定で専用スキルとして実行する
+          reason: フェーズに対応した4つのスキルにより再利用可能な手順を分離しつつ、有効な決定集合の責任を複数の対等エージェントに分散させないため。
           status: "⚠️Discussion Approved"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-3-audit-skill-default
-          title: 成果物監査は既定でメインエージェント配下の再利用可能なスキルとして実行する
-          reason: 監査の大半は決定的な成果物整合チェックであり、信頼性確保のために別の対等エージェントを必須としないため。
+          title: 既定の audit チェックは discussion-validation と implementation-validation の各スキルに吸収する
+          reason: 監査の大半はすでに検証責務に属しており、独立した既定 audit skill を持つと責務重複とパッケージ肥大を招くため。
           status: "⚠️Discussion Approved"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-4-audit-agent-exception
           title: 独立性または規模が正当化する場合にのみ read-only の監査エージェントを導入する
           reason: 専用監査エージェントはオーケストレーションコストを増やすため、監査独立性または負荷が追加コストを上回る場合に限定するため。
           status: "⚠️Discussion Approved"
+
+  スキル:
+    - id: agent-008-phase-skill-set
+      title: DOD のデフォルトスキルパッケージをフェーズ対応の 4 スキルとして定義する
+      reason: 再利用する手順は明示的かつ最小限に保ちつつ、フロー制御と最終ゲート判定はメイン DOD エージェントに残すべきため。
+      status: "⚠️Implementing"
+      link: "records/agent-008-phase-skill-set.md"
+      sub_decisions:
+        - id: agent-008-1-discussion-skill
+          title: 議論フェーズの調査と記録ドラフト作成用に専用 discussion skill を提供する
+          reason: 議論作業を、ゲート所有権をメインエージェントから移さずに再利用可能な手順として扱うため。
+          status: "⚠️Implementing"
+        - id: agent-008-2-discussion-validation-skill
+          title: 決定昇格前の方向性確認用に専用 discussion-validation skill を提供する
+          reason: 候補結論が有効な決定になる前の方向適合確認を、明示的で再利用可能な手順として扱うため。
+          status: "⚠️Implementing"
+        - id: agent-008-3-implementation-skill
+          title: フェーズ内の設計とテスト・実装ループ用に専用 implementation skill を提供する
+          reason: 実装作業を、メインエージェントが保持する有効な決定集合の下で、集中した再利用可能手順として扱うため。
+          status: "⚠️Implementing"
+        - id: agent-008-4-implementation-validation-skill
+          title: クローズ前の成果物確認用に専用 implementation-validation skill を提供する
+          reason: テスト、コード、関連成果物が昇格済み決定と一致することを確認するクローズ前検証を、明示的な再利用手順として扱うため。
+          status: "⚠️Implementing"
+        - id: agent-008-5-broad-then-focus-discussion
+          title: 議論は bounded broad scan から始め、その後に焦点領域へ絞り込む
+          reason: 議論作業では、まず影響ドメインと考慮漏れリスクを浮かび上がらせる必要があり、早すぎる絞り込みは実装フェーズ向けの局所性を持ち込み有効拘束条件の見落としを招くため。
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
 
   インストーラー:
     - id: agent-002-installer-delivery
@@ -146,6 +177,11 @@ decisions:
           title: discussion-record テンプレートを .dodkit/templates/discussion-record.md にインストールする
           reason: DODKit 専用の隠しディレクトリでワークスペース直下のノイズを抑えつつ、将来のテンプレート拡張でも安定したツール中立の配置先を確保できるため。
           status: "✅️Implementation Approved"
+        - id: agent-004-6-skill-template-source-layout
+          title: 配布する skill のソーステンプレートは templates/skills 配下に skill ごとの .skill.md として保存する
+          reason: 専用のソースディレクトリにより、再利用する skill 内容をインストール先の検出パスから分離しつつ、4-skill パッケージをリポジトリ内でレビューしやすく翻訳もしやすくするため。
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
 
     - id: agent-005-lightweight-template-roles
       title: 独立した決定フェーズを増やさずに軽量なテンプレート役割を定義する

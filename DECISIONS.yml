@@ -36,17 +36,48 @@ decisions:
           reason: Gate A, Gate B, and Gate C need a single authority for artifact order, status progression, and completion judgment.
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: Execute discussion and implementation through dedicated skills by default
-          reason: Skills modularize phase-specific procedure without splitting ownership of the active decision set across peer agents.
+          title: Execute discussion, discussion-validation, implementation, and implementation-validation through dedicated skills by default
+          reason: Four phase-aligned skills modularize the reusable procedure without splitting ownership of the active decision set across peer agents.
           status: "⚠️Discussion Approved"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-3-audit-skill-default
-          title: Run artifact audit as a reusable skill under the main agent by default
-          reason: Most audit checks are deterministic artifact consistency checks and do not require a separate peer agent to stay reliable.
+          title: Absorb default audit checks into the discussion-validation and implementation-validation skills
+          reason: Most audit work is already a validation concern, so a separate default audit skill would duplicate responsibility and add unnecessary packaging weight.
           status: "⚠️Discussion Approved"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-4-audit-agent-exception
           title: Introduce a separate read-only audit agent only when independence or scale justifies it
           reason: A dedicated audit agent adds orchestration cost and should be reserved for cases where audit independence or workload justifies the extra runtime separation.
           status: "⚠️Discussion Approved"
+
+  Skills:
+    - id: agent-008-phase-skill-set
+      title: Define the default DOD skill package as four phase-aligned skills
+      reason: The reusable procedures should be explicit and minimal, while the main DOD agent retains flow control and final gate judgment.
+      status: "⚠️Implementing"
+      link: "records/agent-008-phase-skill-set.md"
+      sub_decisions:
+        - id: agent-008-1-discussion-skill
+          title: Provide a dedicated discussion skill for discussion-phase research and record drafting
+          reason: Discussion work should be reusable as a focused procedure without moving gate ownership away from the main agent.
+          status: "⚠️Implementing"
+        - id: agent-008-2-discussion-validation-skill
+          title: Provide a dedicated discussion-validation skill for directional checks before decision promotion
+          reason: Directional fit should be reusable as an explicit step before candidate conclusions become active decisions.
+          status: "⚠️Implementing"
+        - id: agent-008-3-implementation-skill
+          title: Provide a dedicated implementation skill for phase-local design and test-and-implement loops
+          reason: Implementation work should be reusable as a focused procedure under the active decision set owned by the main agent.
+          status: "⚠️Implementing"
+        - id: agent-008-4-implementation-validation-skill
+          title: Provide a dedicated implementation-validation skill for artifact checks before closeout
+          reason: Closeout validation should be reusable as an explicit procedure that confirms tests, code, and related artifacts match the promoted decisions.
+          status: "⚠️Implementing"
+        - id: agent-008-5-broad-then-focus-discussion
+          title: Start discussion with a bounded broad scan before narrowing to focus areas
+          reason: Discussion work must first surface affected domains and omission risks; narrowing too early imports implementation-style locality and risks missing active constraints.
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
 
   Installer:
     - id: agent-002-installer-delivery
@@ -146,6 +177,11 @@ decisions:
           title: Install discussion-record template at .dodkit/templates/discussion-record.md
           reason: A DODKit-scoped hidden directory keeps workspace root clean while providing a stable, tool-neutral location for future template expansion.
           status: "✅️Implementation Approved"
+        - id: agent-004-6-skill-template-source-layout
+          title: Store shipped skill source templates under templates/skills as one .skill.md file per skill
+          reason: A dedicated source directory keeps reusable skill content separate from installed discovery paths while making the four-skill package reviewable and translatable in the repository.
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
 
     - id: agent-005-lightweight-template-roles
       title: Define lightweight template roles without adding a separate decision phase
