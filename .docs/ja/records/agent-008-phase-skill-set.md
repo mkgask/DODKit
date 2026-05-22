@@ -68,3 +68,10 @@ Append rules:
 - Current conclusion: implementation-validation skill は、generic な review を示すのではなく、自分が担う closeout checks を列挙するべきである。現在の decision 文言でも `default` という語は避け、validation-owned checks を具体的に表すべきである。
 - Promotion to DECISIONS.yml: promoted -> agent-006-3-validation-owned-consistency-checks, agent-008-7-explicit-implementation-validation-checklist
 - Evidence / references (optional): templates/skills/implementation-validation.skill.md, DECISIONS.yml
+
+### Entry 0007 (2026-05-22)
+- Why now: implementation skill が、決定駆動の target construction よりも局所的な最小編集探索に寄りすぎていないかを見直すため。
+- Findings / trade-offs: Gate B に入る時点では、昇格済みの decision set によって意図する結果は十分に見えているはずであり、実装は tiny slices を辿って ad hoc に scope を発見するより、target shape に向かって設計されるべきである。focused validation と短いループ自体は依然として有効だが、それらは必要な設計を安全に組み込むために使うべきであって、実装 scope をその場で再定義するためではない。DOD では実効的な実装 scope は promoted decisions とその contract details から決まるので、implementation skill は intended shape の導出、妥当な integration order の選択、そして途中の検証に集中するべきである。
+- Current conclusion: implementation skill は target-shape-driven であるべきである。promoted decisions から intended result を導出し、validation-friendly な integration order を選び、実装を「最小の self-defined slice を探す作業」としては表現しない。
+- Promotion to DECISIONS.yml: promoted -> agent-008-3-implementation-skill, agent-008-8-decision-scoped-target-shape-implementation
+- Evidence / references (optional): templates/skills/implementation.skill.md, DOD.md, DECISIONS.yml

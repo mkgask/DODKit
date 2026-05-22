@@ -1,6 +1,6 @@
 ---
 name: implementation
-description: 'Run the DOD implementation step. Use for phase-local design, narrow test selection, and short test-and-implement loops after discussion and decision promotion are complete.'
+description: 'Run the DOD implementation step. Use for deriving the target shape implied by the promoted decisions, choosing a validation-friendly integration order, and implementing that design after discussion and decision promotion are complete.'
 user-invocable: false
 ---
 
@@ -8,38 +8,41 @@ user-invocable: false
 
 ## Purpose
 Use this skill for Gate B steps 1 and 2: design, then test and implement.
-Its job is to turn the active decision set into the smallest useful change that can be validated quickly.
+Its job is to derive the intended target shape from the active decision set and integrate that design in a validation-friendly order.
 
 ## Required Inputs
 - Discussion ID
 - Active decision IDs and statuses in `DECISIONS.yml`
-- Requested implementation scope
-- The owning code path, test, or failing behavior that anchors the work
+- The code paths, tests, interfaces, docs, or templates affected by the promoted decisions
+- Any failing behavior or verification target that the promoted decisions require the implementation to satisfy
 
 ## Procedure
 1. Confirm Gate A is complete.
    Ensure the discussion record is updated, discussion-validation has passed, and the relevant decisions are already promoted in `DECISIONS.yml`.
-2. Design against the active decisions.
-   Translate the promoted decisions into one small implementation slice with a cheap falsifying check.
-3. Prefer fail-first when practical.
-   Choose the narrowest test or executable check that can prove the slice is wrong before widening scope.
-4. Implement in short loops.
-   Make the smallest reversible edit that exercises the current hypothesis.
-5. Validate immediately after the first substantive edit.
-   Run the focused behavior check, narrow test, or narrow compile/lint/typecheck before doing more reading or more patching.
-6. Keep records current when new facts matter.
+2. Derive the target shape from the active decisions.
+   Make explicit what the implemented result should look like when the promoted decisions are satisfied, including the affected code, tests, interfaces, docs, or templates that belong to that result.
+3. Choose the integration order.
+   Decide what needs to be introduced first, what depends on later pieces, and where focused validation should run so the target shape can be integrated safely.
+4. Prefer fail-first when practical.
+   Choose behavior checks, targeted tests, or executable checks that can disconfirm the work at meaningful integration points.
+5. Implement toward the target shape in short, validation-friendly loops.
+   Integrate the required design in a sensible order. The loop size should help verification and safety; it should not redefine the implementation scope that already comes from the promoted decisions.
+6. Validate at meaningful checkpoints.
+   Run the focused behavior check, targeted test, or narrow compile/lint/typecheck after each meaningful integration step, especially after the first substantive edit.
+7. Keep records current when new facts matter.
    If implementation reveals a new binding constraint or a materially decision-relevant fact, append it to `records/{discussion-id}.md` and promote the constraint to `DECISIONS.yml` in the same change set.
-7. Stop before closeout.
+8. Stop before closeout.
    Hand the result to implementation-validation rather than declaring completion here.
 
 ## Guardrails
-- Do not reopen broad exploration once a local implementation slice is chosen unless the current hypothesis is falsified.
-- Do not widen the edit surface before rerunning the same focused validation.
+- Do not let this skill redefine or shrink the implementation scope; the promoted decision set defines what must be built.
+- Do not chase locally minimal edits at the cost of the intended target shape.
+- Do not skip focused validation just because the target shape is already clear.
 - Do not let implementation drift beyond the promoted decision scope.
-- Update adjacent docs or tests only when the active decisions make them part of the same slice.
+- Update adjacent tests, docs, interfaces, or templates when the promoted decisions make them part of the intended result.
 
 ## Completion Criteria
-- The implementation slice is in place.
-- At least one focused validation has been run for the changed slice.
+- The intended target shape for the addressed decisions has been integrated far enough for closeout validation.
+- Focused validation has been run at meaningful integration checkpoints.
 - Any newly binding fact has been recorded and promoted.
 - The work is ready for implementation-validation.

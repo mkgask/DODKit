@@ -68,3 +68,10 @@ Append rules:
 - Current conclusion: The implementation-validation skill should enumerate the concrete closeout checks it owns instead of referring to a generic or default review. Current decision language should also avoid `default` wording and describe explicit validation-owned checks.
 - Promotion to DECISIONS.yml: promoted -> agent-006-3-validation-owned-consistency-checks, agent-008-7-explicit-implementation-validation-checklist
 - Evidence / references (optional): templates/skills/implementation-validation.skill.md, DECISIONS.yml
+
+### Entry 0007 (2026-05-22)
+- Why now: Rework the implementation skill after reviewing whether it overemphasizes locally minimal edits instead of decision-driven target construction.
+- Findings / trade-offs: By the time Gate B starts, the promoted decision set should already make the intended result visible enough that the implementer can design toward a target shape rather than discover scope ad hoc through tiny slices. The implementation skill still benefits from focused validation and short loops, but those loops should exist to integrate the required design safely, not to redefine the implementation scope on the fly. In DOD, the effective implementation scope comes from the promoted decisions and their contract details; the implementation skill should focus on deriving the intended shape, choosing a sensible integration order, and validating along the way.
+- Current conclusion: The implementation skill should be target-shape-driven. It should derive the intended result from the promoted decisions, choose a validation-friendly integration order, and avoid presenting implementation as a search for the smallest self-defined slice.
+- Promotion to DECISIONS.yml: promoted -> agent-008-3-implementation-skill, agent-008-8-decision-scoped-target-shape-implementation
+- Evidence / references (optional): templates/skills/implementation.skill.md, DOD.md, DECISIONS.yml

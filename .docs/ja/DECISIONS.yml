@@ -71,8 +71,8 @@ decisions:
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-3-implementation-skill
-          title: フェーズ内の設計とテスト・実装ループ用に専用 implementation skill を提供する
-          reason: 実装作業を、メインエージェントが保持する有効な決定集合の下で、集中した再利用可能手順として扱うため。
+          title: target shape の設計と validation-friendly な組み込み用に専用 implementation skill を提供する
+          reason: 実装作業は、有効な決定集合から意図する結果を導出し、メインエージェントの統治下で妥当な順序で組み込まれるべきため。
           status: "⚠️Implementing"
         - id: agent-008-4-implementation-validation-skill
           title: クローズ前の成果物確認用に専用 implementation-validation skill を提供する
@@ -81,6 +81,11 @@ decisions:
         - id: agent-008-7-explicit-implementation-validation-checklist
           title: implementation-validation が行う具体的な closeout checks を列挙する
           reason: closeout 時点で何を検証するかを明示しないと、成果物整合、用語整合、decision hygiene、blocker 報告が推測任せになり抜け漏れや解釈ぶれが起きるため。
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
+        - id: agent-008-8-decision-scoped-target-shape-implementation
+          title: 実装スコープは promoted decisions が定め、implementation は target shape と integration order を扱う
+          reason: DOD では実装 scope は promoted decisions から決まるため、implementation skill は self-defined な最小スコープ探索ではなく、意図する shape の設計と安全な組み込みに集中するべきため。
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-5-broad-then-focus-discussion

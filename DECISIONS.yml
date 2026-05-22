@@ -71,8 +71,8 @@ decisions:
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-3-implementation-skill
-          title: Provide a dedicated implementation skill for phase-local design and test-and-implement loops
-          reason: Implementation work should be reusable as a focused procedure under the active decision set owned by the main agent.
+          title: Provide a dedicated implementation skill for target-shape design and validation-friendly integration
+          reason: Implementation work should derive the intended result from the active decision set and integrate it in a sensible order under the main agent's governance.
           status: "⚠️Implementing"
         - id: agent-008-4-implementation-validation-skill
           title: Provide a dedicated implementation-validation skill for artifact checks before closeout
@@ -81,6 +81,11 @@ decisions:
         - id: agent-008-7-explicit-implementation-validation-checklist
           title: Make implementation-validation enumerate the concrete closeout checks it must perform
           reason: Implementation-validation should explicitly state what must be verified at closeout so operators do not infer or skip artifact alignment, terminology, decision hygiene, or blocker reporting.
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
+        - id: agent-008-8-decision-scoped-target-shape-implementation
+          title: Let promoted decisions define implementation scope while implementation chooses target shape and integration order
+          reason: In DOD, implementation scope comes from the promoted decisions, so the implementation skill should focus on designing the intended shape and integrating it safely rather than self-defining minimal scope.
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-5-broad-then-focus-discussion
