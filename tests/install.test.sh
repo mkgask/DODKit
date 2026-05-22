@@ -236,6 +236,45 @@ test_copilot_manifest_includes_discussion_record_template() {
   assert_eq "$found_destination" "1" "discussion-record template should map to .dodkit/templates/discussion-record.md"
 }
 
+test_copilot_manifest_includes_skill_templates() {
+  local sources_count="${#COPILOT_SOURCES[@]}"
+  local destinations_count="${#COPILOT_DESTINATIONS[@]}"
+
+  assert_eq "$sources_count" "$destinations_count" "copilot manifest source/destination counts should match"
+
+  local expected_sources=(
+    "templates/skills/discussion.skill.md"
+    "templates/skills/discussion-validation.skill.md"
+    "templates/skills/decision-promotion.skill.md"
+    "templates/skills/implementation.skill.md"
+    "templates/skills/implementation-validation.skill.md"
+  )
+
+  local expected_destinations=(
+    ".github/skills/discussion/SKILL.md"
+    ".github/skills/discussion-validation/SKILL.md"
+    ".github/skills/decision-promotion/SKILL.md"
+    ".github/skills/implementation/SKILL.md"
+    ".github/skills/implementation-validation/SKILL.md"
+  )
+
+  local index=0
+  local manifest_index=0
+  local found_match=0
+
+  for index in "${!expected_sources[@]}"; do
+    found_match=0
+    for manifest_index in "${!COPILOT_SOURCES[@]}"; do
+      if [[ "${COPILOT_SOURCES[$manifest_index]}" == "${expected_sources[$index]}" ]] && [[ "${COPILOT_DESTINATIONS[$manifest_index]}" == "${expected_destinations[$index]}" ]]; then
+        found_match=1
+        break
+      fi
+    done
+
+    assert_eq "$found_match" "1" "copilot manifest should include ${expected_sources[$index]} -> ${expected_destinations[$index]}"
+  done
+}
+
 run_tests() {
   test_parse_args_explicit_values
   test_parse_args_defaults_target_when_missing
@@ -246,6 +285,7 @@ run_tests() {
   test_copy_asset_skips_when_unchanged
   test_copy_asset_refuses_symlink_paths
   test_copilot_manifest_includes_discussion_record_template
+  test_copilot_manifest_includes_skill_templates
   printf '[PASS] install.sh function-level tests passed\n'
 }
 

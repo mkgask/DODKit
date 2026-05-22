@@ -122,3 +122,9 @@ Trade-offs:
 ## Terminology Synchronization Update (2026-04-13)
 - Reverted the active destination from `DODKit/templates/discussion-record.md` back to `.dodkit/templates/discussion-record.md`.
 - `.dodkit` is aligned with other dot-prefixed tool-managed directories and remains reserved for DODKit-managed assets.
+
+## Implementation Update (2026-05-22)
+- Extended the `copilot` installer manifest to include the five shipped DOD skill templates.
+- The installer now maps `templates/skills/*.skill.md` sources into `.github/skills/<skill-name>/SKILL.md` outputs.
+- Installer validation guidance now includes the five installed skill files in addition to the DOD agent file and discussion-record template.
+- Function-level installer validation passed with `bash tests/install.test.sh` after the manifest update.

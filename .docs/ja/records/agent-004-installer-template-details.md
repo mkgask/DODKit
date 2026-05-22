@@ -101,3 +101,13 @@
 ## 配置先命名の更新（2026-04-13）
 - 現在有効な配置先命名を、ドット始まりディレクトリとの整合のため `.dodkit/templates/discussion-record.md` へ戻しました。
 - 配置先は引き続き DODKit 専用スコープとし、インストーラー管理テンプレート資産の予約領域として扱います。
+
+## Skill Template Destination Update (2026-05-22)
+- `templates/skills/*.skill.md` 配下の shipped skill source templates は、GitHub Copilot のワークスペース skill discovery layout へ対応付けます。
+- `copilot` インストーラーターゲットでは、各 `templates/skills/<name>.skill.md` source を `.github/skills/<name>/SKILL.md` へインストールします。
+- skill directory name は、source basename から `.skill.md` suffix を除いた値で導出します。
+- これにより、リポジトリ上の source templates とインストール後の runtime outputs を分離したまま、skill mapping を決定的かつ追跡可能に保てます。
+
+## 実装更新（2026-05-22）
+- `install.sh` に Copilot skill destination mapping を実装し、`bash tests/install.test.sh` で検証しました。
+- インストーラーマニフェストは、5 つの shipped skill templates を `.github/skills/<name>/SKILL.md` へ配備するようになりました。

@@ -154,6 +154,11 @@ decisions:
           title: Include templates/discussion-record.md in installer-managed template assets
           reason: New decision records should start from a consistent template so the installer must distribute this asset alongside other templates.
           status: "✅️Implementation Approved"
+        - id: agent-002-13-copilot-skill-template-install
+          title: Include the five shipped skill templates in the Copilot installer manifest
+          reason: The Copilot installer must provision the reusable DOD skills alongside the agent and discussion-record assets so the installed workflow is complete.
+          status: "✅️Implementation Approved"
+          link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash
@@ -199,9 +204,14 @@ decisions:
           status: "✅️Implementation Approved"
         - id: agent-004-6-skill-template-source-layout
           title: Store shipped skill source templates under templates/skills as one .skill.md file per skill
-          reason: A dedicated source directory keeps reusable skill content separate from installed discovery paths while making the four-skill package reviewable and translatable in the repository.
-          status: "⚠️Implementing"
+          reason: A dedicated source directory keeps reusable skill content separate from installed discovery paths while making the five-skill package reviewable and translatable in the repository.
+          status: "✅️Implementation Approved"
           link: "records/agent-008-phase-skill-set.md"
+        - id: agent-004-7-copilot-skill-template-destinations
+          title: Install each templates/skills/*.skill.md source to .github/skills/<name>/SKILL.md for Copilot
+          reason: Copilot skill discovery needs a deterministic runtime path, and the installer must map repository skill templates to that path without mixing source and output files.
+          status: "✅️Implementation Approved"
+          link: "records/agent-004-installer-template-details.md"
 
     - id: agent-005-lightweight-template-roles
       title: Define lightweight template roles without adding a separate decision phase

@@ -12,12 +12,22 @@ COPILOT_SOURCES=(
   "templates/agent.md"
   "templates/DECISIONS.yml"
   "templates/discussion-record.md"
+  "templates/skills/discussion.skill.md"
+  "templates/skills/discussion-validation.skill.md"
+  "templates/skills/decision-promotion.skill.md"
+  "templates/skills/implementation.skill.md"
+  "templates/skills/implementation-validation.skill.md"
 )
 
 COPILOT_DESTINATIONS=(
   ".github/agents/dod.agent.md"
   "DECISIONS.yml"
   ".dodkit/templates/discussion-record.md"
+  ".github/skills/discussion/SKILL.md"
+  ".github/skills/discussion-validation/SKILL.md"
+  ".github/skills/decision-promotion/SKILL.md"
+  ".github/skills/implementation/SKILL.md"
+  ".github/skills/implementation-validation/SKILL.md"
 )
 
 # Files that must never be overwritten, even with --force.
@@ -256,10 +266,16 @@ Validation steps:
    - .github/agents/dod.agent.md
   - .dodkit/templates/discussion-record.md
    - DECISIONS.yml
+  - .github/skills/discussion/SKILL.md
+  - .github/skills/discussion-validation/SKILL.md
+  - .github/skills/decision-promotion/SKILL.md
+  - .github/skills/implementation/SKILL.md
+  - .github/skills/implementation-validation/SKILL.md
 2. Review local changes before commit:
    - git status
-3. Open the installed agent file and confirm expected content:
+3. Open the installed agent and skill files and confirm expected content:
    - .github/agents/dod.agent.md
+  - .github/skills/discussion/SKILL.md
 VALIDATION
 }
 

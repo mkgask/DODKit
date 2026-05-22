@@ -154,6 +154,11 @@ decisions:
           title: インストーラー管理のテンプレート資産に templates/discussion-record.md を含める
           reason: 新しい決定記録は一貫したテンプレートから開始されるべきであり、インストーラーが他のテンプレートと同様にこの資産を配布する必要があるため。
           status: "✅️Implementation Approved"
+        - id: agent-002-13-copilot-skill-template-install
+          title: Copilot 向けインストーラーマニフェストに 5 つの shipped skill templates を含める
+          reason: Copilot インストーラーは、agent や discussion-record assets と一緒に再利用可能な DOD skills も配布し、導入後の workflow を一式揃える必要があるため。
+          status: "✅️Implementation Approved"
+          link: "records/agent-002-installer-delivery.md"
 
     - id: agent-003-raw-github-install
       title: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する
@@ -199,9 +204,14 @@ decisions:
           status: "✅️Implementation Approved"
         - id: agent-004-6-skill-template-source-layout
           title: 配布する skill のソーステンプレートは templates/skills 配下に skill ごとの .skill.md として保存する
-          reason: 専用のソースディレクトリにより、再利用する skill 内容をインストール先の検出パスから分離しつつ、4-skill パッケージをリポジトリ内でレビューしやすく翻訳もしやすくするため。
-          status: "⚠️Implementing"
+          reason: 専用のソースディレクトリにより、再利用する skill 内容をインストール先の検出パスから分離しつつ、5-skill パッケージをリポジトリ内でレビューしやすく翻訳もしやすくするため。
+          status: "✅️Implementation Approved"
           link: "records/agent-008-phase-skill-set.md"
+        - id: agent-004-7-copilot-skill-template-destinations
+          title: templates/skills/*.skill.md の各 source は Copilot 向けに .github/skills/<name>/SKILL.md へ配置する
+          reason: Copilot の skill discovery には決定的な runtime path が必要であり、installer は repository skill templates を source/output 混在なしでその path へ写像する必要があるため。
+          status: "✅️Implementation Approved"
+          link: "records/agent-004-installer-template-details.md"
 
     - id: agent-005-lightweight-template-roles
       title: 独立した決定フェーズを増やさずに軽量なテンプレート役割を定義する

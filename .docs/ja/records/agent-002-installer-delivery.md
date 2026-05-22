@@ -122,3 +122,9 @@ Trade-offs:
 ## 用語同期更新（2026-04-13）
 - 現在有効な配置先を `DODKit/templates/discussion-record.md` から `.dodkit/templates/discussion-record.md` へ戻しました。
 - `.dodkit` は他のドット始まりのツール管理ディレクトリと整合するため、DODKit 管理資産の予約領域として維持します。
+
+## 実装更新（2026-05-22）
+- `copilot` 向けインストーラーマニフェストを拡張し、配布対象の 5 つの DOD skill templates を含めました。
+- インストーラーは `templates/skills/*.skill.md` source を `.github/skills/<skill-name>/SKILL.md` outputs へ対応付けます。
+- インストーラーの検証ガイダンスは、DOD agent file と discussion-record template に加えて、5 つの installed skill files も確認対象に含めます。
+- マニフェスト更新後の関数レベル検証は `bash tests/install.test.sh` で通過しました。

@@ -15,6 +15,11 @@ It currently supports GitHub Copilot only and installs the current DOD assets in
 Installed/copied assets:
 - `.github/agents/dod.agent.md`
 - `.dodkit/templates/discussion-record.md`
+- `.github/skills/discussion/SKILL.md`
+- `.github/skills/discussion-validation/SKILL.md`
+- `.github/skills/decision-promotion/SKILL.md`
+- `.github/skills/implementation/SKILL.md`
+- `.github/skills/implementation-validation/SKILL.md`
 - `DECISIONS.yml` (installed only when missing; existing file is preserved even with `--force`)
 
 ### Install with curl

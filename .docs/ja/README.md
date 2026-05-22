@@ -15,6 +15,11 @@ DODKit は Decision Oriented Development（DOD）を軽量に運用するため�
 インストール/コピーされるアセット:
 - `.github/agents/dod.agent.md`
 - `.dodkit/templates/discussion-record.md`
+- `.github/skills/discussion/SKILL.md`
+- `.github/skills/discussion-validation/SKILL.md`
+- `.github/skills/decision-promotion/SKILL.md`
+- `.github/skills/implementation/SKILL.md`
+- `.github/skills/implementation-validation/SKILL.md`
 - `DECISIONS.yml`（存在しない場合のみ導入。既存ファイルは `--force` 指定時でも保護されます）
 
 ### curl でインストール

@@ -101,3 +101,13 @@ Both returned HTTP 200 in validation. For deterministic installation, a commit-p
 ## Destination Naming Update (2026-04-13)
 - Reverted the active destination naming to `.dodkit/templates/discussion-record.md` for consistency with dot-prefixed tool-managed directories.
 - The destination remains DODKit-scoped and reserved for installer-managed template assets.
+
+## Skill Template Destination Update (2026-05-22)
+- The shipped skill source templates under `templates/skills/*.skill.md` are mapped to GitHub Copilot's workspace skill discovery layout.
+- For the `copilot` installer target, each `templates/skills/<name>.skill.md` source installs to `.github/skills/<name>/SKILL.md`.
+- The skill directory name is derived from the source basename without the `.skill.md` suffix.
+- This keeps repository source templates separate from installed runtime outputs while making the skill mapping deterministic and inspectable.
+
+## Implementation Update (2026-05-22)
+- Implemented the Copilot skill destination mapping in `install.sh` and validated it with `bash tests/install.test.sh`.
+- The installer manifest now provisions all five shipped skill templates into `.github/skills/<name>/SKILL.md`.
