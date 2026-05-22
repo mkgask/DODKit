@@ -26,8 +26,8 @@ decisions:
           status: "✅️Implementation Approved"
 
     - id: agent-006-agent-orchestration-model
-      title: Use one main DOD agent with phase skills and conditional audit-agent escalation
-      reason: DOD phase gates require one accountable controller, while phase procedures and audit logic still benefit from modular reuse.
+      title: Use one main DOD agent with sequential phase skills and exceptional read-only subagent assistance
+      reason: DOD phase gates require one accountable controller, while phase procedures remain reusable as skills and read-only subagent assistance should stay exceptional because it adds handoff cost.
       status: "⚠️Discussion Approved"
       link: "records/agent-006-agent-orchestration-model.md"
       sub_decisions:
@@ -36,8 +36,8 @@ decisions:
           reason: Gate A, Gate B, and Gate C need a single authority for artifact order, status progression, and completion judgment.
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: Execute discussion, discussion-validation, decision-promotion, implementation, and implementation-validation through dedicated skills by default
-          reason: Five operational skills modularize the reusable procedure without splitting ownership of the active decision set across peer agents.
+          title: Execute discussion, discussion-validation, decision-promotion, implementation, and implementation-validation sequentially under the main agent by default
+          reason: Sequential skill execution preserves active decision continuity across Gate A and Gate B without paying the handoff cost of per-skill subagent orchestration.
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-3-validation-owned-consistency-checks
@@ -49,6 +49,11 @@ decisions:
           title: Introduce a separate read-only audit agent only when independence or scale justifies it
           reason: A dedicated audit agent adds orchestration cost and should be reserved for cases where audit independence or workload justifies the extra runtime separation.
           status: "⚠️Discussion Approved"
+        - id: agent-006-5-subagent-assistance-exception
+          title: Use subagents only as exceptional read-only assistance under the main agent
+          reason: Subagents can help with independence, search volume, or fresh validation perspective, but final judgment and artifact updates must remain with the main agent.
+          status: "⚠️Discussion Approved"
+          link: "records/agent-006-agent-orchestration-model.md"
 
   Skills:
     - id: agent-008-phase-skill-set

@@ -16,9 +16,19 @@ Your first responsibility is to keep the active decision set lightweight and sus
 - Decision contract completeness in DECISIONS.yml, supported by records/{discussion-id}.md
 
 ## DOD Phase Gates
+## Skill Usage
+- Run these five skills sequentially under the main agent by default so the active decision set and the current record carry forward from one step to the next.
+- Use the `discussion` skill to run the bounded broad scan, select focus areas, and update `records/{discussion-id}.md`.
+- Use the `discussion-validation` skill to validate landscape coverage, narrowed focus, and directional fit against the active decisions.
+- Use the `decision-promotion` skill to convert validated discussion results into active decision objects and decision-contract updates in `DECISIONS.yml`.
+- Use the `implementation` skill to derive the target shape implied by the promoted decisions and integrate it in a validation-friendly order.
+- Use the `implementation-validation` skill to run the explicit closeout checks for executable validation, artifact alignment, terminology alignment, decision-record hygiene, and remaining blockers or risks.
+- Use a subagent only as exceptional read-only assistance when independence, search volume, or a fresh validation perspective justifies the extra handoff cost.
+- Keep final gate judgment, records updates, decision promotion, and closeout decisions in the main agent even when a subagent is consulted.
+
 ### Gate A: Discussion phase completion (required before coding)
 Before writing implementation code, complete the discussion phase in this order and confirm all of the following:
-- Preferred working order inside the discussion phase: 1. discussion, 2. discussion-validation, 3. decision promotion.
+- Preferred working order inside the discussion phase: 1. `discussion` skill, 2. `discussion-validation` skill, 3. `decision-promotion` skill.
 - Discussion: records/{discussion-id}.md exists and has updated context/research.
 - When starting a new discussion record, create records/{discussion-id}.md by copying .dodkit/templates/discussion-record.md and then adapting the copied file for the current discussion.
 - Discussion-validation: validate the candidate direction against the original objective and active constraints before promotion; if it drifts, continue discussion instead of promoting it.
@@ -27,17 +37,17 @@ Before writing implementation code, complete the discussion phase in this order 
 - If discussion produced additional independently active rules, they are added to DECISIONS.yml as new decision objects or sub-decisions.
 - Affected decision statuses are moved into appropriate discussion states.
 
-Discussion may iterate internally, including testing candidate decisions and refining them through further research, but the visible order stays fixed: write the discussion history to records/{discussion-id}.md first, validate the direction, then write the active decisions and contracts to DECISIONS.yml, and only then begin implementation.
+Discussion may iterate internally, including testing candidate decisions and refining them through further research, but the visible order stays fixed: use the `discussion` skill to update records/{discussion-id}.md first, use `discussion-validation` to validate the direction, then use `decision-promotion` to write the active decisions and contracts to DECISIONS.yml, and only then begin implementation.
 
 If any condition is missing, complete discussion artifacts first and stop implementation.
 
 ### Gate B: Implementation phase execution
 When Gate A passes:
-- Preferred working order inside the implementation phase: 1. design, 2. test and implement, 3. validation.
+- Preferred working order inside the implementation phase: 1. `implementation` skill for design and integration, 2. `implementation-validation` skill for closeout checks.
 - Apply minimal reversible changes first.
-- Design the change against the active decisions before widening implementation.
-- Test and implement in short loops.
-- Validate the resulting tests, code, and related artifacts against the active decisions before closeout.
+- Design the target shape against the active decisions before integrating it.
+- Test and implement in validation-friendly loops.
+- Validate the resulting tests, code, docs, templates, terminology, and related artifacts against the active decisions before closeout.
 - Do not deviate from the relevant decisions.
 - Respect existing code, tests, and active decisions.
 - Append newly discovered facts to records/{discussion-id}.md.
@@ -67,7 +77,8 @@ Before reporting completion:
 
 ## Verification Rules
 - discussion-validation: after discussion is recorded, validate the proposed direction against the original objective and active constraints before it becomes binding.
-- implementation-validation: after design, test, and implementation work, validate tests, code, and related artifacts against active decisions before closeout.
+- decision-promotion: after discussion-validation passes, promote the validated outcome into explicit active decisions and decision-contract updates before implementation begins.
+- implementation-validation: after design, test, and implementation work, validate executable results, artifact alignment, terminology alignment, and decision-record hygiene against active decisions before closeout.
 - pre-commit: validate tests and code quality.
 - pre-push: validate decision consistency.
 - The exact testing approach may differ by project, but the recommended default is fail-first TDD.
@@ -89,6 +100,7 @@ For each substantial step, report:
 - If a request conflicts with active decisions, explain the conflict and propose a compliant path.
 - Ask for clarification before broad or irreversible changes.
 - Do not silently change decision scope.
+- Do not treat one-skill-per-subagent orchestration as the default DOD runtime model.
 - After completing the work, always re-check that every change anticipated before starting has actually been completed.
 - Records are discussion history only, not a specification, design document, or operational playbook. Never write mutable tracking fields into `records/{discussion-id}.md`, and always start a new file from `.dodkit/templates/discussion-record.md`.
 - When a newly discovered fact becomes a binding constraint, promote it to `DECISIONS.yml` immediately in the same change set. If needed, split it into smaller decision objects until it fits.

@@ -24,3 +24,10 @@ Append rules:
 - Current conclusion: フロー制御とゲート判定は1つのメイン DOD エージェントに集約し、議論フェーズ、実装フェーズ、成果物監査は既定では専用スキルとして実行します。独立した read-only の監査エージェントは、独立性または規模の要求がある場合に限って導入します。
 - Promotion to DECISIONS.yml: promoted -> agent-006-agent-orchestration-model, agent-006-1-main-agent-governance, agent-006-2-phase-skills-default, agent-006-3-audit-skill-default, agent-006-4-audit-agent-exception
 - Evidence / references (optional): DOD.md, templates/agent.md, DECISIONS.yml
+
+### Entry 0002 (2026-05-22)
+- Why now: DOD の各 skill をそれぞれ subagent で動かすべきか、それともメインエージェントが skills を順次実行し、必要時のみ subagent を使うべきかを決めるため。
+- Findings / trade-offs: 1 skill ごとに subagent を起動すると、局所的な先入観を減らし、特に検証で独立した見方を得やすい利点はあるが、そのぶん引き継ぎコストが増え、Gate A と Gate B をまたいで active decision context を保ちにくくなる。DOD では、promoted decisions と current record がそのまま次の operational step へ持ち越されるべきなので、既定ではその連続性を 1 つの責任主体の中で保つ方がよい。よりよい折衷は、メインエージェントが skills を順次実行するのを既定としつつ、独立性、探索量、fresh validation perspective が追加のオーケストレーションコストを正当化する場合に限って、bounded な read-only subagent assistance を許可することだ。その場合でも、最終ゲート判定、record 更新、decision promotion、closeout はメインエージェントの責務に残る。
+- Current conclusion: 既定のオーケストレーションモデルは、1つのメイン DOD エージェントの下で skills を順次実行する形とする。subagent は、各 skill の既定実行単位ではなく、例外的な read-only helper としてのみ使う。
+- Promotion to DECISIONS.yml: promoted -> agent-006-agent-orchestration-model, agent-006-2-phase-skills-default, agent-006-5-subagent-assistance-exception
+- Evidence / references (optional): DECISIONS.yml, templates/agent.md, records/agent-008-phase-skill-set.md

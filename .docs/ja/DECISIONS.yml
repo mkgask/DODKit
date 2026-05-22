@@ -26,8 +26,8 @@ decisions:
           status: "✅️Implementation Approved"
 
     - id: agent-006-agent-orchestration-model
-      title: 1つのメインDODエージェントとフェーズスキル、条件付き監査エージェント昇格を採用する
-      reason: DODのフェーズゲートには単一の責任主体が必要であり、一方でフェーズ手順と監査ロジックはモジュールとして再利用した方がよいため。
+      title: 1つのメインDODエージェントの下でフェーズスキルを順次実行し、subagent は例外的な read-only 補助として扱う
+      reason: DODのフェーズゲートには単一の責任主体が必要であり、フェーズ手順はスキルとして再利用できる一方、read-only subagent assistance は引き継ぎコストがあるため例外的に扱うべきため。
       status: "⚠️Discussion Approved"
       link: "records/agent-006-agent-orchestration-model.md"
       sub_decisions:
@@ -36,8 +36,8 @@ decisions:
           reason: Gate A、Gate B、Gate C では成果物順序、status進行、完了判定を単一の主体が担う必要があるため。
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: discussion、discussion-validation、decision-promotion、implementation、implementation-validation を既定で専用スキルとして実行する
-          reason: Gate A と Gate B を横断する5つの operational skills により再利用可能な手順を分離しつつ、有効な決定集合の責任を複数の対等エージェントに分散させないため。
+          title: discussion、discussion-validation、decision-promotion、implementation、implementation-validation は既定でメインエージェントの下で順次実行する
+          reason: Gate A と Gate B をまたぐ active decision continuity を保ち、1 skill ごとの subagent orchestration による handoff cost を避けるため。
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-3-validation-owned-consistency-checks
@@ -49,6 +49,11 @@ decisions:
           title: 独立性または規模が正当化する場合にのみ read-only の監査エージェントを導入する
           reason: 専用監査エージェントはオーケストレーションコストを増やすため、監査独立性または負荷が追加コストを上回る場合に限定するため。
           status: "⚠️Discussion Approved"
+        - id: agent-006-5-subagent-assistance-exception
+          title: subagent はメインエージェント配下の例外的な read-only 補助としてのみ使う
+          reason: subagent は独立性、探索量、fresh validation perspective の面では有益だが、最終判断と成果物更新はメインエージェントに残すべきため。
+          status: "⚠️Discussion Approved"
+          link: "records/agent-006-agent-orchestration-model.md"
 
   スキル:
     - id: agent-008-phase-skill-set

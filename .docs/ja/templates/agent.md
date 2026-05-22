@@ -16,9 +16,19 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - DECISIONS.yml上の決定契約の充足状況と、それを支える records/{discussion-id}.md
 
 ## DODフェーズゲート
+## スキル利用
+- 既定では、active decision set と current record を工程間でそのまま持ち越せるよう、この 5 skills はメインエージェントの下で順次実行する。
+- `discussion` skill を使って bounded broad scan を行い、焦点領域を選び、`records/{discussion-id}.md` を更新する。
+- `discussion-validation` skill を使って landscape coverage、絞り込み妥当性、方向適合を active decisions に照らして検証する。
+- `decision-promotion` skill を使って、検証済みの議論結果を `DECISIONS.yml` 上の active decision objects と decision-contract updates に変換する。
+- `implementation` skill を使って、promoted decisions が要求する target shape を導出し、それを validation-friendly な順序で組み込む。
+- `implementation-validation` skill を使って、実行結果、成果物整合、用語整合、decision-record hygiene、残存 blocker / risk についての explicit closeout checks を行う。
+- subagent は、独立性、探索量、fresh validation perspective が追加の handoff cost を正当化する場合に限り、例外的な read-only 補助としてのみ使う。
+- subagent を使った場合でも、最終ゲート判定、records 更新、decision promotion、closeout decision はメインエージェントに残す。
+
 ### ゲートA: 議論フェーズ完了（実装前に必須）
 実装コードに着手する前に、次の順序で議論フェーズを完了し、各条件を満たすこと。
-- 議論フェーズ内の推奨順序は、1. 議論、2. 議論検証、3. 決定昇格、である。
+- 議論フェーズ内の推奨順序は、1. `discussion` skill、2. `discussion-validation` skill、3. `decision-promotion` skill、である。
 - 議論: records/{discussion-id}.md が存在し、背景・調査が更新されている。
 - 新しい議論記録を開始する場合は、.dodkit/templates/discussion-record.md をコピーして records/{discussion-id}.md を作成し、その複製を今回の議論向けに改変する。
 - 議論検証: 昇格前に、候補となる方向性を当初の目的と現在有効な拘束条件に照らして検証し、ずれているなら昇格せず議論を継続する。
@@ -27,17 +37,17 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - 議論の結果として独立して有効なルールが増えた場合は、DECISIONS.yml に新規決定またはサブ決定として追加されている。
 - 影響対象の決定ステータスが適切な議論状態に進められている。
 
-議論の内部では、仮の決定候補を試したり、追加調査で精緻化したりする反復を行ってよいが、外に見える順序は固定する。まず records/{discussion-id}.md に議論履歴を書き、その方向性を検証し、その後に DECISIONS.yml へ有効な決定と契約を書き、実装開始はその後に限る。
+議論の内部では、仮の決定候補を試したり、追加調査で精緻化したりする反復を行ってよいが、外に見える順序は固定する。まず `discussion` skill で records/{discussion-id}.md に議論履歴を書き、次に `discussion-validation` でその方向性を検証し、その後に `decision-promotion` で DECISIONS.yml へ有効な決定と契約を書き、実装開始はその後に限る。
 
 不足がある場合は、先に議論成果物を補完し、実装を停止する。
 
 ### ゲートB: 実装フェーズ実行
 ゲートA通過後に次を実施する。
-- 実装フェーズ内の推奨順序は、1. 設計、2. テスト・実装、3. 検証、である。
+- 実装フェーズ内の推奨順序は、1. `implementation` skill による設計と組み込み、2. `implementation-validation` skill による closeout checks、である。
 - まず最小かつ可逆な変更から適用する。
-- 実装を広げる前に、有効な決定に照らして変更を設計する。
-- テスト・実装を短いループで同期させる。
-- クローズ前に、得られたテスト・コード・関連成果物を有効な決定に照らして検証する。
+- 組み込み前に、有効な決定に照らして target shape を設計する。
+- テスト・実装を validation-friendly な短いループで同期させる。
+- クローズ前に、得られたテスト、コード、docs、templates、用語、関連成果物を有効な決定に照らして検証する。
 - 関連決定から逸脱しない。
 - 既存コード、既存テスト、有効な決定事項を尊重する。
 - 新しい事実は records/{discussion-id}.md に追記する。
@@ -67,7 +77,8 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 
 ## 検証ルール
 - 議論検証: 議論を記録したあと、提案された方向性が拘束力を持つ前に、当初の目的と現在有効な拘束条件に照らして検証する。
-- 実装検証: 設計・テスト・実装のあと、クローズ前に、テスト・コード・関連成果物を現在有効な決定に照らして検証する。
+- 決定昇格: discussion-validation 通過後、実装開始前に、検証済み結論を active decisions と decision-contract updates へ昇格する。
+- 実装検証: 設計・テスト・実装のあと、クローズ前に、実行結果、成果物整合、用語整合、decision-record hygiene を現在有効な決定に照らして検証する。
 - pre-commit: テストとコード品質の検証。
 - pre-push: 決定整合性の検証。
 - テスト手段はプロジェクトごとに異なってよいが、推奨される既定は fail-first の TDD である。
@@ -89,6 +100,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - 要求が有効な決定と衝突する場合は、衝突理由と準拠案を提示する。
 - 広範囲または不可逆な変更前には確認を取る。
 - 決定スコープを黙って変更しない。
+- 1 skill ごとに subagent を割り当てる構成を、既定の DOD runtime model として扱わない。
 - 作業完了後、開始前に想定していた修正がすべて完了できているかを必ず再確認する。
 - records/{discussion-id}.md は議論履歴であり、仕様書・設計書・運用プレイブックではない。更新前提の追跡フィールドを書かず、新しいファイルは必ず `.dodkit/templates/discussion-record.md` を起点に作る。
 - 新たに判明した事実が拘束条件になったら、同じ変更セット内で即座に `DECISIONS.yml` に昇格させる。必要なら複数の小さな決定事項へ分割する。

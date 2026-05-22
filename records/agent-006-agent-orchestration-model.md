@@ -24,3 +24,10 @@ Append rules:
 - Current conclusion: Keep one main DOD agent as the single controller for flow and gate judgment. Execute discussion-phase work, implementation-phase work, and artifact audit through specialized skills by default. Introduce a separate read-only audit agent only when independence or scale justifies it.
 - Promotion to DECISIONS.yml: promoted -> agent-006-agent-orchestration-model, agent-006-1-main-agent-governance, agent-006-2-phase-skills-default, agent-006-3-audit-skill-default, agent-006-4-audit-agent-exception
 - Evidence / references (optional): DOD.md, templates/agent.md, DECISIONS.yml
+
+### Entry 0002 (2026-05-22)
+- Why now: Decide whether each DOD skill should run in its own subagent or whether the main agent should execute the skills sequentially and call subagents only when needed.
+- Findings / trade-offs: Running one skill per subagent can reduce local anchoring and sometimes improves independent validation, but it also adds repeated handoff cost and makes it easier to lose the active decision context across Gate A and Gate B. In DOD, the promoted decisions and the current record are supposed to carry directly from one operational step to the next, so the default should preserve that continuity in one accountable controller. The better compromise is to keep one main agent running the skills sequentially by default, while allowing bounded read-only subagent assistance when independence, search volume, or a fresh validation perspective justifies the extra orchestration cost. Even in those cases, final gate judgment, record updates, decision promotion, and closeout remain the responsibility of the main agent.
+- Current conclusion: Keep sequential skill execution under one main DOD agent as the default orchestration model. Use subagents only as exceptional read-only helpers, not as the default execution unit for every skill.
+- Promotion to DECISIONS.yml: promoted -> agent-006-agent-orchestration-model, agent-006-2-phase-skills-default, agent-006-5-subagent-assistance-exception
+- Evidence / references (optional): DECISIONS.yml, templates/agent.md, records/agent-008-phase-skill-set.md
