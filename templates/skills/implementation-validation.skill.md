@@ -1,6 +1,6 @@
 ---
 name: implementation-validation
-description: 'Validate DOD implementation results before closeout. Use for checking tests, code, docs, templates, and related artifacts against the active decisions, while absorbing the default post-implementation audit.'
+description: 'Validate DOD implementation results before closeout. Use for checking the executable validation result, artifact alignment, terminology alignment, decision-record hygiene, and remaining blockers or risks against the active decisions.'
 user-invocable: false
 ---
 
@@ -19,15 +19,19 @@ Its job is to confirm that the implemented result and its surrounding artifacts 
 ## Procedure
 1. Start with deterministic checks.
    Prefer the narrowest behavior test, targeted test file, compile, lint, or typecheck that can falsify the changed slice.
-2. Run the default post-implementation audit here.
-   Audit consistency between active decisions and the changed artifacts instead of using a separate default audit skill.
-3. Check artifact alignment.
-   Confirm that tests, code, templates, agent guidance, and user-facing terminology stay aligned with the active decisions for the changed scope.
-4. Check decision hygiene.
-   Confirm that `DECISIONS.yml` status is current and that any materially new implementation fact has been appended to `records/{discussion-id}.md` and promoted when binding.
-5. Repair locally when validation exposes a same-slice defect.
+2. Confirm the executable result for the changed slice.
+   Verify that the focused validation chosen during implementation actually passed, or that the remaining blocker is explicit and scoped.
+3. Check artifact alignment against the active decisions.
+   Confirm that the changed tests, code, docs, templates, and agent guidance match the promoted decisions for the changed scope.
+4. Check terminology and user-facing alignment.
+   Confirm that naming, user-facing wording, and related references do not drift from the active decision set where the changed scope affects them.
+5. Check decision and record hygiene.
+   Confirm that `DECISIONS.yml` status is current, links still point to the right record, and any materially new implementation fact has been appended to `records/{discussion-id}.md` and promoted when binding.
+6. Check the remaining blocker and risk state.
+   Make explicit whether anything still blocks closeout, and whether any remaining risk stays non-binding and therefore belongs in the report rather than in a new decision.
+7. Repair locally when validation exposes a same-slice defect.
    Fix the defect and rerun the same focused validation before expanding scope.
-6. Close only when the decision contract is satisfied.
+8. Close only when the decision contract is satisfied.
    Report what was validated, what changed, and any remaining risk that did not rise to a new active constraint.
 
 ## Guardrails
@@ -39,5 +43,5 @@ Its job is to confirm that the implemented result and its surrounding artifacts 
 ## Completion Criteria
 - Focused validation passes for the changed scope, or the remaining blocker is explicit.
 - The changed artifacts match the promoted decisions.
-- Default audit checks are covered by this validation step.
+- The required closeout checks have been explicitly covered.
 - Closeout information is ready for the main agent to report.

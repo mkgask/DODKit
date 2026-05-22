@@ -47,3 +47,24 @@ Append rules:
 - Current conclusion: The discussion skill should begin with a bounded broad scan across the affected landscape before focusing. The discussion-validation skill should explicitly validate broad-scan coverage and the justification for the narrowed focus.
 - Promotion to DECISIONS.yml: promoted -> agent-008-5-broad-then-focus-discussion
 - Evidence / references (optional): DOD.md, templates/skills/discussion.skill.md, templates/skills/discussion-validation.skill.md
+
+### Entry 0004 (2026-05-22)
+- Why now: Reassess whether decision promotion should stay bundled into discussion-validation or become its own reusable skill.
+- Findings / trade-offs: Promotion looked small at first because the visible edit surface is mainly `DECISIONS.yml`, but the operational responsibility is larger than a simple file edit. After validation passes, promotion still has to decide whether to update or split decision objects, ensure binding constraints are fully promoted, verify decision-contract completeness, update statuses and links, and confirm that no implementation-critical rule is left only in the record. Leaving this work as an implied tail step inside discussion-validation would make the procedure underspecified and easy to execute inconsistently. A dedicated decision-promotion skill keeps Gate A explicit without adding a new lifecycle phase: discussion discovers, discussion-validation judges directional fit, and decision-promotion converts the approved result into active decision objects.
+- Current conclusion: DOD should keep decision-promotion as its own skill inside Gate A. The default skill package should therefore be five operational skills: discussion, discussion-validation, decision-promotion, implementation, and implementation-validation.
+- Promotion to DECISIONS.yml: promoted -> agent-008-phase-skill-set, agent-008-6-decision-promotion-skill, agent-006-2-phase-skills-default
+- Evidence / references (optional): DECISIONS.yml, templates/skills/discussion-validation.skill.md, templates/skills/decision-promotion.skill.md, DOD.md
+
+### Entry 0005 (2026-05-22)
+- Why now: Remove lingering non-record terminology that still suggests a separate default audit skill even though the active model now keeps those checks inside validation.
+- Findings / trade-offs: The repository history should preserve how the idea evolved, but current non-record artifacts should describe only the active operational model. Leaving `audit skill` terminology in current decision entries or current skill templates implies a still-existing reusable capability that the repository no longer intends to ship by default. The active concept is narrower: default consistency checks are owned by the validation skills, while a separate audit agent remains only an exception path when independence or scale justifies it.
+- Current conclusion: Outside records, the repository should stop describing a separate default audit skill and instead describe validation-owned consistency checks.
+- Promotion to DECISIONS.yml: promoted -> agent-006-3-validation-owned-consistency-checks
+- Evidence / references (optional): DECISIONS.yml, templates/skills/implementation-validation.skill.md
+
+### Entry 0006 (2026-05-22)
+- Why now: Replace vague implementation-validation wording with an explicit statement of what must be checked at that stage.
+- Findings / trade-offs: Saying that implementation-validation covers some unspecified or default consistency review is too implicit. The operator needs to know exactly what to inspect at closeout time: the executable validation result for the changed slice, artifact alignment against the active decisions, terminology drift, decision-record hygiene, and any remaining blocker or risk. Without an explicit checklist, the skill invites inconsistent interpretations and increases the chance that operators will verify only the code path they just touched while missing adjacent artifacts or stale decision state.
+- Current conclusion: The implementation-validation skill should enumerate the concrete closeout checks it owns instead of referring to a generic or default review. Current decision language should also avoid `default` wording and describe explicit validation-owned checks.
+- Promotion to DECISIONS.yml: promoted -> agent-006-3-validation-owned-consistency-checks, agent-008-7-explicit-implementation-validation-checklist
+- Evidence / references (optional): templates/skills/implementation-validation.skill.md, DECISIONS.yml

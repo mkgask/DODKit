@@ -36,13 +36,13 @@ decisions:
           reason: Gate A, Gate B, and Gate C need a single authority for artifact order, status progression, and completion judgment.
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: Execute discussion, discussion-validation, implementation, and implementation-validation through dedicated skills by default
-          reason: Four phase-aligned skills modularize the reusable procedure without splitting ownership of the active decision set across peer agents.
+          title: Execute discussion, discussion-validation, decision-promotion, implementation, and implementation-validation through dedicated skills by default
+          reason: Five operational skills modularize the reusable procedure without splitting ownership of the active decision set across peer agents.
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
-        - id: agent-006-3-audit-skill-default
-          title: Absorb default audit checks into the discussion-validation and implementation-validation skills
-          reason: Most audit work is already a validation concern, so a separate default audit skill would duplicate responsibility and add unnecessary packaging weight.
+        - id: agent-006-3-validation-owned-consistency-checks
+          title: Keep validation-owned consistency checks inside the discussion-validation and implementation-validation skills
+          reason: Consistency checking belongs to validation, and current artifacts should describe those checks explicitly rather than as a separate capability or vague default behavior.
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-4-audit-agent-exception
@@ -52,8 +52,8 @@ decisions:
 
   Skills:
     - id: agent-008-phase-skill-set
-      title: Define the default DOD skill package as four phase-aligned skills
-      reason: The reusable procedures should be explicit and minimal, while the main DOD agent retains flow control and final gate judgment.
+      title: Define the default DOD skill package as five operational skills across Gate A and Gate B
+      reason: The reusable procedures should be explicit and complete, while the main DOD agent retains flow control and final gate judgment.
       status: "⚠️Implementing"
       link: "records/agent-008-phase-skill-set.md"
       sub_decisions:
@@ -63,8 +63,13 @@ decisions:
           status: "⚠️Implementing"
         - id: agent-008-2-discussion-validation-skill
           title: Provide a dedicated discussion-validation skill for directional checks before decision promotion
-          reason: Directional fit should be reusable as an explicit step before candidate conclusions become active decisions.
+          reason: Directional fit should be reusable as an explicit step before promotion work begins.
           status: "⚠️Implementing"
+        - id: agent-008-6-decision-promotion-skill
+          title: Provide a dedicated decision-promotion skill for converting approved discussion results into active decision objects
+          reason: Promotion is a distinct operational step that must update decision objects, contracts, statuses, and links consistently after validation passes.
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-3-implementation-skill
           title: Provide a dedicated implementation skill for phase-local design and test-and-implement loops
           reason: Implementation work should be reusable as a focused procedure under the active decision set owned by the main agent.
@@ -73,6 +78,11 @@ decisions:
           title: Provide a dedicated implementation-validation skill for artifact checks before closeout
           reason: Closeout validation should be reusable as an explicit procedure that confirms tests, code, and related artifacts match the promoted decisions.
           status: "⚠️Implementing"
+        - id: agent-008-7-explicit-implementation-validation-checklist
+          title: Make implementation-validation enumerate the concrete closeout checks it must perform
+          reason: Implementation-validation should explicitly state what must be verified at closeout so operators do not infer or skip artifact alignment, terminology, decision hygiene, or blocker reporting.
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-5-broad-then-focus-discussion
           title: Start discussion with a bounded broad scan before narrowing to focus areas
           reason: Discussion work must first surface affected domains and omission risks; narrowing too early imports implementation-style locality and risks missing active constraints.

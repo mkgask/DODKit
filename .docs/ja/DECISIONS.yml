@@ -36,13 +36,13 @@ decisions:
           reason: Gate A、Gate B、Gate C では成果物順序、status進行、完了判定を単一の主体が担う必要があるため。
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: discussion、discussion-validation、implementation、implementation-validation を既定で専用スキルとして実行する
-          reason: フェーズに対応した4つのスキルにより再利用可能な手順を分離しつつ、有効な決定集合の責任を複数の対等エージェントに分散させないため。
+          title: discussion、discussion-validation、decision-promotion、implementation、implementation-validation を既定で専用スキルとして実行する
+          reason: Gate A と Gate B を横断する5つの operational skills により再利用可能な手順を分離しつつ、有効な決定集合の責任を複数の対等エージェントに分散させないため。
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
-        - id: agent-006-3-audit-skill-default
-          title: 既定の audit チェックは discussion-validation と implementation-validation の各スキルに吸収する
-          reason: 監査の大半はすでに検証責務に属しており、独立した既定 audit skill を持つと責務重複とパッケージ肥大を招くため。
+        - id: agent-006-3-validation-owned-consistency-checks
+          title: validation が担う整合確認は discussion-validation と implementation-validation の各スキル内で扱う
+          reason: 整合確認は検証責務に属しており、曖昧な既定動作や別機能としてではなく、現在の成果物で明示的に記述されるべきため。
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-4-audit-agent-exception
@@ -52,8 +52,8 @@ decisions:
 
   スキル:
     - id: agent-008-phase-skill-set
-      title: DOD のデフォルトスキルパッケージをフェーズ対応の 4 スキルとして定義する
-      reason: 再利用する手順は明示的かつ最小限に保ちつつ、フロー制御と最終ゲート判定はメイン DOD エージェントに残すべきため。
+      title: DOD のデフォルトスキルパッケージを Gate A と Gate B にまたがる 5 operational skills として定義する
+      reason: 再利用する手順を明示的かつ欠落なく保ちつつ、フロー制御と最終ゲート判定はメイン DOD エージェントに残すべきため。
       status: "⚠️Implementing"
       link: "records/agent-008-phase-skill-set.md"
       sub_decisions:
@@ -63,8 +63,13 @@ decisions:
           status: "⚠️Implementing"
         - id: agent-008-2-discussion-validation-skill
           title: 決定昇格前の方向性確認用に専用 discussion-validation skill を提供する
-          reason: 候補結論が有効な決定になる前の方向適合確認を、明示的で再利用可能な手順として扱うため。
+          reason: 候補結論が有効な決定になる前に、方向妥当性を判定する手順を明示的で再利用可能な形にするため。
           status: "⚠️Implementing"
+        - id: agent-008-6-decision-promotion-skill
+          title: 承認済みの議論結果を active decision objects へ変換する専用 decision-promotion skill を提供する
+          reason: promotion は validation 通過後に決定オブジェクト、契約、status、link を一貫して更新する独立した operational step であるため。
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-3-implementation-skill
           title: フェーズ内の設計とテスト・実装ループ用に専用 implementation skill を提供する
           reason: 実装作業を、メインエージェントが保持する有効な決定集合の下で、集中した再利用可能手順として扱うため。
@@ -73,6 +78,11 @@ decisions:
           title: クローズ前の成果物確認用に専用 implementation-validation skill を提供する
           reason: テスト、コード、関連成果物が昇格済み決定と一致することを確認するクローズ前検証を、明示的な再利用手順として扱うため。
           status: "⚠️Implementing"
+        - id: agent-008-7-explicit-implementation-validation-checklist
+          title: implementation-validation が行う具体的な closeout checks を列挙する
+          reason: closeout 時点で何を検証するかを明示しないと、成果物整合、用語整合、decision hygiene、blocker 報告が推測任せになり抜け漏れや解釈ぶれが起きるため。
+          status: "⚠️Implementing"
+          link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-5-broad-then-focus-discussion
           title: 議論は bounded broad scan から始め、その後に焦点領域へ絞り込む
           reason: 議論作業では、まず影響ドメインと考慮漏れリスクを浮かび上がらせる必要があり、早すぎる絞り込みは実装フェーズ向けの局所性を持ち込み有効拘束条件の見落としを招くため。
