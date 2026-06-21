@@ -42,6 +42,14 @@ test_parse_args_explicit_values() {
   assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite"
 }
 
+test_parse_args_explicit_cursor_value() {
+  reset_installer_state
+  parse_args cursor --force
+
+  assert_eq "$TARGET_CLI" "cursor" "parse_args should accept cursor as an explicit target"
+  assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite for cursor"
+}
+
 test_parse_args_defaults_target_when_missing() {
   reset_installer_state
   parse_args --force
@@ -76,6 +84,11 @@ test_validate_target_rejects_unknown() {
     printf '[FAIL] validate_target should reject unsupported targets\n' >&2
     exit 1
   fi
+}
+
+test_validate_target_accepts_cursor() {
+  TARGET_CLI="cursor"
+  validate_target
 }
 
 test_copy_asset_installs_and_sets_permissions() {
@@ -198,6 +211,11 @@ FAKECURL
   mkdir -p "$tmpdir/real-output"
   ln -s "$tmpdir/real-output" "$tmpdir/output"
 
+  if [[ ! -L "$tmpdir/output" ]]; then
+    printf '[INFO] skipping symlink-path test because this bash environment does not create real symlinks\n'
+    return 0
+  fi
+
   destination="$tmpdir/output/file.txt"
   protected_file="$tmpdir/real-output/file.txt"
   printf 'protected-content' >"$protected_file"
@@ -275,17 +293,169 @@ test_copilot_manifest_includes_skill_templates() {
   done
 }
 
+test_cursor_manifest_includes_discussion_record_template() {
+  local sources_count="${#CURSOR_SOURCES[@]}"
+  local destinations_count="${#CURSOR_DESTINATIONS[@]}"
+
+  assert_eq "$sources_count" "$destinations_count" "cursor manifest source/destination counts should match"
+
+  local found_source=0
+  local found_destination=0
+  local index=0
+
+  for index in "${!CURSOR_SOURCES[@]}"; do
+    if [[ "${CURSOR_SOURCES[$index]}" == "templates/discussion-record.md" ]]; then
+      found_source=1
+      if [[ "${CURSOR_DESTINATIONS[$index]}" == ".dodkit/templates/discussion-record.md" ]]; then
+        found_destination=1
+      fi
+    fi
+  done
+
+  assert_eq "$found_source" "1" "cursor manifest should include templates/discussion-record.md"
+  assert_eq "$found_destination" "1" "cursor discussion-record template should map to .dodkit/templates/discussion-record.md"
+}
+
+test_cursor_manifest_includes_rule_templates() {
+  local sources_count="${#CURSOR_SOURCES[@]}"
+  local destinations_count="${#CURSOR_DESTINATIONS[@]}"
+
+  assert_eq "$sources_count" "$destinations_count" "cursor manifest source/destination counts should match"
+
+  local expected_sources=(
+    "templates/agent.md"
+    "templates/skills/discussion.skill.md"
+    "templates/skills/discussion-validation.skill.md"
+    "templates/skills/decision-promotion.skill.md"
+    "templates/skills/implementation.skill.md"
+    "templates/skills/implementation-validation.skill.md"
+  )
+
+  local expected_destinations=(
+    ".cursor/rules/dod-implementation-agent.mdc"
+    ".cursor/rules/discussion.mdc"
+    ".cursor/rules/discussion-validation.mdc"
+    ".cursor/rules/decision-promotion.mdc"
+    ".cursor/rules/implementation.mdc"
+    ".cursor/rules/implementation-validation.mdc"
+  )
+
+  local index=0
+  local manifest_index=0
+  local found_match=0
+
+  for index in "${!expected_sources[@]}"; do
+    found_match=0
+    for manifest_index in "${!CURSOR_SOURCES[@]}"; do
+      if [[ "${CURSOR_SOURCES[$manifest_index]}" == "${expected_sources[$index]}" ]] && [[ "${CURSOR_DESTINATIONS[$manifest_index]}" == "${expected_destinations[$index]}" ]]; then
+        found_match=1
+        break
+      fi
+    done
+
+    assert_eq "$found_match" "1" "cursor manifest should include ${expected_sources[$index]} -> ${expected_destinations[$index]}"
+  done
+}
+
+test_run_install_for_cursor_creates_expected_workspace_files() {
+  local tmpdir=""
+  local faketools=""
+
+  tmpdir="$(mktemp -d)"
+  faketools="$tmpdir/faketools"
+  mkdir -p "$faketools"
+
+  cat >"$faketools/curl" <<'FAKECURL'
+#!/usr/bin/env bash
+set -euo pipefail
+output_file=""
+source_url=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      source_url="$1"
+      shift
+      ;;
+  esac
+done
+
+case "$source_url" in
+  *"/templates/agent.md")
+    cat >"$output_file" <<'EOF'
+---
+name: DOD Implementation Agent
+description: Example
+---
+
+# Shared Agent Body
+EOF
+    ;;
+  *"/templates/skills/discussion.skill.md")
+    cat >"$output_file" <<'EOF'
+---
+name: discussion
+description: Example
+---
+
+# Shared Discussion Body
+EOF
+    ;;
+  *"/templates/discussion-record.md")
+    printf 'shared-discussion-record-template' >"$output_file"
+    ;;
+  *"/templates/DECISIONS.yml")
+    printf 'shared-decisions-template' >"$output_file"
+    ;;
+  *)
+    printf 'generic-source:%s' "$source_url" >"$output_file"
+    ;;
+esac
+FAKECURL
+  chmod +x "$faketools/curl"
+
+  PATH="$faketools:$PATH"
+  TARGET_CLI="cursor"
+  FORCE_OVERWRITE=1
+
+  pushd "$tmpdir" >/dev/null
+  run_install_for_target
+  popd >/dev/null
+
+  assert_file_content "$tmpdir/.cursor/rules/dod-implementation-agent.mdc" "---
+description: DOD main controller instructions for manual use in Cursor.
+alwaysApply: false
+---
+
+# Shared Agent Body" "cursor target should render the main Cursor rule from the shared agent template"
+  assert_file_content "$tmpdir/.cursor/rules/discussion.mdc" "---
+description: DOD Gate A step 1 discussion procedure for manual use in Cursor.
+alwaysApply: false
+---
+
+# Shared Discussion Body" "cursor target should render the discussion Cursor rule from the shared skill template"
+  assert_file_content "$tmpdir/.dodkit/templates/discussion-record.md" "shared-discussion-record-template" "cursor target should still install the shared discussion record template without rendering"
+}
+
 run_tests() {
   test_parse_args_explicit_values
+  test_parse_args_explicit_cursor_value
   test_parse_args_defaults_target_when_missing
   test_parse_args_no_args_defaults
   test_parse_args_rejects_repo_ref_options
   test_validate_target_rejects_unknown
+  test_validate_target_accepts_cursor
   test_copy_asset_installs_and_sets_permissions
   test_copy_asset_skips_when_unchanged
   test_copy_asset_refuses_symlink_paths
   test_copilot_manifest_includes_discussion_record_template
   test_copilot_manifest_includes_skill_templates
+  test_cursor_manifest_includes_discussion_record_template
+  test_cursor_manifest_includes_rule_templates
+  test_run_install_for_cursor_creates_expected_workspace_files
   printf '[PASS] install.sh function-level tests passed\n'
 }
 

@@ -5,22 +5,31 @@
 > **アルファ版ソフトウェアです。** DODKit は開発初期段階にあります。不具合や破壊的変更が含まれる可能性があります。使用は自己責任でお願いします。
 
 DODKit は Decision Oriented Development（DOD）を軽量に運用するためのツールキットです。
-現在有効な決定事項を明示し、決定の履歴と現在の拘束条件を分離し、再利用可能な Copilot カスタマイズアセットをワークスペースへ導入できる実践的な構成を提供します。
+現在有効な決定事項を明示し、決定の履歴と現在の拘束条件を分離し、再利用可能な Copilot または Cursor のカスタマイズアセットをワークスペースへ導入できる実践的な構成を提供します。
 
 ## インストール
 
 インストーラーはリポジトリルートの `install.sh` です。
-現在は GitHub Copilot のみに対応しており、現在のワークスペースディレクトリへ DOD アセットを導入します。
+GitHub Copilot と Cursor に対応しており、現在のワークスペースディレクトリへ DOD アセットを導入します。
 
 インストール/コピーされるアセット:
-- `.github/agents/dod.agent.md`
-- `.dodkit/templates/discussion-record.md`
-- `.github/skills/discussion/SKILL.md`
-- `.github/skills/discussion-validation/SKILL.md`
-- `.github/skills/decision-promotion/SKILL.md`
-- `.github/skills/implementation/SKILL.md`
-- `.github/skills/implementation-validation/SKILL.md`
-- `DECISIONS.yml`（存在しない場合のみ導入。既存ファイルは `--force` 指定時でも保護されます）
+- 両ターゲット共通:
+	- `.dodkit/templates/discussion-record.md`
+	- `DECISIONS.yml`（存在しない場合のみ導入。既存ファイルは `--force` 指定時でも保護されます）
+- `copilot` 向け:
+	- `.github/agents/dod.agent.md`
+	- `.github/skills/discussion/SKILL.md`
+	- `.github/skills/discussion-validation/SKILL.md`
+	- `.github/skills/decision-promotion/SKILL.md`
+	- `.github/skills/implementation/SKILL.md`
+	- `.github/skills/implementation-validation/SKILL.md`
+- `cursor` 向け:
+	- `.cursor/rules/dod-implementation-agent.mdc`
+	- `.cursor/rules/discussion.mdc`
+	- `.cursor/rules/discussion-validation.mdc`
+	- `.cursor/rules/decision-promotion.mdc`
+	- `.cursor/rules/implementation.mdc`
+	- `.cursor/rules/implementation-validation.mdc`
 
 ### curl でインストール
 
@@ -37,8 +46,11 @@ wget -qO- https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash
 ### インストーラーの任意引数
 
 ```bash
+# 既定の Copilot ではなく Cursor 向けアセットを導入
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor
+
 # 既存の対象ファイルを強制上書き
-curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- --force
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --force
 ```
 
 ## DOD とは

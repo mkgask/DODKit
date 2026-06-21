@@ -110,9 +110,9 @@ decisions:
           title: Use template files as installer inputs
           reason: Templates keep source assets separate from target outputs and make future CLI expansion safer.
           status: "✅️Implementation Approved"
-        - id: agent-002-2-copilot-only
-          title: Limit the initial installer CLI scope to copilot
-          reason: A single-target first release reduces rollout risk while preserving a path for later CLI expansion.
+        - id: agent-002-2-installer-target-scope
+          title: Support copilot and cursor as the bounded installer CLI target set
+          reason: The installer now needs a second supported target, but the active target set should stay explicit and small so rollout and validation remain predictable.
           status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
           title: Keep the installer safe to run repeatedly
@@ -130,9 +130,9 @@ decisions:
           title: Fail fast with explicit errors and print post-install validation steps
           reason: Installation must stop clearly on invalid state and tell the user how to verify success afterward.
           status: "✅️Implementation Approved"
-        - id: agent-002-7-copilot-target-name
-          title: Use `copilot` as the initial installer CLI target value
-          reason: The first release needs a stable explicit target name so installer invocation and validation do not drift.
+        - id: agent-002-7-supported-target-names
+          title: Use `copilot` and `cursor` as the supported installer CLI target values
+          reason: The installer needs stable explicit target names for both supported runtimes so invocation and validation do not drift.
           status: "✅️Implementation Approved"
         - id: agent-002-8-existing-file-overwrite-policy
           title: Preserve existing files by default and ask before overwrite without backups
@@ -159,6 +159,11 @@ decisions:
           reason: The Copilot installer must provision the reusable DOD skills alongside the agent and discussion-record assets so the installed workflow is complete.
           status: "✅️Implementation Approved"
           link: "records/agent-002-installer-delivery.md"
+        - id: agent-002-14-initial-cursor-template-manifest
+          title: Install Cursor rule outputs rendered from shared DOD sources plus shared DOD assets into the initial Cursor workspace paths
+          reason: Cursor support still needs an explicit manifest, but the manifest should point at shared DOD sources and let the installer render the Cursor-specific rule wrapper instead of storing duplicated source files.
+          status: "✅️Implementation Approved"
+          link: "records/agent-009-cursor-install-target.md"
 
     - id: agent-003-raw-github-install
       title: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash
@@ -212,6 +217,21 @@ decisions:
           reason: Copilot skill discovery needs a deterministic runtime path, and the installer must map repository skill templates to that path without mixing source and output files.
           status: "✅️Implementation Approved"
           link: "records/agent-004-installer-template-details.md"
+        - id: agent-004-8-cursor-rule-template-source-layout
+          title: Reuse templates/agent.md and templates/skills/*.skill.md as the shared source set for Cursor rule rendering
+          reason: The rule body content is shared with Copilot, so keeping dedicated Cursor source files would duplicate almost identical content and create avoidable maintenance drift.
+          status: "✅️Implementation Approved"
+          link: "records/agent-009-cursor-install-target.md"
+        - id: agent-004-9-cursor-rule-template-destinations
+          title: Render shared DOD sources to .cursor/rules/<name>.mdc outputs for Cursor
+          reason: Cursor project rules are still discovered from deterministic workspace paths, but the runtime files should now be rendered outputs rather than direct copies of duplicated source templates.
+          status: "✅️Implementation Approved"
+          link: "records/agent-009-cursor-install-target.md"
+        - id: agent-004-10-cursor-manual-rule-frontmatter
+          title: Render the Cursor DOD rule wrapper as opt-in manual project rules rather than always-applied instructions
+          reason: Manual Cursor rules preserve the existing explicit-entry workflow more closely than always-applied guidance and avoid constraining unrelated chat sessions by default, so the installer must synthesize that frontmatter around the shared body content.
+          status: "✅️Implementation Approved"
+          link: "records/agent-009-cursor-install-target.md"
 
     - id: agent-005-lightweight-template-roles
       title: Define lightweight template roles without adding a separate decision phase
