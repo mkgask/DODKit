@@ -18,7 +18,7 @@ DOD solves this by separating active decisions from discussion history and by ma
 
 Another part of the motivation is that the source of specification is rarely explicit at the start.
 It often exists as tacit understanding distributed across people, constraints, context, and prior discussion.
-DOD is a way to turn that tacit source into explicit decisions and reasons, so implementation can proceed from a shared and inspectable basis.
+DOD is a way to turn that tacit source into explicit decisions (in `DECISIONS.yml`) and explicit rationale/history (in `records/{discussion-id}.md`), so implementation can proceed from a shared and inspectable basis.
 
 ## Core Principle
 
@@ -29,7 +29,7 @@ DOD must keep discussion, decision, and implementation separate.
 - Decision is the binding definition produced from discussion. In DOD, "decision" is not limited to resolved disputes — specifications, design constraints, interface contracts, technology selections, project constitution, philosophy, governing principles, behavioral invariants, and non-goals are all decisions and must be managed in `DECISIONS.yml`.
 - Implementation is the act of turning those decisions into tests and working code.
 
-For this reason, DOD separates the following two artifacts.
+Because of that, DOD separates the following two artifacts.
 
 **Decision List File**
 The set of decision objects and binding constraints needed to make the next implementation decision correctly without reading history.
@@ -110,7 +110,8 @@ If the answer suggests that implementation could drift, the safe default is to s
 - Prefer many small decisions or sub-decisions over a few overloaded entries.
 - Top-level categories should usually express a concern area or domain such as `Feature`, `Infrastructure`, `Business Logic`, `Security`, `Data`, or `CI/CD`.
 - Do not default to splitting the top level by lifecycle axes such as specification, design, implementation, or test. When those axes independently constrain work, express them as decisions or sub-decisions inside the relevant concern category.
-- The core fields are `id`, `title`, and `reason`. `status` and `link` are optional but recommended when they help keep the active set understandable.
+- The core fields are `id` and `decision`. `status` and `link` are optional but recommended when they help keep the active set understandable.
+- Keep descriptive content in the `decision` field and use it to state the currently active implementation constraint for each decision object.
 - A parent decision can point to the shared discussion record for one discussion or research thread, and sub-decisions can inherit that `link` unless they need a different record.
 - Decision objects can be nested up to 5 levels, though 3 levels is usually enough.
 

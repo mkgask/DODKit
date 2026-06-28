@@ -13,88 +13,71 @@ decisions:
 
   Feature:
     - id: feature-001-profile-editing
-      title: User profile editing capability
+      decision: User profile editing capability. This feature constrains current UI, API, and validation work across the app
       status: "⚠️Implementing"
-      reason: This feature constrains current UI, API, and validation work across the app
       link: "records/feature-001-profile-editing.md"
       sub_decisions:
         - id: feature-001-1-spec-fields
-          title: Editable fields and validation rules
+          decision: Editable fields and validation rules. The API and form schema must agree on allowed fields before implementation
           status: "⚠️Discussion Approved"
-          reason: The API and form schema must agree on allowed fields before implementation
           sub_decisions: []
         - id: feature-001-2-design-boundary
-          title: Server and client responsibility boundary
+          decision: Server and client responsibility boundary. Component structure and mutation flow depend on where state and actions live
           status: "⚠️Implementing"
-          reason: Component structure and mutation flow depend on where state and actions live
           sub_decisions: []
         - id: feature-001-3-test-acceptance
-          title: Acceptance coverage for success and rejection paths
+          decision: Acceptance coverage for success and rejection paths. The feature is incomplete unless valid updates succeed and invalid input is rejected
           status: "⚠️Discussion Approved"
-          reason: The feature is incomplete unless valid updates succeed and invalid input is rejected
           sub_decisions: []
 
   Architecture:
     - id: r-007
-      title: Frontend framework selection
+      decision: Frontend framework selection. App Router issues remained unresolved; prioritize simple data loading and performance
       status: "✅️Implementation Approved"
-      reason: App Router issues remained unresolved; prioritize simple data loading and performance
       sub_decisions:
         - id: r-007-1
-          title: Routing strategy
+          decision: Routing strategy. Adopt file-based routing and leverage nested routes
           status: "⚠️Discussion Approved"
-          reason: Adopt file-based routing and leverage nested routes
           sub_decisions: []
         - id: r-007-2
-          title: Data fetching strategy
+          decision: Data fetching strategy. Prefer Server Components and minimize Client Components
           status: "⚠️Implementing"
-          reason: Prefer Server Components and minimize Client Components
         - id: r-007-3
-          title: Form interaction boundary
+          decision: Form interaction boundary. Keep complex interactive form state in narrowly scoped client components
           status: "⚠️Discussion In Progress"
-          reason: Keep complex interactive form state in narrowly scoped client components
 
   Database:
     - id: r-001
-      title: Primary database adoption
+      decision: Primary database adoption. Prioritize strong ACID transactions and scalability
       status: "✅️Implementation Approved"
-      reason: Prioritize strong ACID transactions and scalability
       sub_decisions:
         - id: r-001-1
-          title: Read scaling
+          decision: Read scaling. Read Replica complemented by Citrus
           status: "⛔️On Hold"
-          reason: Read Replica complemented by Citrus
         - id: r-001-2
-          title: Schema migration workflow
+          decision: Schema migration workflow. Run reviewed forward-only migrations in CI before deployment
           status: "⚠️Discussion Approved"
-          reason: Run reviewed forward-only migrations in CI before deployment
 
   Authentication and Security:
     - id: r-012
-      title: Authentication approach selection
+      decision: Authentication approach selection. Best balance between security and development speed
       status: "⚠️Discussion In Progress"
-      reason: Best balance between security and development speed
       sub_decisions:
         - id: r-012-1
-          title: Session storage strategy
+          decision: Session storage strategy. Use server-side sessions so revocation remains centrally enforceable
           status: "⚠️Discussion Approved"
-          reason: Use server-side sessions so revocation remains centrally enforceable
         - id: r-012-2
-          title: MFA rollout scope
+          decision: MFA rollout scope. Require MFA first for admin roles before expanding to all users
           status: "⚠️Discussion In Progress"
-          reason: Require MFA first for admin roles before expanding to all users
 
   Operations and CI/CD:
     - id: r-015
-      title: Automated dependency updates
+      decision: Automated dependency updates. Enable rapid response to security patches
       status: "⚠️Implementing"
-      reason: Enable rapid response to security patches
       sub_decisions:
         - id: r-015-1
-          title: Update frequency and review policy
+          decision: Update frequency and review policy. Create automated PRs weekly and require manual review
           status: "⚠️Discussion Approved"
-          reason: Create automated PRs weekly and require manual review
         - id: r-015-2
-          title: Dependency update merge gate
+          decision: Dependency update merge gate. Merge only after tests, type checks, and security review pass
           status: "✅️Implementation Approved"
-          reason: Merge only after tests, type checks, and security review pass

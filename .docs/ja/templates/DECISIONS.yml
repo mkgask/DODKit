@@ -20,11 +20,9 @@ decisions:
   カテゴリ名:
     - # 必須。{category}-{sequence}-{shortname} のような安定したIDを使います。
       id: category-001-short-name
-      # 必須。決定内容を1行で書きます。
-      title: 決定内容を1行で書く
-      # 必須。現在の実装を拘束する理由を、簡潔に1〜3行程度で書きます。
-      # 議論の全履歴ではなく、今効いている拘束理由を書くことが重要です。
-      reason: この決定が今の実装を拘束する理由を書く
+      # 必須。決定名と現在の拘束内容を、decision フィールド1つにまとめて書きます。
+      # 簡潔で走査しやすく保ち、必要な場合のみ 3 行程度まで使います。
+      decision: 決定内容と現在有効な拘束内容を 1 フィールドで書く
       # 任意。基本的には次の既定ステータスを使います。
       # - ⚠️Discussion In Progress
       # - ⚠️Discussion Approved
@@ -40,8 +38,7 @@ decisions:
       # 例:
       # sub_decisions:
       #   - id: category-001-1-contract-detail
-      #     title: 独立して有効な契約詳細を1つ書く
-      #     reason: この詳細が今の実装を拘束する理由を書く
+      #     decision: 独立して有効な契約詳細と、その拘束理由を1つの文で書く
       #     status: "⚠️Discussion Approved"
       #     sub_decisions: []
       sub_decisions: []
@@ -49,24 +46,20 @@ decisions:
   # 例:
   # Feature:
   #   - id: feature-001-profile-editing
-  #     title: ユーザープロフィール編集機能
-  #     reason: この機能が現在の UI、API、バリデーション実装を横断して拘束している
+  #     decision: ユーザープロフィール編集機能。この機能が現在の UI、API、バリデーション実装を横断して拘束している
   #     status: "⚠️Implementing"
   #     link: "records/feature-001-profile-editing.md"
   #     sub_decisions:
   #       - id: feature-001-1-spec-fields
-  #         title: 編集可能項目とバリデーション規則
-  #         reason: 実装前に API とフォームスキーマで許可項目を一致させる必要がある
+  #         decision: 編集可能項目とバリデーション規則。実装前に API とフォームスキーマで許可項目を一致させる必要がある
   #         status: "⚠️Discussion Approved"
   #         sub_decisions: []
   #       - id: feature-001-2-design-boundary
-  #         title: サーバーとクライアントの責務境界
-  #         reason: コンポーネント構成と更新フローがこの境界に依存する
+  #         decision: サーバーとクライアントの責務境界。コンポーネント構成と更新フローがこの境界に依存する
   #         status: "⚠️Implementing"
   #         sub_decisions: []
   #       - id: feature-001-3-test-acceptance
-  #         title: 正常系と拒否系の受け入れテスト範囲
-  #         reason: 正しい更新成功と不正入力拒否を検証しない限り、この機能は完了と見なせない
+  #         decision: 正常系と拒否系の受け入れテスト範囲。正しい更新成功と不正入力拒否を検証しない限り、この機能は完了と見なせない
   #         status: "⚠️Discussion Approved"
   #         sub_decisions: []
 

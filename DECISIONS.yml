@@ -3,280 +3,230 @@ decisions:
 
   DOD Agent:
     - id: agent-001-dod-custom-agent
-      title: Create a dedicated DOD custom agent in VS Code
-      reason: A persistent persona with constrained tools is required to keep implementation aligned with DOD decisions.
+      decision: Create a dedicated DOD custom agent in VS Code. A persistent persona with constrained tools is required to keep implementation aligned with DOD decisions.
       status: "✅️Implementation Approved"
       link: "records/agent-001-dod-custom-agent.md"
       sub_decisions:
         - id: agent-001-1-workspace-agent-location
-          title: Define the DOD custom agent as a workspace file under .github/agents
-          reason: The agent must be discoverable in the repository without relying on user-local configuration.
+          decision: Define the DOD custom agent as a workspace file under .github/agents. The agent must be discoverable in the repository without relying on user-local configuration.
           status: "✅️Implementation Approved"
         - id: agent-001-2-phase-and-artifact-guidance
-          title: Require explicit DOD phase and artifact guidance in the custom agent
-          reason: The agent must explicitly enforce discussion and implementation behavior to reduce decision drift.
+          decision: Require explicit DOD phase and artifact guidance in the custom agent. The agent must explicitly enforce discussion and implementation behavior to reduce decision drift.
           status: "✅️Implementation Approved"
         - id: agent-001-3-shared-workspace-reusability
-          title: Keep the DOD custom agent reusable without contributor-local manual edits
-          reason: The agent should work as a shared workspace runtime rather than depending on machine-specific setup.
+          decision: Keep the DOD custom agent reusable without contributor-local manual edits. The agent should work as a shared workspace runtime rather than depending on machine-specific setup.
           status: "✅️Implementation Approved"
         - id: agent-001-4-discussion-record-template-usage
-          title: Require new records files to be created from the installed discussion-record template
-          reason: Mandatory template usage keeps record structure consistent and prevents ad hoc record formats.
+          decision: Require new records files to be created from the installed discussion-record template. Mandatory template usage keeps record structure consistent and prevents ad hoc record formats.
           status: "✅️Implementation Approved"
 
     - id: agent-006-agent-orchestration-model
-      title: Use one main DOD agent with sequential phase skills and exceptional read-only subagent assistance
-      reason: DOD phase gates require one accountable controller, while phase procedures remain reusable as skills and read-only subagent assistance should stay exceptional because it adds handoff cost.
+      decision: Use one main DOD agent with sequential phase skills and exceptional read-only subagent assistance. DOD phase gates require one accountable controller, while phase procedures remain reusable as skills and read-only subagent assistance should stay exceptional because it adds handoff cost.
       status: "⚠️Discussion Approved"
       link: "records/agent-006-agent-orchestration-model.md"
       sub_decisions:
         - id: agent-006-1-main-agent-governance
-          title: Keep one main DOD agent responsible for flow control and final gate judgment
-          reason: Gate A, Gate B, and Gate C need a single authority for artifact order, status progression, and completion judgment.
+          decision: Keep one main DOD agent responsible for flow control and final gate judgment. Gate A, Gate B, and Gate C need a single authority for artifact order, status progression, and completion judgment.
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: Execute discussion, discussion-validation, decision-promotion, implementation, and implementation-validation sequentially under the main agent by default
-          reason: Sequential skill execution preserves active decision continuity across Gate A and Gate B without paying the handoff cost of per-skill subagent orchestration.
+          decision: Execute discussion, discussion-validation, decision-promotion, implementation, and implementation-validation sequentially under the main agent by default. Sequential skill execution preserves active decision continuity across Gate A and Gate B without paying the handoff cost of per-skill subagent orchestration.
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-3-validation-owned-consistency-checks
-          title: Keep validation-owned consistency checks inside the discussion-validation and implementation-validation skills
-          reason: Consistency checking belongs to validation, and current artifacts should describe those checks explicitly rather than as a separate capability or vague default behavior.
+          decision: Keep validation-owned consistency checks inside the discussion-validation and implementation-validation skills. Consistency checking belongs to validation, and current artifacts should describe those checks explicitly rather than as a separate capability or vague default behavior.
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-4-audit-agent-exception
-          title: Introduce a separate read-only audit agent only when independence or scale justifies it
-          reason: A dedicated audit agent adds orchestration cost and should be reserved for cases where audit independence or workload justifies the extra runtime separation.
+          decision: Introduce a separate read-only audit agent only when independence or scale justifies it. A dedicated audit agent adds orchestration cost and should be reserved for cases where audit independence or workload justifies the extra runtime separation.
           status: "⚠️Discussion Approved"
         - id: agent-006-5-subagent-assistance-exception
-          title: Use subagents only as exceptional read-only assistance under the main agent
-          reason: Subagents can help with independence, search volume, or fresh validation perspective, but final judgment and artifact updates must remain with the main agent.
+          decision: Use subagents only as exceptional read-only assistance under the main agent. Subagents can help with independence, search volume, or fresh validation perspective, but final judgment and artifact updates must remain with the main agent.
           status: "⚠️Discussion Approved"
           link: "records/agent-006-agent-orchestration-model.md"
 
   Skills:
     - id: agent-008-phase-skill-set
-      title: Define the default DOD skill package as five operational skills across Gate A and Gate B
-      reason: The reusable procedures should be explicit and complete, while the main DOD agent retains flow control and final gate judgment.
+      decision: Define the default DOD skill package as five operational skills across Gate A and Gate B. The reusable procedures should be explicit and complete, while the main DOD agent retains flow control and final gate judgment.
       status: "⚠️Implementing"
       link: "records/agent-008-phase-skill-set.md"
       sub_decisions:
         - id: agent-008-1-discussion-skill
-          title: Provide a dedicated discussion skill for discussion-phase research and record drafting
-          reason: Discussion work should be reusable as a focused procedure without moving gate ownership away from the main agent.
+          decision: Provide a dedicated discussion skill for discussion-phase research and record drafting. Discussion work should be reusable as a focused procedure without moving gate ownership away from the main agent.
           status: "⚠️Implementing"
         - id: agent-008-2-discussion-validation-skill
-          title: Provide a dedicated discussion-validation skill for directional checks before decision promotion
-          reason: Directional fit should be reusable as an explicit step before promotion work begins.
+          decision: Provide a dedicated discussion-validation skill for directional checks before decision promotion. Directional fit should be reusable as an explicit step before promotion work begins.
           status: "⚠️Implementing"
         - id: agent-008-6-decision-promotion-skill
-          title: Provide a dedicated decision-promotion skill for converting approved discussion results into active decision objects
-          reason: Promotion is a distinct operational step that must update decision objects, contracts, statuses, and links consistently after validation passes.
+          decision: Provide a dedicated decision-promotion skill for converting approved discussion results into active decision objects. Promotion is a distinct operational step that must update decision objects, contracts, statuses, and links consistently after validation passes.
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-3-implementation-skill
-          title: Provide a dedicated implementation skill for target-shape design and validation-friendly integration
-          reason: Implementation work should derive the intended result from the active decision set and integrate it in a sensible order under the main agent's governance.
+          decision: Provide a dedicated implementation skill for target-shape design and validation-friendly integration. Implementation work should derive the intended result from the active decision set and integrate it in a sensible order under the main agent's governance.
           status: "⚠️Implementing"
         - id: agent-008-4-implementation-validation-skill
-          title: Provide a dedicated implementation-validation skill for artifact checks before closeout
-          reason: Closeout validation should be reusable as an explicit procedure that confirms tests, code, and related artifacts match the promoted decisions.
+          decision: Provide a dedicated implementation-validation skill for artifact checks before closeout. Closeout validation should be reusable as an explicit procedure that confirms tests, code, and related artifacts match the promoted decisions.
           status: "⚠️Implementing"
         - id: agent-008-7-explicit-implementation-validation-checklist
-          title: Make implementation-validation enumerate the concrete closeout checks it must perform
-          reason: Implementation-validation should explicitly state what must be verified at closeout so operators do not infer or skip artifact alignment, terminology, decision hygiene, or blocker reporting.
+          decision: Make implementation-validation enumerate the concrete closeout checks it must perform. Implementation-validation should explicitly state what must be verified at closeout so operators do not infer or skip artifact alignment, terminology, decision hygiene, or blocker reporting.
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-8-decision-scoped-target-shape-implementation
-          title: Let promoted decisions define implementation scope while implementation chooses target shape and integration order
-          reason: In DOD, implementation scope comes from the promoted decisions, so the implementation skill should focus on designing the intended shape and integrating it safely rather than self-defining minimal scope.
+          decision: Let promoted decisions define implementation scope while implementation chooses target shape and integration order. In DOD, implementation scope comes from the promoted decisions, so the implementation skill should focus on designing the intended shape and integrating it safely rather than self-defining minimal scope.
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-5-broad-then-focus-discussion
-          title: Start discussion with a bounded broad scan before narrowing to focus areas
-          reason: Discussion work must first surface affected domains and omission risks; narrowing too early imports implementation-style locality and risks missing active constraints.
+          decision: Start discussion with a bounded broad scan before narrowing to focus areas. Discussion work must first surface affected domains and omission risks; narrowing too early imports implementation-style locality and risks missing active constraints.
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
 
   Installer:
     - id: agent-002-installer-delivery
-      title: Provide a repository installer for the DOD agent package
-      reason: Provide the installer delivery mechanism and keep its active sub-decisions explicit in this list.
+      decision: Provide a repository installer for the DOD agent package. Provide the installer delivery mechanism and keep its active sub-decisions explicit in this list.
       status: "✅️Implementation Approved"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
-          title: Use template files as installer inputs
-          reason: Templates keep source assets separate from target outputs and make future CLI expansion safer.
+          decision: Use template files as installer inputs. Templates keep source assets separate from target outputs and make future CLI expansion safer.
           status: "✅️Implementation Approved"
         - id: agent-002-2-installer-target-scope
-          title: Support copilot and cursor as the bounded installer CLI target set
-          reason: The installer now needs a second supported target, but the active target set should stay explicit and small so rollout and validation remain predictable.
+          decision: Support copilot and cursor as the bounded installer CLI target set. The installer now needs a second supported target, but the active target set should stay explicit and small so rollout and validation remain predictable.
           status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
-          title: Keep the installer safe to run repeatedly
-          reason: Re-running the installer must not duplicate configuration or corrupt existing installed assets.
+          decision: Keep the installer safe to run repeatedly. Re-running the installer must not duplicate configuration or corrupt existing installed assets.
           status: "✅️Implementation Approved"
         - id: agent-002-4-workspace-scope-only
-          title: Limit installer writes to intended workspace customization paths
-          reason: The installer must stay inside declared workspace scope instead of modifying broader user or system locations.
+          decision: Limit installer writes to intended workspace customization paths. The installer must stay inside declared workspace scope instead of modifying broader user or system locations.
           status: "✅️Implementation Approved"
         - id: agent-002-5-explicit-cli-target-validation
-          title: Require an explicit CLI target and reject unsupported targets
-          reason: Installer behavior must stay predictable and must not silently accept unsupported target modes.
+          decision: Require an explicit CLI target and reject unsupported targets. Installer behavior must stay predictable and must not silently accept unsupported target modes.
           status: "✅️Implementation Approved"
         - id: agent-002-6-fail-fast-and-validation-guidance
-          title: Fail fast with explicit errors and print post-install validation steps
-          reason: Installation must stop clearly on invalid state and tell the user how to verify success afterward.
+          decision: Fail fast with explicit errors and print post-install validation steps. Installation must stop clearly on invalid state and tell the user how to verify success afterward.
           status: "✅️Implementation Approved"
         - id: agent-002-7-supported-target-names
-          title: Use `copilot` and `cursor` as the supported installer CLI target values
-          reason: The installer needs stable explicit target names for both supported runtimes so invocation and validation do not drift.
+          decision: Use `copilot` and `cursor` as the supported installer CLI target values. The installer needs stable explicit target names for both supported runtimes so invocation and validation do not drift.
           status: "✅️Implementation Approved"
         - id: agent-002-8-existing-file-overwrite-policy
-          title: Preserve existing files by default and ask before overwrite without backups
-          reason: The installer must protect existing workspace files without silently replacing them or creating extra backup artifacts.
+          decision: Preserve existing files by default and ask before overwrite without backups. The installer must protect existing workspace files without silently replacing them or creating extra backup artifacts.
           status: "✅️Implementation Approved"
         - id: agent-002-9-initial-copilot-template-manifest
-          title: Install templates/agent.md and templates/DECISIONS.yml into the initial Copilot workspace paths
-          reason: The first release needs an explicit template file set and destination mapping so installer behavior stays deterministic.
+          decision: Install templates/agent.md and templates/DECISIONS.yml into the initial Copilot workspace paths. The first release needs an explicit template file set and destination mapping so installer behavior stays deterministic.
           status: "✅️Implementation Approved"
         - id: agent-002-10-decisions-yml-never-overwrite
-          title: Never overwrite an existing DECISIONS.yml regardless of --force
-          reason: DECISIONS.yml contains project-specific decision records that would be permanently lost on overwrite; the installer must always preserve it.
+          decision: Never overwrite an existing DECISIONS.yml regardless of --force. DECISIONS.yml contains project-specific decision records that would be permanently lost on overwrite; the installer must always preserve it.
           status: "✅️Implementation Approved"
         - id: agent-002-11-no-template-fallback-copy
-          title: Do not save a fallback copy such as DECISIONS.template.yml when DECISIONS.yml already exists
-          reason: A fallback copy adds filesystem noise without clear benefit; the upstream template is always available via the source repository.
+          decision: Do not save a fallback copy such as DECISIONS.template.yml when DECISIONS.yml already exists. A fallback copy adds filesystem noise without clear benefit; the upstream template is always available via the source repository.
           status: "✅️Implementation Approved"
         - id: agent-002-12-discussion-record-template-install
-          title: Include templates/discussion-record.md in installer-managed template assets
-          reason: New decision records should start from a consistent template so the installer must distribute this asset alongside other templates.
+          decision: Include templates/discussion-record.md in installer-managed template assets. New decision records should start from a consistent template so the installer must distribute this asset alongside other templates.
           status: "✅️Implementation Approved"
         - id: agent-002-13-copilot-skill-template-install
-          title: Include the five shipped skill templates in the Copilot installer manifest
-          reason: The Copilot installer must provision the reusable DOD skills alongside the agent and discussion-record assets so the installed workflow is complete.
+          decision: Include the five shipped skill templates in the Copilot installer manifest. The Copilot installer must provision the reusable DOD skills alongside the agent and discussion-record assets so the installed workflow is complete.
           status: "✅️Implementation Approved"
           link: "records/agent-002-installer-delivery.md"
         - id: agent-002-14-initial-cursor-template-manifest
-          title: Install Cursor rule outputs rendered from shared DOD sources plus shared DOD assets into the initial Cursor workspace paths
-          reason: Cursor support still needs an explicit manifest, but the manifest should point at shared DOD sources and let the installer render the Cursor-specific rule wrapper instead of storing duplicated source files.
+          decision: Install Cursor rule outputs rendered from shared DOD sources plus shared DOD assets into the initial Cursor workspace paths. Cursor support still needs an explicit manifest, but the manifest should point at shared DOD sources and let the installer render the Cursor-specific rule wrapper instead of storing duplicated source files.
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
 
     - id: agent-003-raw-github-install
-      title: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash
-      reason: GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
+      decision: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash. GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
       status: "✅️Implementation Approved"
       link: "records/agent-003-raw-github-install.md"
       sub_decisions:
         - id: agent-003-1-curl-fssl-command
-          title: Use curl -fsSL for the install.sh one-line command
-          reason: The command must fail on HTTP errors while staying quiet and diagnosable for shell-based installation.
+          decision: Use curl -fsSL for the install.sh one-line command. The command must fail on HTTP errors while staying quiet and diagnosable for shell-based installation.
           status: "✅️Implementation Approved"
         - id: agent-003-2-stable-ref-guidance
-          title: Default installer URLs to a stable ref and allow commit pinning for reproducibility
-          reason: Install instructions need a stable default while preserving a deterministic option when stronger reproducibility is required.
+          decision: Default installer URLs to a stable ref and allow commit pinning for reproducibility. Install instructions need a stable default while preserving a deterministic option when stronger reproducibility is required.
           status: "✅️Implementation Approved"
 
   Template:
     - id: agent-004-installer-template-details
-      title: Define installer template file layout and output mapping
-      reason: Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.
+      decision: Define installer template file layout and output mapping. Template usage is already active, but template file structure and output mapping need their own explicit decision before implementation.
       status: "✅️Implementation Approved"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
-          title: Store the initial template at templates/agent.md
-          reason: A top-level template path is simple now and still leaves room for future expansion.
+          decision: Store the initial template at templates/agent.md. A top-level template path is simple now and still leaves room for future expansion.
           status: "✅️Implementation Approved"
         - id: agent-004-2-copy-manifest
-          title: Keep the installer copy-target list inside the installer
-          reason: The installer needs an explicit mapping list even with only one file so future expansion stays deterministic.
+          decision: Keep the installer copy-target list inside the installer. The installer needs an explicit mapping list even with only one file so future expansion stays deterministic.
           status: "✅️Implementation Approved"
         - id: agent-004-3-source-destination-rule
-          title: Use raw.githubusercontent.com as source and current-directory-relative paths as destination
-          reason: Source and destination resolution must stay explicit and consistent for installer execution.
+          decision: Use raw.githubusercontent.com as source and current-directory-relative paths as destination. Source and destination resolution must stay explicit and consistent for installer execution.
           status: "✅️Implementation Approved"
         - id: agent-004-4-separate-template-sources-and-outputs
-          title: Keep template source files separate from installed output files
-          reason: Template assets and installed customization outputs must not be mixed if file mapping is to remain stable and understandable.
+          decision: Keep template source files separate from installed output files. Template assets and installed customization outputs must not be mixed if file mapping is to remain stable and understandable.
           status: "✅️Implementation Approved"
         - id: agent-004-5-discussion-record-template-destination
-          title: Install discussion-record template at .dodkit/templates/discussion-record.md
-          reason: A DODKit-scoped hidden directory keeps workspace root clean while providing a stable, tool-neutral location for future template expansion.
+          decision: Install discussion-record template at .dodkit/templates/discussion-record.md. A DODKit-scoped hidden directory keeps workspace root clean while providing a stable, tool-neutral location for future template expansion.
           status: "✅️Implementation Approved"
         - id: agent-004-6-skill-template-source-layout
-          title: Store shipped skill source templates under templates/skills as one .skill.md file per skill
-          reason: A dedicated source directory keeps reusable skill content separate from installed discovery paths while making the five-skill package reviewable and translatable in the repository.
+          decision: Store shipped skill source templates under templates/skills as one .skill.md file per skill. A dedicated source directory keeps reusable skill content separate from installed discovery paths while making the five-skill package reviewable and translatable in the repository.
           status: "✅️Implementation Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-004-7-copilot-skill-template-destinations
-          title: Install each templates/skills/*.skill.md source to .github/skills/<name>/SKILL.md for Copilot
-          reason: Copilot skill discovery needs a deterministic runtime path, and the installer must map repository skill templates to that path without mixing source and output files.
+          decision: Install each templates/skills/*.skill.md source to .github/skills/<name>/SKILL.md for Copilot. Copilot skill discovery needs a deterministic runtime path, and the installer must map repository skill templates to that path without mixing source and output files.
           status: "✅️Implementation Approved"
           link: "records/agent-004-installer-template-details.md"
         - id: agent-004-8-cursor-rule-template-source-layout
-          title: Reuse templates/agent.md and templates/skills/*.skill.md as the shared source set for Cursor rule rendering
-          reason: The rule body content is shared with Copilot, so keeping dedicated Cursor source files would duplicate almost identical content and create avoidable maintenance drift.
+          decision: Reuse templates/agent.md and templates/skills/*.skill.md as the shared source set for Cursor rule rendering. The rule body content is shared with Copilot, so keeping dedicated Cursor source files would duplicate almost identical content and create avoidable maintenance drift.
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
         - id: agent-004-9-cursor-rule-template-destinations
-          title: Render shared DOD sources to .cursor/rules/<name>.mdc outputs for Cursor
-          reason: Cursor project rules are still discovered from deterministic workspace paths, but the runtime files should now be rendered outputs rather than direct copies of duplicated source templates.
+          decision: Render shared DOD sources to .cursor/rules/<name>.mdc outputs for Cursor. Cursor project rules are still discovered from deterministic workspace paths, but the runtime files should now be rendered outputs rather than direct copies of duplicated source templates.
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
         - id: agent-004-10-cursor-manual-rule-frontmatter
-          title: Render the Cursor DOD rule wrapper as opt-in manual project rules rather than always-applied instructions
-          reason: Manual Cursor rules preserve the existing explicit-entry workflow more closely than always-applied guidance and avoid constraining unrelated chat sessions by default, so the installer must synthesize that frontmatter around the shared body content.
+          decision: Render the Cursor DOD rule wrapper as opt-in manual project rules rather than always-applied instructions. Manual Cursor rules preserve the existing explicit-entry workflow more closely than always-applied guidance and avoid constraining unrelated chat sessions by default, so the installer must synthesize that frontmatter around the shared body content.
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
 
     - id: agent-005-lightweight-template-roles
-      title: Define lightweight template roles without adding a separate decision phase
-      reason: DOD must stay lightweight, and current AI friction comes from artifact overlap rather than from a missing phase.
+      decision: Define lightweight template roles without adding a separate decision phase. DOD must stay lightweight, and current AI friction comes from artifact overlap rather than from a missing phase.
       status: "✅️Implementation Approved"
       link: "records/agent-005-lightweight-template-roles.md"
       sub_decisions:
         - id: agent-005-1-two-phase-dod
-          title: Keep decision recording inside the discussion phase rather than adding a third phase
-          reason: The discussion phase already runs until decisions are explicit, so a separate decision phase would add process weight with little new operational value.
+          decision: Keep decision recording inside the discussion phase rather than adding a third phase. The discussion phase already runs until decisions are explicit, so a separate decision phase would add process weight with little new operational value.
           status: "✅️Implementation Approved"
         - id: agent-005-2-decisions-template-scanability
-          title: Keep the DECISIONS.yml template optimized for human scanability
-          reason: The canonical decision list must remain easy to scan, so the default decision shape should stay minimal.
+          decision: Keep the DECISIONS.yml template optimized for human scanability. The canonical decision list must remain easy to scan, so the default decision shape should stay minimal.
           status: "✅️Implementation Approved"
         - id: agent-005-3-contract-details-as-needed
-          title: Express only necessary contract details as additional sub-decisions
-          reason: Decision contracts must be explicit, but forcing the same contract fields onto every node would reduce scanability and add redundant work.
+          decision: Express only necessary contract details as additional sub-decisions. Decision contracts must be explicit, but forcing the same contract fields onto every node would reduce scanability and add redundant work.
           status: "✅️Implementation Approved"
         - id: agent-005-4-discussion-record-minimal-structure
-          title: Keep the discussion-record template lightweight and focused on history
-          reason: The record template should require only minimal discussion history so AI can preserve artifact order without duplicating current constraints from DECISIONS.yml.
+          decision: Keep the discussion-record template lightweight and focused on history. The record template should require only minimal discussion history so AI can preserve artifact order without duplicating current constraints from DECISIONS.yml.
           status: "✅️Implementation Approved"
         - id: agent-005-5-optional-record-detail
-          title: Make evidence and detailed promotion metadata optional in discussion records
-          reason: Optional detail keeps the template usable for small discussions while preserving room for deeper records when needed.
+          decision: Make evidence and detailed promotion metadata optional in discussion records. Optional detail keeps the template usable for small discussions while preserving room for deeper records when needed.
+          status: "✅️Implementation Approved"
+
+    - id: agent-010-decision-single-field
+      decision: Replace split descriptive fields in DECISIONS.yml with one decision field. A single field reduces AI-authored drift between labels and constraints and keeps active constraints semantically linked.
+      status: "✅️Implementation Approved"
+      link: "records/agent-010-decision-single-field.md"
+      sub_decisions:
+        - id: agent-010-1-decision-single-field-length
+          decision: Keep each decision field concise while allowing up to about three lines when the binding constraint needs extra clarity. This preserves scanability without forcing semantic split across multiple fields.
           status: "✅️Implementation Approved"
 
   DOD Process:
     - id: agent-007-phase-verification-model
-      title: Keep DOD as a two-phase method while making phase-specific verification explicit
-      reason: DOD needs directional validation before decision promotion and implementation validation before closeout, but adding a separate verification phase would add process weight without enough new value.
+      decision: Keep DOD as a two-phase method while making phase-specific verification explicit. DOD needs directional validation before decision promotion and implementation validation before closeout, but adding a separate verification phase would add process weight without enough new value.
       status: "✅️Implementation Approved"
       link: "records/agent-007-phase-verification-model.md"
       sub_decisions:
         - id: agent-007-1-no-third-phase
-          title: Keep verification inside the existing two-phase model instead of adding a third phase
-          reason: Discussion and implementation already provide the needed lifecycle boundaries, so a separate verification phase would mostly duplicate work and increase friction.
+          decision: Keep verification inside the existing two-phase model instead of adding a third phase. Discussion and implementation already provide the needed lifecycle boundaries, so a separate verification phase would mostly duplicate work and increase friction.
           status: "✅️Implementation Approved"
         - id: agent-007-2-discussion-validation-before-promotion
-          title: Require lightweight discussion-validation before promoting candidate conclusions into DECISIONS.yml
-          reason: A decision can be implemented correctly yet still be directionally wrong, so the proposed direction must be checked against the original objective and active constraints before it becomes binding.
+          decision: Require lightweight discussion-validation before promoting candidate conclusions into DECISIONS.yml. A decision can be implemented correctly yet still be directionally wrong, so the proposed direction must be checked against the original objective and active constraints before it becomes binding.
           status: "✅️Implementation Approved"
         - id: agent-007-3-implementation-validation-before-closeout
-          title: Require implementation-validation against active decisions before closing implementation work
-          reason: Decisions remain advisory unless tests, code, and related artifacts are checked against the promoted decision set before closeout.
+          decision: Require implementation-validation against active decisions before closing implementation work. Decisions remain advisory unless tests, code, and related artifacts are checked against the promoted decision set before closeout.
           status: "✅️Implementation Approved"
 

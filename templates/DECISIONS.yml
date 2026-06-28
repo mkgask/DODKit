@@ -20,11 +20,9 @@ decisions:
   Category Name:
     - # Required. Use a stable ID such as {category}-{sequence}-{shortname}.
       id: category-001-short-name
-      # Required. Describe the decision in one line.
-      title: Describe the decision in one line
-      # Required. Describe the current binding reason in 1 to 3 concise lines.
-      # Write the reason that constrains implementation now, not the full discussion history.
-      reason: Explain why this decision currently constrains implementation
+      # Required. Use one decision field that keeps name and binding content together.
+      # Keep it concise and scannable; up to about 3 lines when needed.
+      decision: Describe the decision and its current binding constraint in one field
       # Optional. Prefer one of the default statuses below.
       # - ⚠️Discussion In Progress
       # - ⚠️Discussion Approved
@@ -40,8 +38,7 @@ decisions:
       # Example:
       # sub_decisions:
       #   - id: category-001-1-contract-detail
-      #     title: Describe one independently active contract detail
-      #     reason: Explain why this detail currently constrains implementation
+      #     decision: Describe one independently active contract detail and why it currently constrains implementation
       #     status: "⚠️Discussion Approved"
       #     sub_decisions: []
       sub_decisions: []
@@ -49,24 +46,20 @@ decisions:
   # Example:
   # Feature:
   #   - id: feature-001-profile-editing
-  #     title: User profile editing capability
-  #     reason: This feature currently constrains UI, API, and validation work across the app
+  #     decision: User profile editing capability. This feature currently constrains UI, API, and validation work across the app
   #     status: "⚠️Implementing"
   #     link: "records/feature-001-profile-editing.md"
   #     sub_decisions:
   #       - id: feature-001-1-spec-fields
-  #         title: Editable fields and validation rules
-  #         reason: The API and form schema must agree on allowed fields before implementation
+  #         decision: Editable fields and validation rules. The API and form schema must agree on allowed fields before implementation
   #         status: "⚠️Discussion Approved"
   #         sub_decisions: []
   #       - id: feature-001-2-design-boundary
-  #         title: Server and client responsibility boundary
-  #         reason: Component structure and mutation flow depend on this boundary
+  #         decision: Server and client responsibility boundary. Component structure and mutation flow depend on this boundary
   #         status: "⚠️Implementing"
   #         sub_decisions: []
   #       - id: feature-001-3-test-acceptance
-  #         title: Acceptance coverage for success and rejection paths
-  #         reason: The feature is incomplete unless valid updates succeed and invalid input is rejected
+  #         decision: Acceptance coverage for success and rejection paths. The feature is incomplete unless valid updates succeed and invalid input is rejected
   #         status: "⚠️Discussion Approved"
   #         sub_decisions: []
 

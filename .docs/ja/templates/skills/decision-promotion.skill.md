@@ -20,7 +20,7 @@ user-invocable: false
 1. validation 通過を確認する。
    discussion-validation が方向を明示的に受理し、何を昇格または更新すべきかを示した後にのみ開始する。
 2. 正しい decision shape を選ぶ。
-   その結果を既存 decision に入れるべきか、新規 decision object にするべきか、あるいは 1 つ以上の sub-decision に分けるべきかを決める。複数の active rules を 1 ノードに隠さず、過積載なら分割する。
+   その結果を既存 decision に入れるべきか、新規 decision object にするべきか、あるいは 1 つ以上の sub-decision に分けるべきかを決める。複数の active rules を 1 ノードに隠さず、過積載なら分割する。説明内容は `decision` 単一フィールドへ集約する。
 3. 新たに binding になったルールをすべて昇格する。
    検証済み結果から、実装に効く拘束条件をすべて `DECISIONS.yml` へ移す。active rules を `records/{discussion-id}.md` にだけ残さない。
 4. decision contract を充足させる。
@@ -36,6 +36,7 @@ user-invocable: false
 - discussion-validation が曖昧または不通過なら昇格を始めない。
 - 新しい active constraints を叙述だけに隠さない。
 - 分離すべきルールを 1 つの decision に過積載しない。
+- 昇格後の決定エントリで説明フィールドの分割を再導入しない。
 - `DECISIONS.yml` は簡潔に保つが、実装ドリフトを防ぐために必要なルールは省略しない。
 
 ## 完了条件

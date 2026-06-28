@@ -30,7 +30,7 @@ user-invocable: false
 6. 意味のあるチェックポイントで検証する。
    それぞれの意味のある integration step、特に最初の実質編集後には、focused behavior check、対象限定テスト、または狭い compile/lint/typecheck を走らせる。
 7. 新しい事実が重要なら記録を更新する。
-   実装中に新しい拘束条件や決定上重要な事実が判明した場合は、`records/{discussion-id}.md` へ追記し、拘束条件なら同じ変更セットで `DECISIONS.yml` に昇格する。
+   実装中に新しい拘束条件や決定上重要な事実が判明した場合は、`records/{discussion-id}.md` へ追記し、拘束条件なら同じ変更セットで `DECISIONS.yml` に昇格する。決定エントリを新規作成または更新する際は `decision` 単一フィールドを使う。
 8. クローズ前で止める。
    ここでは完了宣言せず、結果を implementation-validation へ渡す。
 

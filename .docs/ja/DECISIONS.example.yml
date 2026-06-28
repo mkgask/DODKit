@@ -12,88 +12,71 @@ decisions:
 
   Feature:
     - id: feature-001-profile-editing
-      title: ユーザープロフィール編集機能
+      decision: ユーザープロフィール編集機能。この機能が現在の UI、API、バリデーション実装を横断して拘束している
       status: "⚠️Implementing"
-      reason: この機能が現在の UI、API、バリデーション実装を横断して拘束している
       link: "records/feature-001-profile-editing.md"
       sub_decisions:
         - id: feature-001-1-spec-fields
-          title: 編集可能項目とバリデーション規則
+          decision: 編集可能項目とバリデーション規則。実装前に API とフォームスキーマで許可項目を一致させる必要がある
           status: "⚠️Discussion Approved"
-          reason: 実装前に API とフォームスキーマで許可項目を一致させる必要がある
           sub_decisions: []
         - id: feature-001-2-design-boundary
-          title: サーバーとクライアントの責務境界
+          decision: サーバーとクライアントの責務境界。コンポーネント構成と更新フローが、状態とアクションの配置に依存する
           status: "⚠️Implementing"
-          reason: コンポーネント構成と更新フローが、状態とアクションの配置に依存する
           sub_decisions: []
         - id: feature-001-3-test-acceptance
-          title: 正常系と拒否系の受け入れテスト範囲
+          decision: 正常系と拒否系の受け入れテスト範囲。正しい更新成功と不正入力拒否を検証しない限り、この機能は完了と見なせない
           status: "⚠️Discussion Approved"
-          reason: 正しい更新成功と不正入力拒否を検証しない限り、この機能は完了と見なせない
           sub_decisions: []
 
   アーキテクチャ:
     - id: r-007
-      title: フロントエンドフレームワークの選定
+      decision: フロントエンドフレームワークの選定。App Router の問題が解決されず、データロードのシンプルさとパフォーマンスを優先
       status: "✅️Implementation Approved"
-      reason: App Routerの問題が解決されず、データロードのシンプルさとパフォーマンスを優先
       sub_decisions:
         - id: r-007-1
-          title: ルーティング方式
+          decision: ルーティング方式。File-based routing を採用し、ネストされたルートを活用
           status: "⚠️Discussion Approved"
-          reason: File-based routingを採用し、ネストされたルートを活用
           sub_decisions: []
         - id: r-007-2
-          title: データフェッチ戦略
+          decision: データフェッチ戦略。Server Components を優先し、Client Components は最小限にする
           status: "⚠️Implementing"
-          reason: Server Componentsを優先し、Client Componentsは最小限に
         - id: r-007-3
-          title: フォーム相互作用の境界
+          decision: フォーム相互作用の境界。複雑なフォーム状態は、必要最小限の Client Component に閉じ込める
           status: "⚠️Discussion In Progress"
-          reason: 複雑なフォーム状態は、必要最小限のClient Componentに閉じ込める
 
   データベース:
     - id: r-001
-      title: プライマリデータベースの採用
+      decision: プライマリデータベースの採用。ACID トランザクションの強さと拡張性を重視
       status: "✅️Implementation Approved"
-      reason: ACIDトランザクションの強さと拡張性を重視
       sub_decisions:
         - id: r-001-1
-          title: 読み取りスケーリング
+          decision: 読み取りスケーリング。Read Replica + Citrus で補完
           status: "⛔️On Hold"
-          reason: Read Replica + Citrusで補完
         - id: r-001-2
-          title: スキーママイグレーション運用
+          decision: スキーママイグレーション運用。デプロイ前に、レビュー済みの forward-only migration を CI で実行する
           status: "⚠️Discussion Approved"
-          reason: デプロイ前に、レビュー済みのforward-only migrationをCIで実行する
 
   認証・セキュリティ:
     - id: r-012
-      title: 認証方式の選択
+      decision: 認証方式の選択。セキュリティと開発速度のバランスが最適
       status: "⚠️Discussion In Progress"
-      reason: セキュリティと開発速度のバランスが最適
       sub_decisions:
         - id: r-012-1
-          title: セッション保存戦略
+          decision: セッション保存戦略。失効制御を中央で維持できるよう、サーバー側セッションを採用する
           status: "⚠️Discussion Approved"
-          reason: 失効制御を中央で維持できるよう、サーバー側セッションを採用する
         - id: r-012-2
-          title: MFA導入範囲
+          decision: MFA 導入範囲。まず管理者ロールに MFA を必須化し、その後に全ユーザーへ拡張する
           status: "⚠️Discussion In Progress"
-          reason: まず管理者ロールにMFAを必須化し、その後に全ユーザーへ拡張する
 
   運用・CI/CD:
     - id: r-015
-      title: 依存関係更新の自動化
+      decision: 依存関係更新の自動化。セキュリティパッチへ迅速に対応する
       status: "⚠️Implementing"
-      reason: セキュリティパッチの迅速対応のため
       sub_decisions:
         - id: r-015-1
-          title: 更新頻度とレビュー
+          decision: 更新頻度とレビュー。週次で自動 PR を作成し、手動レビューを必須にする
           status: "⚠️Discussion Approved"
-          reason: 週次で自動PR作成、手動レビュー必須
         - id: r-015-2
-          title: 依存関係更新のマージ条件
+          decision: 依存関係更新のマージ条件。テスト、型チェック、セキュリティレビュー通過後にのみマージする
           status: "✅️Implementation Approved"
-          reason: テスト、型チェック、セキュリティレビュー通過後にのみマージする

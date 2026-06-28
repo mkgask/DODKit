@@ -53,6 +53,7 @@ argument-hint: Provide discussion ID, target decision scope, and implementation 
 - DECISIONS.yml はプロジェクトの決定事項オブジェクトの正本として、各決定項目を簡潔に保ちつつ最新状態を維持する。
 - 判定基準は重要そうかどうかではなく、実装を拘束するかどうかである。
 - 各決定項目は簡潔に保つが、実装に関わる決定事項を省略してはならない。
+- 各決定事項オブジェクトの説明は `decision` フィールドを使い、そのフィールドに現在有効な実装拘束条件を書く。
 - DECISIONS.yml は継続開発の中でも持続可能に維持し、次の決定のために広い履歴を読み直さなくて済む状態を保つ。
 - トップレベルカテゴリは関心領域またはドメイン単位で扱い、仕様・設計・実装方針・テスト義務は、それ自体が拘束条件になる場合に関連カテゴリ内の決定事項またはサブ決定として扱う。
 - ステータスは原則として `⚠️Discussion In Progress`、`⚠️Discussion Approved`、`⚠️Implementing`、`✅️Implementation Approved` を使い、例外ステータスは本当に必要な場合だけ使う。

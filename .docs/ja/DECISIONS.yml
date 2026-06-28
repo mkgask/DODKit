@@ -3,279 +3,229 @@ decisions:
 
   DOD エージェント:
     - id: agent-001-dod-custom-agent
-      title: DOD専用のVS Codeカスタムエージェントを作成する
-      reason: DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
+      decision: DOD専用のVS Codeカスタムエージェントを作成する. DODの決定に沿った実装を維持するため、永続的なペルソナとツール制約が必要。
       status: "✅️Implementation Approved"
       link: "records/agent-001-dod-custom-agent.md"
       sub_decisions:
         - id: agent-001-1-workspace-agent-location
-          title: DODカスタムエージェントを .github/agents 配下のワークスペースファイルとして定義する
-          reason: ユーザー固有設定に依存せず、リポジトリ内でエージェントを発見可能にするため。
+          decision: DODカスタムエージェントを .github/agents 配下のワークスペースファイルとして定義する. ユーザー固有設定に依存せず、リポジトリ内でエージェントを発見可能にするため。
           status: "✅️Implementation Approved"
         - id: agent-001-2-phase-and-artifact-guidance
-          title: カスタムエージェントにDODフェーズと成果物の明示的な指示を持たせる
-          reason: 議論と実装の振る舞いを明示的に強制し、決定ドリフトを減らすため。
+          decision: カスタムエージェントにDODフェーズと成果物の明示的な指示を持たせる. 議論と実装の振る舞いを明示的に強制し、決定ドリフトを減らすため。
           status: "✅️Implementation Approved"
         - id: agent-001-3-shared-workspace-reusability
-          title: ローカル手作業なしで再利用できる共有ワークスペースエージェントにする
-          reason: マシン固有の設定に依存せず、共有ランタイムとして扱える必要があるため。
+          decision: ローカル手作業なしで再利用できる共有ワークスペースエージェントにする. マシン固有の設定に依存せず、共有ランタイムとして扱える必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-001-4-discussion-record-template-usage
-          title: 新しい records ファイルはインストール済み discussion-record テンプレートから作成することを必須にする
-          reason: テンプレート利用を必須化することで記録構造の一貫性を保ち、場当たり的な形式の記録作成を防ぐため。
+          decision: 新しい records ファイルはインストール済み discussion-record テンプレートから作成することを必須にする. テンプレート利用を必須化することで記録構造の一貫性を保ち、場当たり的な形式の記録作成を防ぐため。
           status: "✅️Implementation Approved"
 
     - id: agent-006-agent-orchestration-model
-      title: 1つのメインDODエージェントの下でフェーズスキルを順次実行し、subagent は例外的な read-only 補助として扱う
-      reason: DODのフェーズゲートには単一の責任主体が必要であり、フェーズ手順はスキルとして再利用できる一方、read-only subagent assistance は引き継ぎコストがあるため例外的に扱うべきため。
+      decision: 1つのメインDODエージェントの下でフェーズスキルを順次実行し、subagent は例外的な read-only 補助として扱う. DODのフェーズゲートには単一の責任主体が必要であり、フェーズ手順はスキルとして再利用できる一方、read-only subagent assistance は引き継ぎコストがあるため例外的に扱うべきため。
       status: "⚠️Discussion Approved"
       link: "records/agent-006-agent-orchestration-model.md"
       sub_decisions:
         - id: agent-006-1-main-agent-governance
-          title: フロー制御と最終ゲート判定は1つのメインDODエージェントに持たせる
-          reason: Gate A、Gate B、Gate C では成果物順序、status進行、完了判定を単一の主体が担う必要があるため。
+          decision: フロー制御と最終ゲート判定は1つのメインDODエージェントに持たせる. Gate A、Gate B、Gate C では成果物順序、status進行、完了判定を単一の主体が担う必要があるため。
           status: "⚠️Discussion Approved"
         - id: agent-006-2-phase-skills-default
-          title: discussion、discussion-validation、decision-promotion、implementation、implementation-validation は既定でメインエージェントの下で順次実行する
-          reason: Gate A と Gate B をまたぐ active decision continuity を保ち、1 skill ごとの subagent orchestration による handoff cost を避けるため。
+          decision: discussion、discussion-validation、decision-promotion、implementation、implementation-validation は既定でメインエージェントの下で順次実行する. Gate A と Gate B をまたぐ active decision continuity を保ち、1 skill ごとの subagent orchestration による handoff cost を避けるため。
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-3-validation-owned-consistency-checks
-          title: validation が担う整合確認は discussion-validation と implementation-validation の各スキル内で扱う
-          reason: 整合確認は検証責務に属しており、曖昧な既定動作や別機能としてではなく、現在の成果物で明示的に記述されるべきため。
+          decision: validation が担う整合確認は discussion-validation と implementation-validation の各スキル内で扱う. 整合確認は検証責務に属しており、曖昧な既定動作や別機能としてではなく、現在の成果物で明示的に記述されるべきため。
           status: "⚠️Discussion Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-006-4-audit-agent-exception
-          title: 独立性または規模が正当化する場合にのみ read-only の監査エージェントを導入する
-          reason: 専用監査エージェントはオーケストレーションコストを増やすため、監査独立性または負荷が追加コストを上回る場合に限定するため。
+          decision: 独立性または規模が正当化する場合にのみ read-only の監査エージェントを導入する. 専用監査エージェントはオーケストレーションコストを増やすため、監査独立性または負荷が追加コストを上回る場合に限定するため。
           status: "⚠️Discussion Approved"
         - id: agent-006-5-subagent-assistance-exception
-          title: subagent はメインエージェント配下の例外的な read-only 補助としてのみ使う
-          reason: subagent は独立性、探索量、fresh validation perspective の面では有益だが、最終判断と成果物更新はメインエージェントに残すべきため。
+          decision: subagent はメインエージェント配下の例外的な read-only 補助としてのみ使う. subagent は独立性、探索量、fresh validation perspective の面では有益だが、最終判断と成果物更新はメインエージェントに残すべきため。
           status: "⚠️Discussion Approved"
           link: "records/agent-006-agent-orchestration-model.md"
 
   スキル:
     - id: agent-008-phase-skill-set
-      title: DOD のデフォルトスキルパッケージを Gate A と Gate B にまたがる 5 operational skills として定義する
-      reason: 再利用する手順を明示的かつ欠落なく保ちつつ、フロー制御と最終ゲート判定はメイン DOD エージェントに残すべきため。
+      decision: DOD のデフォルトスキルパッケージを Gate A と Gate B にまたがる 5 operational skills として定義する. 再利用する手順を明示的かつ欠落なく保ちつつ、フロー制御と最終ゲート判定はメイン DOD エージェントに残すべきため。
       status: "⚠️Implementing"
       link: "records/agent-008-phase-skill-set.md"
       sub_decisions:
         - id: agent-008-1-discussion-skill
-          title: 議論フェーズの調査と記録ドラフト作成用に専用 discussion skill を提供する
-          reason: 議論作業を、ゲート所有権をメインエージェントから移さずに再利用可能な手順として扱うため。
+          decision: 議論フェーズの調査と記録ドラフト作成用に専用 discussion skill を提供する. 議論作業を、ゲート所有権をメインエージェントから移さずに再利用可能な手順として扱うため。
           status: "⚠️Implementing"
         - id: agent-008-2-discussion-validation-skill
-          title: 決定昇格前の方向性確認用に専用 discussion-validation skill を提供する
-          reason: 候補結論が有効な決定になる前に、方向妥当性を判定する手順を明示的で再利用可能な形にするため。
+          decision: 決定昇格前の方向性確認用に専用 discussion-validation skill を提供する. 候補結論が有効な決定になる前に、方向妥当性を判定する手順を明示的で再利用可能な形にするため。
           status: "⚠️Implementing"
         - id: agent-008-6-decision-promotion-skill
-          title: 承認済みの議論結果を active decision objects へ変換する専用 decision-promotion skill を提供する
-          reason: promotion は validation 通過後に決定オブジェクト、契約、status、link を一貫して更新する独立した operational step であるため。
+          decision: 承認済みの議論結果を active decision objects へ変換する専用 decision-promotion skill を提供する. promotion は validation 通過後に決定オブジェクト、契約、status、link を一貫して更新する独立した operational step であるため。
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-3-implementation-skill
-          title: target shape の設計と validation-friendly な組み込み用に専用 implementation skill を提供する
-          reason: 実装作業は、有効な決定集合から意図する結果を導出し、メインエージェントの統治下で妥当な順序で組み込まれるべきため。
+          decision: target shape の設計と validation-friendly な組み込み用に専用 implementation skill を提供する. 実装作業は、有効な決定集合から意図する結果を導出し、メインエージェントの統治下で妥当な順序で組み込まれるべきため。
           status: "⚠️Implementing"
         - id: agent-008-4-implementation-validation-skill
-          title: クローズ前の成果物確認用に専用 implementation-validation skill を提供する
-          reason: テスト、コード、関連成果物が昇格済み決定と一致することを確認するクローズ前検証を、明示的な再利用手順として扱うため。
+          decision: クローズ前の成果物確認用に専用 implementation-validation skill を提供する. テスト、コード、関連成果物が昇格済み決定と一致することを確認するクローズ前検証を、明示的な再利用手順として扱うため。
           status: "⚠️Implementing"
         - id: agent-008-7-explicit-implementation-validation-checklist
-          title: implementation-validation が行う具体的な closeout checks を列挙する
-          reason: closeout 時点で何を検証するかを明示しないと、成果物整合、用語整合、decision hygiene、blocker 報告が推測任せになり抜け漏れや解釈ぶれが起きるため。
+          decision: implementation-validation が行う具体的な closeout checks を列挙する. closeout 時点で何を検証するかを明示しないと、成果物整合、用語整合、decision hygiene、blocker 報告が推測任せになり抜け漏れや解釈ぶれが起きるため。
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-8-decision-scoped-target-shape-implementation
-          title: 実装スコープは promoted decisions が定め、implementation は target shape と integration order を扱う
-          reason: DOD では実装 scope は promoted decisions から決まるため、implementation skill は self-defined な最小スコープ探索ではなく、意図する shape の設計と安全な組み込みに集中するべきため。
+          decision: 実装スコープは promoted decisions が定め、implementation は target shape と integration order を扱う. DOD では実装 scope は promoted decisions から決まるため、implementation skill は self-defined な最小スコープ探索ではなく、意図する shape の設計と安全な組み込みに集中するべきため。
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-008-5-broad-then-focus-discussion
-          title: 議論は bounded broad scan から始め、その後に焦点領域へ絞り込む
-          reason: 議論作業では、まず影響ドメインと考慮漏れリスクを浮かび上がらせる必要があり、早すぎる絞り込みは実装フェーズ向けの局所性を持ち込み有効拘束条件の見落としを招くため。
+          decision: 議論は bounded broad scan から始め、その後に焦点領域へ絞り込む. 議論作業では、まず影響ドメインと考慮漏れリスクを浮かび上がらせる必要があり、早すぎる絞り込みは実装フェーズ向けの局所性を持ち込み有効拘束条件の見落としを招くため。
           status: "⚠️Implementing"
           link: "records/agent-008-phase-skill-set.md"
 
   インストーラー:
     - id: agent-002-installer-delivery
-      title: DODエージェントパッケージ用のリポジトリインストーラーを提供する
-      reason: インストーラー提供の決定を置き、その下の現在有効なサブ決定もこの一覧に明示する。
+      decision: DODエージェントパッケージ用のリポジトリインストーラーを提供する. インストーラー提供の決定を置き、その下の現在有効なサブ決定もこの一覧に明示する。
       status: "✅️Implementation Approved"
       link: "records/agent-002-installer-delivery.md"
       sub_decisions:
         - id: agent-002-1-installer-template-assets
-          title: インストーラー入力としてテンプレートファイルを使用する
-          reason: ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
+          decision: インストーラー入力としてテンプレートファイルを使用する. ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
           status: "✅️Implementation Approved"
         - id: agent-002-2-installer-target-scope
-          title: インストーラーCLIの対応ターゲット集合を copilot と cursor に限定して明示する
-          reason: 第2の対応ターゲットが必要になった一方で、ロールアウトと検証を予測可能に保つため、現在有効な対象集合は小さく明示したままにする必要があるため。
+          decision: インストーラーCLIの対応ターゲット集合を copilot と cursor に限定して明示する. 第2の対応ターゲットが必要になった一方で、ロールアウトと検証を予測可能に保つため、現在有効な対象集合は小さく明示したままにする必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-002-3-idempotent-reruns
-          title: インストーラーは繰り返し実行しても安全にする
-          reason: 再実行時に設定の重複や既存成果物の破損を起こしてはならないため。
+          decision: インストーラーは繰り返し実行しても安全にする. 再実行時に設定の重複や既存成果物の破損を起こしてはならないため。
           status: "✅️Implementation Approved"
         - id: agent-002-4-workspace-scope-only
-          title: インストーラーの書き込み先を意図したワークスペースカスタマイズパスに限定する
-          reason: ユーザー全体やシステム全体の場所ではなく、宣言したワークスペース範囲のみに留める必要があるため。
+          decision: インストーラーの書き込み先を意図したワークスペースカスタマイズパスに限定する. ユーザー全体やシステム全体の場所ではなく、宣言したワークスペース範囲のみに留める必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-002-5-explicit-cli-target-validation
-          title: 明示的なCLIターゲット指定を必須にし、未対応ターゲットを拒否する
-          reason: インストーラーの挙動を予測可能に保ち、未対応モードの黙認を防ぐため。
+          decision: 明示的なCLIターゲット指定を必須にし、未対応ターゲットを拒否する. インストーラーの挙動を予測可能に保ち、未対応モードの黙認を防ぐため。
           status: "✅️Implementation Approved"
         - id: agent-002-6-fail-fast-and-validation-guidance
-          title: 明示的なエラーで早期失敗し、インストール後の確認手順を出力する
-          reason: 異常時は明確に停止し、成功後の検証方法も案内する必要があるため。
+          decision: 明示的なエラーで早期失敗し、インストール後の確認手順を出力する. 異常時は明確に停止し、成功後の検証方法も案内する必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-002-7-supported-target-names
-          title: 対応するインストーラーCLIターゲット値として `copilot` と `cursor` を使用する
-          reason: 両ランタイムで呼び出し方法と検証方法がドリフトしないよう、安定した明示ターゲット名を固定する必要があるため。
+          decision: 対応するインストーラーCLIターゲット値として `copilot` と `cursor` を使用する. 両ランタイムで呼び出し方法と検証方法がドリフトしないよう、安定した明示ターゲット名を固定する必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-002-8-existing-file-overwrite-policy
-          title: 既存ファイルは既定で維持し、バックアップなしで上書き前に確認する
-          reason: 既存のワークスペースファイルをサイレントに置き換えず、余分なバックアップ成果物も増やさないようにするため。
+          decision: 既存ファイルは既定で維持し、バックアップなしで上書き前に確認する. 既存のワークスペースファイルをサイレントに置き換えず、余分なバックアップ成果物も増やさないようにするため。
           status: "✅️Implementation Approved"
         - id: agent-002-9-initial-copilot-template-manifest
-          title: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する
-          reason: 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
+          decision: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する. 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
           status: "✅️Implementation Approved"
         - id: agent-002-10-decisions-yml-never-overwrite
-          title: --force 指定時を含め、既存の DECISIONS.yml は絶対に上書きしない
-          reason: DECISIONS.yml にはプロジェクト固有の決定記録が含まれており、上書きすると永久に失われるため、インストーラーは常に保護しなければならない。
+          decision: --force 指定時を含め、既存の DECISIONS.yml は絶対に上書きしない. DECISIONS.yml にはプロジェクト固有の決定記録が含まれており、上書きすると永久に失われるため、インストーラーは常に保護しなければならない。
           status: "✅️Implementation Approved"
         - id: agent-002-11-no-template-fallback-copy
-          title: DECISIONS.yml が既に存在する場合に DECISIONS.template.yml のような別名コピーを残さない
-          reason: 別名コピーはファイルシステムの余分なノイズになるだけで実質的な価値がなく、元のテンプレートはソースリポジトリから常に参照可能なため。
+          decision: DECISIONS.yml が既に存在する場合に DECISIONS.template.yml のような別名コピーを残さない. 別名コピーはファイルシステムの余分なノイズになるだけで実質的な価値がなく、元のテンプレートはソースリポジトリから常に参照可能なため。
           status: "✅️Implementation Approved"
         - id: agent-002-12-discussion-record-template-install
-          title: インストーラー管理のテンプレート資産に templates/discussion-record.md を含める
-          reason: 新しい決定記録は一貫したテンプレートから開始されるべきであり、インストーラーが他のテンプレートと同様にこの資産を配布する必要があるため。
+          decision: インストーラー管理のテンプレート資産に templates/discussion-record.md を含める. 新しい決定記録は一貫したテンプレートから開始されるべきであり、インストーラーが他のテンプレートと同様にこの資産を配布する必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-002-13-copilot-skill-template-install
-          title: Copilot 向けインストーラーマニフェストに 5 つの shipped skill templates を含める
-          reason: Copilot インストーラーは、agent や discussion-record assets と一緒に再利用可能な DOD skills も配布し、導入後の workflow を一式揃える必要があるため。
+          decision: Copilot 向けインストーラーマニフェストに 5 つの shipped skill templates を含める. Copilot インストーラーは、agent や discussion-record assets と一緒に再利用可能な DOD skills も配布し、導入後の workflow を一式揃える必要があるため。
           status: "✅️Implementation Approved"
           link: "records/agent-002-installer-delivery.md"
         - id: agent-002-14-initial-cursor-template-manifest
-          title: Cursor 向けの初期ワークスペースパスへ共有 DOD sources から render した Cursor rule outputs と共有 DOD assets を配置する
-          reason: Cursor 対応では明示マニフェストが必要な点は変わらないが、重複 source files を保存する代わりに、共有 DOD sources に Cursor 固有の rule wrapper を適用して runtime files を生成するほうが保守容易なため。
+          decision: Cursor 向けの初期ワークスペースパスへ共有 DOD sources から render した Cursor rule outputs と共有 DOD assets を配置する. Cursor 対応では明示マニフェストが必要な点は変わらないが、重複 source files を保存する代わりに、共有 DOD sources に Cursor 固有の rule wrapper を適用して runtime files を生成するほうが保守容易なため。
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
 
     - id: agent-003-raw-github-install
-      title: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する
-      reason: GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
+      decision: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する. GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
       status: "✅️Implementation Approved"
       link: "records/agent-003-raw-github-install.md"
       sub_decisions:
         - id: agent-003-1-curl-fssl-command
-          title: install.sh のワンライナーは curl -fsSL を使用する
-          reason: HTTPエラーで失敗しつつ、シェル導入時に静かで診断可能な挙動を保つ必要があるため。
+          decision: install.sh のワンライナーは curl -fsSL を使用する. HTTPエラーで失敗しつつ、シェル導入時に静かで診断可能な挙動を保つ必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-003-2-stable-ref-guidance
-          title: インストールURLは安定した ref を既定とし、再現性のためにコミット固定を許可する
-          reason: 安定した既定値を持たせつつ、必要時には決定的な導入も選べるようにするため。
+          decision: インストールURLは安定した ref を既定とし、再現性のためにコミット固定を許可する. 安定した既定値を持たせつつ、必要時には決定的な導入も選べるようにするため。
           status: "✅️Implementation Approved"
 
   テンプレート:
     - id: agent-004-installer-template-details
-      title: インストーラーテンプレートファイルの構成と出力マッピングを定義する
-      reason: テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
+      decision: インストーラーテンプレートファイルの構成と出力マッピングを定義する. テンプレート利用自体は有効だが、テンプレート構成と出力先対応は実装前に独立決定として明示する必要がある。
       status: "✅️Implementation Approved"
       link: "records/agent-004-installer-template-details.md"
       sub_decisions:
         - id: agent-004-1-template-path
-          title: 初期テンプレートは templates/agent.md に置く
-          reason: トップレベルの配置は当面シンプルで、将来拡張の余地も残せるため。
+          decision: 初期テンプレートは templates/agent.md に置く. トップレベルの配置は当面シンプルで、将来拡張の余地も残せるため。
           status: "✅️Implementation Approved"
         - id: agent-004-2-copy-manifest
-          title: インストーラー内にコピー対象リストを保持する
-          reason: 1ファイル構成でも将来拡張に備えて、明示的な対応表を持つ必要があるため。
+          decision: インストーラー内にコピー対象リストを保持する. 1ファイル構成でも将来拡張に備えて、明示的な対応表を持つ必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-004-3-source-destination-rule
-          title: コピー元は raw.githubusercontent.com、コピー先はカレントディレクトリ相対パスとする
-          reason: インストーラー実行時の入出力解決を明示的かつ一貫して扱うため。
+          decision: コピー元は raw.githubusercontent.com、コピー先はカレントディレクトリ相対パスとする. インストーラー実行時の入出力解決を明示的かつ一貫して扱うため。
           status: "✅️Implementation Approved"
         - id: agent-004-4-separate-template-sources-and-outputs
-          title: テンプレートのソースファイルとインストール先の出力ファイルを分離する
-          reason: ファイル対応を安定かつ理解可能に保つには、テンプレート資産と出力結果を混在させてはならないため。
+          decision: テンプレートのソースファイルとインストール先の出力ファイルを分離する. ファイル対応を安定かつ理解可能に保つには、テンプレート資産と出力結果を混在させてはならないため。
           status: "✅️Implementation Approved"
         - id: agent-004-5-discussion-record-template-destination
-          title: discussion-record テンプレートを .dodkit/templates/discussion-record.md にインストールする
-          reason: DODKit 専用の隠しディレクトリでワークスペース直下のノイズを抑えつつ、将来のテンプレート拡張でも安定したツール中立の配置先を確保できるため。
+          decision: discussion-record テンプレートを .dodkit/templates/discussion-record.md にインストールする. DODKit 専用の隠しディレクトリでワークスペース直下のノイズを抑えつつ、将来のテンプレート拡張でも安定したツール中立の配置先を確保できるため。
           status: "✅️Implementation Approved"
         - id: agent-004-6-skill-template-source-layout
-          title: 配布する skill のソーステンプレートは templates/skills 配下に skill ごとの .skill.md として保存する
-          reason: 専用のソースディレクトリにより、再利用する skill 内容をインストール先の検出パスから分離しつつ、5-skill パッケージをリポジトリ内でレビューしやすく翻訳もしやすくするため。
+          decision: 配布する skill のソーステンプレートは templates/skills 配下に skill ごとの .skill.md として保存する. 専用のソースディレクトリにより、再利用する skill 内容をインストール先の検出パスから分離しつつ、5-skill パッケージをリポジトリ内でレビューしやすく翻訳もしやすくするため。
           status: "✅️Implementation Approved"
           link: "records/agent-008-phase-skill-set.md"
         - id: agent-004-7-copilot-skill-template-destinations
-          title: templates/skills/*.skill.md の各 source は Copilot 向けに .github/skills/<name>/SKILL.md へ配置する
-          reason: Copilot の skill discovery には決定的な runtime path が必要であり、installer は repository skill templates を source/output 混在なしでその path へ写像する必要があるため。
+          decision: templates/skills/*.skill.md の各 source は Copilot 向けに .github/skills/<name>/SKILL.md へ配置する. Copilot の skill discovery には決定的な runtime path が必要であり、installer は repository skill templates を source/output 混在なしでその path へ写像する必要があるため。
           status: "✅️Implementation Approved"
           link: "records/agent-004-installer-template-details.md"
         - id: agent-004-8-cursor-rule-template-source-layout
-          title: Cursor rule rendering の共有ソース集合として templates/agent.md と templates/skills/*.skill.md を再利用する
-          reason: rule body content は Copilot と共有できるため、Cursor 専用 source files を持つと、ほぼ同一内容の重複と保守ドリフトを招くため。
+          decision: Cursor rule rendering の共有ソース集合として templates/agent.md と templates/skills/*.skill.md を再利用する. rule body content は Copilot と共有できるため、Cursor 専用 source files を持つと、ほぼ同一内容の重複と保守ドリフトを招くため。
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
         - id: agent-004-9-cursor-rule-template-destinations
-          title: 共有 DOD sources を Cursor 向けに .cursor/rules/<name>.mdc outputs へ render する
-          reason: Cursor の project rules は引き続き決定的なワークスペースパスから検出されるが、runtime files は重複ソースの直接コピーではなく render 結果にするべきため。
+          decision: 共有 DOD sources を Cursor 向けに .cursor/rules/<name>.mdc outputs へ render する. Cursor の project rules は引き続き決定的なワークスペースパスから検出されるが、runtime files は重複ソースの直接コピーではなく render 結果にするべきため。
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
         - id: agent-004-10-cursor-manual-rule-frontmatter
-          title: Cursor 向け DOD rule wrapper は常時適用ではなく opt-in の manual project rules として render する
-          reason: manual rules の方が既存の明示的な entry workflow に近く、無関係な chat session 全体まで既定で拘束しないため、installer は共有本文の外側にその frontmatter を合成する必要があるため。
+          decision: Cursor 向け DOD rule wrapper は常時適用ではなく opt-in の manual project rules として render する. manual rules の方が既存の明示的な entry workflow に近く、無関係な chat session 全体まで既定で拘束しないため、installer は共有本文の外側にその frontmatter を合成する必要があるため。
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
 
     - id: agent-005-lightweight-template-roles
-      title: 独立した決定フェーズを増やさずに軽量なテンプレート役割を定義する
-      reason: DOD は軽量性を保つ必要があり、現在のAI摩擦はフェーズ不足ではなく成果物の役割重複から生じているため。
+      decision: 独立した決定フェーズを増やさずに軽量なテンプレート役割を定義する. DOD は軽量性を保つ必要があり、現在のAI摩擦はフェーズ不足ではなく成果物の役割重複から生じているため。
       status: "✅️Implementation Approved"
       link: "records/agent-005-lightweight-template-roles.md"
       sub_decisions:
         - id: agent-005-1-two-phase-dod
-          title: 決定の文書化は第3フェーズを作らず議論フェーズ内で完了させる
-          reason: 議論フェーズは決定が明示されるまで終わらないため、独立した決定フェーズを増やしても実務上の価値は小さい。
+          decision: 決定の文書化は第3フェーズを作らず議論フェーズ内で完了させる. 議論フェーズは決定が明示されるまで終わらないため、独立した決定フェーズを増やしても実務上の価値は小さい。
           status: "✅️Implementation Approved"
         - id: agent-005-2-decisions-template-scanability
-          title: DECISIONS.yml テンプレートは人間の一覧性を優先して軽く保つ
-          reason: 正本の決定一覧は素早く走査できる必要があるため、既定の決定形は最小限に保つ。
+          decision: DECISIONS.yml テンプレートは人間の一覧性を優先して軽く保つ. 正本の決定一覧は素早く走査できる必要があるため、既定の決定形は最小限に保つ。
           status: "✅️Implementation Approved"
         - id: agent-005-3-contract-details-as-needed
-          title: 契約詳細は必要な分だけ追加のサブ決定として表現する
-          reason: 決定契約は明示すべきだが、すべてのノードに同じ契約フィールドを強制すると一覧性が落ち、重複作業も増えるため。
+          decision: 契約詳細は必要な分だけ追加のサブ決定として表現する. 決定契約は明示すべきだが、すべてのノードに同じ契約フィールドを強制すると一覧性が落ち、重複作業も増えるため。
           status: "✅️Implementation Approved"
         - id: agent-005-4-discussion-record-minimal-structure
-          title: discussion-record テンプレートは履歴に絞って軽量に保つ
-          reason: 記録テンプレートは最小限の議論履歴だけを必須にし、DECISIONS.yml 上の現在拘束条件を重複させないようにする必要があるため。
+          decision: discussion-record テンプレートは履歴に絞って軽量に保つ. 記録テンプレートは最小限の議論履歴だけを必須にし、DECISIONS.yml 上の現在拘束条件を重複させないようにする必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-005-5-optional-record-detail
-          title: discussion-record の根拠と詳細な昇格メタデータは任意にする
-          reason: 補助情報を任意にすることで、小さな議論でも使いやすさを保ちつつ、必要時の深い記録余地も確保できるため。
+          decision: discussion-record の根拠と詳細な昇格メタデータは任意にする. 補助情報を任意にすることで、小さな議論でも使いやすさを保ちつつ、必要時の深い記録余地も確保できるため。
+          status: "✅️Implementation Approved"
+
+    - id: agent-010-decision-single-field
+      decision: DECISIONS.yml の説明フィールド分割を廃止し、decision 単一フィールドへ統一する. 単一フィールドにすることで、AI 更新時のラベルと拘束内容の乖離を減らし、現在有効な拘束内容を一体で保持できるため。
+      status: "✅️Implementation Approved"
+      link: "records/agent-010-decision-single-field.md"
+      sub_decisions:
+        - id: agent-010-1-decision-single-field-length
+          decision: 各 decision は簡潔さを保ちつつ、拘束内容の明確化が必要な場合のみ 3 行程度まで記述を許可する. これにより、一覧性を維持しながら意味を複数フィールドに分断せずに済む。
           status: "✅️Implementation Approved"
 
   DODプロセス:
     - id: agent-007-phase-verification-model
-      title: DOD を 2 フェーズのまま保ちつつ、フェーズ別の検証を明示する
-      reason: DOD には決定昇格前の方向性検証と、クローズ前の実装検証が必要だが、独立した検証フェーズを追加すると価値に対して手順が重くなりすぎるため。
+      decision: DOD を 2 フェーズのまま保ちつつ、フェーズ別の検証を明示する. DOD には決定昇格前の方向性検証と、クローズ前の実装検証が必要だが、独立した検証フェーズを追加すると価値に対して手順が重くなりすぎるため。
       status: "✅️Implementation Approved"
       link: "records/agent-007-phase-verification-model.md"
       sub_decisions:
         - id: agent-007-1-no-third-phase
-          title: 検証は第3フェーズにせず、既存の2フェーズ内で扱う
-          reason: 議論と実装ですでに必要なライフサイクル境界は揃っており、独立した検証フェーズは多くの場合、作業の重複と摩擦増加になるため。
+          decision: 検証は第3フェーズにせず、既存の2フェーズ内で扱う. 議論と実装ですでに必要なライフサイクル境界は揃っており、独立した検証フェーズは多くの場合、作業の重複と摩擦増加になるため。
           status: "✅️Implementation Approved"
         - id: agent-007-2-discussion-validation-before-promotion
-          title: 候補結論を DECISIONS.yml に昇格する前に軽量な議論検証を必須にする
-          reason: 決定自体が当初の目的に対して方向を外していれば、実装が正しくても全体として誤るため、拘束力を持たせる前に方向性を確認する必要がある。
+          decision: 候補結論を DECISIONS.yml に昇格する前に軽量な議論検証を必須にする. 決定自体が当初の目的に対して方向を外していれば、実装が正しくても全体として誤るため、拘束力を持たせる前に方向性を確認する必要がある。
           status: "✅️Implementation Approved"
         - id: agent-007-3-implementation-validation-before-closeout
-          title: 実装作業を閉じる前に有効な決定に対する実装検証を必須にする
-          reason: テスト、コード、関連成果物が昇格済み決定に照らして検証されない限り、決定は助言に留まりやすいため。
+          decision: 実装作業を閉じる前に有効な決定に対する実装検証を必須にする. テスト、コード、関連成果物が昇格済み決定に照らして検証されない限り、決定は助言に留まりやすいため。
           status: "✅️Implementation Approved"
