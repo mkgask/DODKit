@@ -111,3 +111,10 @@ Both returned HTTP 200 in validation. For deterministic installation, a commit-p
 ## Implementation Update (2026-05-22)
 - Implemented the Copilot skill destination mapping in `install.sh` and validated it with `bash tests/install.test.sh`.
 - The installer manifest now provisions all five shipped skill templates into `.github/skills/<name>/SKILL.md`.
+
+### Entry 0007 (2026-07-15)
+- Why now: The installer manifest was changed so each copy source and destination can be reviewed as one specification instead of being coupled by parallel-array indexes.
+- Findings / trade-offs: `install.sh` now stores target-specific `source|destination|asset_name` specifications in `COPILOT_ASSET_SPECS` and `CURSOR_ASSET_SPECS`. The installer validates all three fields before dispatching to direct-copy or Cursor rendering, while source URL resolution, destination scope, and runtime outputs remain unchanged. The delimiter format requires manifest fields to stay free of `|`, which is satisfied by the current paths and labels.
+- Current conclusion: Discussion-validation confirms that paired asset specifications satisfy the existing deterministic mapping and source/output separation constraints. The implementation and focused tests preserve the supported `copilot` and `cursor` behavior while removing the parallel-array correspondence risk.
+- Promotion to DECISIONS.yml: promoted -> agent-004-2-copy-manifest
+- Evidence / references (optional): `install.sh`; `tests/install.test.sh`; `bash tests/install.test.sh`

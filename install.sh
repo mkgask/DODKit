@@ -8,59 +8,26 @@ FORCE_OVERWRITE=0
 SOURCE_REPOSITORY="mkgask/DODKit"
 SOURCE_REF="main"
 
-COPILOT_SOURCES=(
-  "templates/agent.md"
-  "templates/DECISIONS.yml"
-  "templates/discussion-record.md"
-  "templates/skills/discussion.skill.md"
-  "templates/skills/discussion-validation.skill.md"
-  "templates/skills/decision-promotion.skill.md"
-  "templates/skills/implementation.skill.md"
-  "templates/skills/implementation-validation.skill.md"
+COPILOT_ASSET_SPECS=(
+  "templates/agent.md|.github/agents/dod.agent.md|DOD agent"
+  "templates/DECISIONS.yml|DECISIONS.yml|DOD decisions"
+  "templates/discussion-record.md|.dodkit/templates/discussion-record.md|DOD discussion record template"
+  "templates/skills/discussion.skill.md|.github/skills/discussion/SKILL.md|DOD discussion skill"
+  "templates/skills/discussion-validation.skill.md|.github/skills/discussion-validation/SKILL.md|DOD discussion validation skill"
+  "templates/skills/decision-promotion.skill.md|.github/skills/decision-promotion/SKILL.md|DOD decision promotion skill"
+  "templates/skills/implementation.skill.md|.github/skills/implementation/SKILL.md|DOD implementation skill"
+  "templates/skills/implementation-validation.skill.md|.github/skills/implementation-validation/SKILL.md|DOD implementation validation skill"
 )
 
-COPILOT_DESTINATIONS=(
-  ".github/agents/dod.agent.md"
-  "DECISIONS.yml"
-  ".dodkit/templates/discussion-record.md"
-  ".github/skills/discussion/SKILL.md"
-  ".github/skills/discussion-validation/SKILL.md"
-  ".github/skills/decision-promotion/SKILL.md"
-  ".github/skills/implementation/SKILL.md"
-  ".github/skills/implementation-validation/SKILL.md"
-)
-
-CURSOR_SOURCES=(
-  "templates/agent.md"
-  "templates/DECISIONS.yml"
-  "templates/discussion-record.md"
-  "templates/skills/discussion.skill.md"
-  "templates/skills/discussion-validation.skill.md"
-  "templates/skills/decision-promotion.skill.md"
-  "templates/skills/implementation.skill.md"
-  "templates/skills/implementation-validation.skill.md"
-)
-
-CURSOR_DESTINATIONS=(
-  ".cursor/rules/dod-implementation-agent.mdc"
-  "DECISIONS.yml"
-  ".dodkit/templates/discussion-record.md"
-  ".cursor/rules/discussion.mdc"
-  ".cursor/rules/discussion-validation.mdc"
-  ".cursor/rules/decision-promotion.mdc"
-  ".cursor/rules/implementation.mdc"
-  ".cursor/rules/implementation-validation.mdc"
-)
-
-CURSOR_RULE_DESCRIPTIONS=(
-  "DOD main controller instructions for manual use in Cursor."
-  ""
-  ""
-  "DOD Gate A step 1 discussion procedure for manual use in Cursor."
-  "DOD Gate A step 2 discussion-validation procedure for manual use in Cursor."
-  "DOD Gate A step 3 decision-promotion procedure for manual use in Cursor."
-  "DOD Gate B implementation procedure for manual use in Cursor."
-  "DOD Gate B and Gate C implementation-validation procedure for manual use in Cursor."
+CURSOR_ASSET_SPECS=(
+  "templates/agent.md|.cursor/rules/dod-implementation-agent.mdc|DOD main controller instructions for manual use in Cursor."
+  "templates/DECISIONS.yml|DECISIONS.yml|DOD decisions"
+  "templates/discussion-record.md|.dodkit/templates/discussion-record.md|DOD discussion record template"
+  "templates/skills/discussion.skill.md|.cursor/rules/discussion.mdc|DOD Gate A step 1 discussion procedure for manual use in Cursor."
+  "templates/skills/discussion-validation.skill.md|.cursor/rules/discussion-validation.mdc|DOD Gate A step 2 discussion-validation procedure for manual use in Cursor."
+  "templates/skills/decision-promotion.skill.md|.cursor/rules/decision-promotion.mdc|DOD Gate A step 3 decision-promotion procedure for manual use in Cursor."
+  "templates/skills/implementation.skill.md|.cursor/rules/implementation.mdc|DOD Gate B implementation procedure for manual use in Cursor."
+  "templates/skills/implementation-validation.skill.md|.cursor/rules/implementation-validation.mdc|DOD Gate B and Gate C implementation-validation procedure for manual use in Cursor."
 )
 
 # Files that must never be overwritten, even with --force.
@@ -249,12 +216,13 @@ create_parent_directory() {
 copy_asset() {
   local source_path="$1"
   local destination_path="$2"
+  local asset_name="${3:-$destination_path}"
   local temporary_file=""
   temporary_file="$(mktemp)"
 
   if ! download_asset_to_file "$source_path" "$temporary_file"; then
     rm -f "$temporary_file"
-    die "Failed to download source asset: $source_path"
+    die "Failed to download source asset '$asset_name': $source_path"
   fi
 
   install_staged_asset "$temporary_file" "$destination_path"
@@ -418,43 +386,40 @@ VALIDATION
 }
 
 run_install_for_target() {
-  local index=0
   local installed_count=0
   local skipped_count=0
   local unchanged_count=0
   local install_status=0
+  local asset_spec=""
+  local asset_specs=()
   local source_path=""
   local destination_path=""
-  local source_paths=()
-  local destination_paths=()
-  local cursor_rule_descriptions=()
-  local current_rule_description=""
+  local asset_name=""
 
   case "$TARGET_CLI" in
     copilot)
-      source_paths=("${COPILOT_SOURCES[@]}")
-      destination_paths=("${COPILOT_DESTINATIONS[@]}")
+      asset_specs=("${COPILOT_ASSET_SPECS[@]}")
       ;;
     cursor)
-      source_paths=("${CURSOR_SOURCES[@]}")
-      destination_paths=("${CURSOR_DESTINATIONS[@]}")
-      cursor_rule_descriptions=("${CURSOR_RULE_DESCRIPTIONS[@]}")
+      asset_specs=("${CURSOR_ASSET_SPECS[@]}")
       ;;
   esac
 
-  for index in "${!source_paths[@]}"; do
-    source_path="${source_paths[$index]}"
-    destination_path="${destination_paths[$index]}"
-    current_rule_description="${cursor_rule_descriptions[$index]:-}"
+  for asset_spec in "${asset_specs[@]}"; do
+    IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+    if [[ -z "$source_path" ]] || [[ -z "$destination_path" ]] || [[ -z "$asset_name" ]]; then
+      die "Invalid asset spec: $asset_spec"
+    fi
 
     if [[ "$TARGET_CLI" == "cursor" ]] && [[ "$destination_path" == *.mdc ]]; then
-      if render_cursor_rule_asset "$source_path" "$destination_path" "$current_rule_description"; then
+      if render_cursor_rule_asset "$source_path" "$destination_path" "$asset_name"; then
         install_status=0
       else
         install_status="$?"
       fi
     else
-      if copy_asset "$source_path" "$destination_path"; then
+      if copy_asset "$source_path" "$destination_path" "$asset_name"; then
         install_status=0
       else
         install_status="$?"

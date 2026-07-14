@@ -152,7 +152,7 @@ decisions:
           decision: Store the initial template at templates/agent.md. A top-level template path is simple now and still leaves room for future expansion.
           status: "✅️Implementation Approved"
         - id: agent-004-2-copy-manifest
-          decision: Keep the installer copy-target list inside the installer. The installer needs an explicit mapping list even with only one file so future expansion stays deterministic.
+          decision: Keep the installer copy-target list inside the installer as explicit per-target asset specifications. Each specification must keep source path, destination path, and asset name together in source|destination|asset_name form so the mapping can be reviewed as one unit instead of being inferred through parallel-array indexes.
           status: "✅️Implementation Approved"
         - id: agent-004-3-source-destination-rule
           decision: Use raw.githubusercontent.com as source and current-directory-relative paths as destination. Source and destination resolution must stay explicit and consistent for installer execution.

@@ -231,20 +231,44 @@ FAKECURL
   assert_file_content "$protected_file" "protected-content" "copy_asset should not overwrite through symlink paths"
 }
 
+assert_asset_specs_are_well_formed() {
+  local target_name="$1"
+  shift
+
+  local asset_spec=""
+  local source_path=""
+  local destination_path=""
+  local asset_name=""
+
+  for asset_spec in "$@"; do
+    IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+    if [[ -z "$source_path" ]] || [[ -z "$destination_path" ]] || [[ -z "$asset_name" ]]; then
+      printf '[FAIL] %s asset spec should contain source, destination, and asset name: %s\n' "$target_name" "$asset_spec" >&2
+      exit 1
+    fi
+  done
+}
+
+test_asset_specs_are_well_formed() {
+  assert_asset_specs_are_well_formed "copilot" "${COPILOT_ASSET_SPECS[@]}"
+  assert_asset_specs_are_well_formed "cursor" "${CURSOR_ASSET_SPECS[@]}"
+}
+
 test_copilot_manifest_includes_discussion_record_template() {
-  local sources_count="${#COPILOT_SOURCES[@]}"
-  local destinations_count="${#COPILOT_DESTINATIONS[@]}"
-
-  assert_eq "$sources_count" "$destinations_count" "copilot manifest source/destination counts should match"
-
   local found_source=0
   local found_destination=0
-  local index=0
+  local asset_spec=""
+  local source_path=""
+  local destination_path=""
+  local asset_name=""
 
-  for index in "${!COPILOT_SOURCES[@]}"; do
-    if [[ "${COPILOT_SOURCES[$index]}" == "templates/discussion-record.md" ]]; then
+  for asset_spec in "${COPILOT_ASSET_SPECS[@]}"; do
+    IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+    if [[ "$source_path" == "templates/discussion-record.md" ]]; then
       found_source=1
-      if [[ "${COPILOT_DESTINATIONS[$index]}" == ".dodkit/templates/discussion-record.md" ]]; then
+      if [[ "$destination_path" == ".dodkit/templates/discussion-record.md" ]]; then
         found_destination=1
       fi
     fi
@@ -255,11 +279,6 @@ test_copilot_manifest_includes_discussion_record_template() {
 }
 
 test_copilot_manifest_includes_skill_templates() {
-  local sources_count="${#COPILOT_SOURCES[@]}"
-  local destinations_count="${#COPILOT_DESTINATIONS[@]}"
-
-  assert_eq "$sources_count" "$destinations_count" "copilot manifest source/destination counts should match"
-
   local expected_sources=(
     "templates/skills/discussion.skill.md"
     "templates/skills/discussion-validation.skill.md"
@@ -277,13 +296,18 @@ test_copilot_manifest_includes_skill_templates() {
   )
 
   local index=0
-  local manifest_index=0
+  local asset_spec=""
+  local source_path=""
+  local destination_path=""
+  local asset_name=""
   local found_match=0
 
   for index in "${!expected_sources[@]}"; do
     found_match=0
-    for manifest_index in "${!COPILOT_SOURCES[@]}"; do
-      if [[ "${COPILOT_SOURCES[$manifest_index]}" == "${expected_sources[$index]}" ]] && [[ "${COPILOT_DESTINATIONS[$manifest_index]}" == "${expected_destinations[$index]}" ]]; then
+    for asset_spec in "${COPILOT_ASSET_SPECS[@]}"; do
+      IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+      if [[ "$source_path" == "${expected_sources[$index]}" ]] && [[ "$destination_path" == "${expected_destinations[$index]}" ]]; then
         found_match=1
         break
       fi
@@ -294,19 +318,19 @@ test_copilot_manifest_includes_skill_templates() {
 }
 
 test_cursor_manifest_includes_discussion_record_template() {
-  local sources_count="${#CURSOR_SOURCES[@]}"
-  local destinations_count="${#CURSOR_DESTINATIONS[@]}"
-
-  assert_eq "$sources_count" "$destinations_count" "cursor manifest source/destination counts should match"
-
   local found_source=0
   local found_destination=0
-  local index=0
+  local asset_spec=""
+  local source_path=""
+  local destination_path=""
+  local asset_name=""
 
-  for index in "${!CURSOR_SOURCES[@]}"; do
-    if [[ "${CURSOR_SOURCES[$index]}" == "templates/discussion-record.md" ]]; then
+  for asset_spec in "${CURSOR_ASSET_SPECS[@]}"; do
+    IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+    if [[ "$source_path" == "templates/discussion-record.md" ]]; then
       found_source=1
-      if [[ "${CURSOR_DESTINATIONS[$index]}" == ".dodkit/templates/discussion-record.md" ]]; then
+      if [[ "$destination_path" == ".dodkit/templates/discussion-record.md" ]]; then
         found_destination=1
       fi
     fi
@@ -317,11 +341,6 @@ test_cursor_manifest_includes_discussion_record_template() {
 }
 
 test_cursor_manifest_includes_rule_templates() {
-  local sources_count="${#CURSOR_SOURCES[@]}"
-  local destinations_count="${#CURSOR_DESTINATIONS[@]}"
-
-  assert_eq "$sources_count" "$destinations_count" "cursor manifest source/destination counts should match"
-
   local expected_sources=(
     "templates/agent.md"
     "templates/skills/discussion.skill.md"
@@ -341,13 +360,18 @@ test_cursor_manifest_includes_rule_templates() {
   )
 
   local index=0
-  local manifest_index=0
+  local asset_spec=""
+  local source_path=""
+  local destination_path=""
+  local asset_name=""
   local found_match=0
 
   for index in "${!expected_sources[@]}"; do
     found_match=0
-    for manifest_index in "${!CURSOR_SOURCES[@]}"; do
-      if [[ "${CURSOR_SOURCES[$manifest_index]}" == "${expected_sources[$index]}" ]] && [[ "${CURSOR_DESTINATIONS[$manifest_index]}" == "${expected_destinations[$index]}" ]]; then
+    for asset_spec in "${CURSOR_ASSET_SPECS[@]}"; do
+      IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+      if [[ "$source_path" == "${expected_sources[$index]}" ]] && [[ "$destination_path" == "${expected_destinations[$index]}" ]]; then
         found_match=1
         break
       fi
@@ -451,6 +475,7 @@ run_tests() {
   test_copy_asset_installs_and_sets_permissions
   test_copy_asset_skips_when_unchanged
   test_copy_asset_refuses_symlink_paths
+  test_asset_specs_are_well_formed
   test_copilot_manifest_includes_discussion_record_template
   test_copilot_manifest_includes_skill_templates
   test_cursor_manifest_includes_discussion_record_template

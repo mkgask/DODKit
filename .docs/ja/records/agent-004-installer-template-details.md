@@ -111,3 +111,10 @@
 ## 実装更新（2026-05-22）
 - `install.sh` に Copilot skill destination mapping を実装し、`bash tests/install.test.sh` で検証しました。
 - インストーラーマニフェストは、5 つの shipped skill templates を `.github/skills/<name>/SKILL.md` へ配備するようになりました。
+
+### Entry 0007（2026-07-15）
+- Why now: インストーラーマニフェストを変更し、並列配列の添字で結合するのではなく、コピー元とコピー先を一つの仕様として確認できるようにしたため。
+- Findings / trade-offs: `install.sh` はターゲットごとに `source|destination|asset_name` 形式の仕様を `COPILOT_ASSET_SPECS` と `CURSOR_ASSET_SPECS` に保持するようになりました。インストーラーは直接コピーまたは Cursor rendering へ分岐する前に3項目すべてを検証し、コピー元 URL の解決、コピー先のスコープ、runtime output は変更していません。区切り文字形式のため、マニフェストの各フィールドに `|` を含めない必要がありますが、現在のパスとラベルはこの条件を満たします。
+- Current conclusion: Discussion-validation により、アセット仕様の一体化が既存の決定的なマッピングと source/output 分離の制約を満たすことを確認しました。実装と focused test は対応する `copilot` / `cursor` の動作を維持しつつ、並列配列の対応ずれリスクを解消しています。
+- Promotion to DECISIONS.yml: promoted -> agent-004-2-copy-manifest
+- Evidence / references (optional): `install.sh`; `tests/install.test.sh`; `bash tests/install.test.sh`
