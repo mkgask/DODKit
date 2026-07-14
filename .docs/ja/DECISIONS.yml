@@ -89,8 +89,9 @@ decisions:
           decision: インストーラー入力としてテンプレートファイルを使用する. ソース資産と出力先を分離し、将来のCLI拡張を安全にするため。
           status: "✅️Implementation Approved"
         - id: agent-002-2-installer-target-scope
-          decision: インストーラーCLIの対応ターゲット集合を copilot と cursor に限定して明示する. 第2の対応ターゲットが必要になった一方で、ロールアウトと検証を予測可能に保つため、現在有効な対象集合は小さく明示したままにする必要があるため。
+          decision: インストーラーCLIの対応ターゲット集合を copilot、cursor、grok として限定・明示する. Grok は target-specific file を .grok 配下へ配置する workspace-local convention target とし、ロールアウトと検証を予測可能に保つため、現在有効な対象集合は小さく明示したままにする。
           status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
         - id: agent-002-3-idempotent-reruns
           decision: インストーラーは繰り返し実行しても安全にする. 再実行時に設定の重複や既存成果物の破損を起こしてはならないため。
           status: "✅️Implementation Approved"
@@ -104,8 +105,9 @@ decisions:
           decision: 明示的なエラーで早期失敗し、インストール後の確認手順を出力する. 異常時は明確に停止し、成功後の検証方法も案内する必要があるため。
           status: "✅️Implementation Approved"
         - id: agent-002-7-supported-target-names
-          decision: 対応するインストーラーCLIターゲット値として `copilot` と `cursor` を使用する. 両ランタイムで呼び出し方法と検証方法がドリフトしないよう、安定した明示ターゲット名を固定する必要があるため。
+          decision: 対応するインストーラーCLIターゲット値として `copilot`、`cursor`、`grok` を使用する. すべての supported runtime で呼び出し方法と検証方法がドリフトしないよう、安定した明示ターゲット名を固定する。
           status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
         - id: agent-002-8-existing-file-overwrite-policy
           decision: 既存ファイルは既定で維持し、バックアップなしで上書き前に確認する. 既存のワークスペースファイルをサイレントに置き換えず、余分なバックアップ成果物も増やさないようにするため。
           status: "✅️Implementation Approved"
@@ -129,6 +131,14 @@ decisions:
           decision: Cursor 向けの初期ワークスペースパスへ共有 DOD sources から render した Cursor rule outputs と共有 DOD assets を配置する. Cursor 対応では明示マニフェストが必要な点は変わらないが、重複 source files を保存する代わりに、共有 DOD sources に Cursor 固有の rule wrapper を適用して runtime files を生成するほうが保守容易なため。
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
+        - id: agent-002-15-initial-grok-template-manifest
+          decision: shared DOD agent と5つの skill source を .grok/dod.agent.md と .grok/<skill-name>.skill.md として .grok 配下へ直接配置する. DECISIONS.yml と .dodkit/templates/discussion-record.md は既存の shared workspace path に残し、Grok 専用コピーは作成しない。
+          status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
+        - id: agent-002-16-grok-discovery-boundary
+          decision: .grok は Grok の instruction をユーザーが明示的に読ませる workspace convention として扱い、公式に discovery または自動適用される Grok configuration directory とは扱わない. installer documentation でも native Grok discovery behavior を主張しない。
+          status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
 
     - id: agent-003-raw-github-install
       decision: raw.githubusercontent.com経由でinstall.sh | bashの導線を提供する. GitHub Raw配信で直接スクリプト配布が可能であり、正しいRawホストを使うことでドメイン誤りによる失敗を回避できる。
@@ -183,6 +193,10 @@ decisions:
           decision: Cursor 向け DOD rule wrapper は常時適用ではなく opt-in の manual project rules として render する. manual rules の方が既存の明示的な entry workflow に近く、無関係な chat session 全体まで既定で拘束しないため、installer は共有本文の外側にその frontmatter を合成する必要があるため。
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
+        - id: agent-004-11-grok-asset-destinations
+          decision: shared DOD agent と skill source を .grok 配下へ flat な target-specific destination として直接コピーする: .grok/dod.agent.md と .grok/<skill-name>.skill.md. Grok asset には Cursor frontmatter や別の target-specific rendering wrapper を適用しない。
+          status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
 
     - id: agent-005-lightweight-template-roles
       decision: 独立した決定フェーズを増やさずに軽量なテンプレート役割を定義する. DOD は軽量性を保つ必要があり、現在のAI摩擦はフェーズ不足ではなく成果物の役割重複から生じているため。

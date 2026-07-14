@@ -89,8 +89,9 @@ decisions:
           decision: Use template files as installer inputs. Templates keep source assets separate from target outputs and make future CLI expansion safer.
           status: "✅️Implementation Approved"
         - id: agent-002-2-installer-target-scope
-          decision: Support copilot and cursor as the bounded installer CLI target set. The installer now needs a second supported target, but the active target set should stay explicit and small so rollout and validation remain predictable.
+          decision: Support copilot, cursor, and grok as the bounded installer CLI target set. Grok is an explicit workspace-local convention target whose target-specific files are placed under .grok, while the active target set remains small and explicit so rollout and validation stay predictable.
           status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
         - id: agent-002-3-idempotent-reruns
           decision: Keep the installer safe to run repeatedly. Re-running the installer must not duplicate configuration or corrupt existing installed assets.
           status: "✅️Implementation Approved"
@@ -104,8 +105,9 @@ decisions:
           decision: Fail fast with explicit errors and print post-install validation steps. Installation must stop clearly on invalid state and tell the user how to verify success afterward.
           status: "✅️Implementation Approved"
         - id: agent-002-7-supported-target-names
-          decision: Use `copilot` and `cursor` as the supported installer CLI target values. The installer needs stable explicit target names for both supported runtimes so invocation and validation do not drift.
+          decision: Use `copilot`, `cursor`, and `grok` as the supported installer CLI target values. The installer needs stable explicit target names for all supported runtimes so invocation and validation do not drift.
           status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
         - id: agent-002-8-existing-file-overwrite-policy
           decision: Preserve existing files by default and ask before overwrite without backups. The installer must protect existing workspace files without silently replacing them or creating extra backup artifacts.
           status: "✅️Implementation Approved"
@@ -129,6 +131,14 @@ decisions:
           decision: Install Cursor rule outputs rendered from shared DOD sources plus shared DOD assets into the initial Cursor workspace paths. Cursor support still needs an explicit manifest, but the manifest should point at shared DOD sources and let the installer render the Cursor-specific rule wrapper instead of storing duplicated source files.
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
+        - id: agent-002-15-initial-grok-template-manifest
+          decision: Install the shared DOD agent and five skill sources directly into .grok as .grok/dod.agent.md and .grok/<skill-name>.skill.md. Keep DECISIONS.yml and .dodkit/templates/discussion-record.md at their existing shared workspace paths instead of creating Grok-specific copies.
+          status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
+        - id: agent-002-16-grok-discovery-boundary
+          decision: Treat .grok as a user-directed workspace convention for Grok instructions, not as an officially discovered or automatically applied Grok configuration directory. Installer documentation must describe the convention without claiming native Grok discovery behavior.
+          status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
 
     - id: agent-003-raw-github-install
       decision: Deliver installer entrypoint through raw.githubusercontent.com and pipe install.sh to bash. GitHub raw content hosting allows direct script delivery; using the official raw host avoids invalid-domain failures.
@@ -183,6 +193,10 @@ decisions:
           decision: Render the Cursor DOD rule wrapper as opt-in manual project rules rather than always-applied instructions. Manual Cursor rules preserve the existing explicit-entry workflow more closely than always-applied guidance and avoid constraining unrelated chat sessions by default, so the installer must synthesize that frontmatter around the shared body content.
           status: "✅️Implementation Approved"
           link: "records/agent-009-cursor-install-target.md"
+        - id: agent-004-11-grok-asset-destinations
+          decision: Direct-copy the shared DOD agent and skill sources into the .grok directory using flat target-specific destinations: .grok/dod.agent.md and .grok/<skill-name>.skill.md. Grok assets do not receive Cursor frontmatter or another target-specific rendering wrapper.
+          status: "✅️Implementation Approved"
+          link: "records/agent-011-grok-install-target.md"
 
     - id: agent-005-lightweight-template-roles
       decision: Define lightweight template roles without adding a separate decision phase. DOD must stay lightweight, and current AI friction comes from artifact overlap rather than from a missing phase.

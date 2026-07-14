@@ -5,12 +5,12 @@
 > **Alpha software.** DODKit is in early development. It may contain bugs or breaking changes. Use at your own risk.
 
 DODKit is a lightweight toolkit for Decision Oriented Development (DOD).
-It provides a practical structure for keeping active decisions explicit, separating decision history from current constraints, and installing reusable Copilot or Cursor customization assets into a workspace.
+It provides a practical structure for keeping active decisions explicit, separating decision history from current constraints, and installing reusable Copilot, Cursor, or user-directed Grok customization assets into a workspace.
 
 ## Install
 
 The installer is a single shell script at the repository root (`install.sh`).
-It supports GitHub Copilot and Cursor, and installs the current DOD assets into your current workspace directory.
+It supports GitHub Copilot, Cursor, and a user-directed Grok workspace convention, and installs the current DOD assets into your current workspace directory.
 
 Installed/copied assets:
 - Shared for both targets:
@@ -30,6 +30,15 @@ Installed/copied assets:
 	- `.cursor/rules/decision-promotion.mdc`
 	- `.cursor/rules/implementation.mdc`
 	- `.cursor/rules/implementation-validation.mdc`
+- For `grok`:
+	- `.grok/dod.agent.md`
+	- `.grok/discussion.skill.md`
+	- `.grok/discussion-validation.skill.md`
+	- `.grok/decision-promotion.skill.md`
+	- `.grok/implementation.skill.md`
+	- `.grok/implementation-validation.skill.md`
+
+The `.grok` directory is a workspace convention for files that you explicitly provide to Grok. It is not an official automatic Grok discovery path.
 
 ### Install with curl
 
@@ -48,6 +57,9 @@ wget -qO- https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash
 ```bash
 # Install Cursor assets instead of the default Copilot target
 curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor
+
+# Install user-directed Grok assets
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- grok
 
 # Force overwrite existing target files
 curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --force

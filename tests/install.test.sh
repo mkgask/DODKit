@@ -29,6 +29,16 @@ assert_file_content() {
   assert_eq "$actual" "$expected" "$message"
 }
 
+assert_file_exists() {
+  local file_path="$1"
+  local message="$2"
+
+  if [[ ! -f "$file_path" ]]; then
+    printf '[FAIL] %s (missing=%s)\n' "$message" "$file_path" >&2
+    exit 1
+  fi
+}
+
 reset_installer_state() {
   TARGET_CLI=""
   FORCE_OVERWRITE=0
@@ -48,6 +58,14 @@ test_parse_args_explicit_cursor_value() {
 
   assert_eq "$TARGET_CLI" "cursor" "parse_args should accept cursor as an explicit target"
   assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite for cursor"
+}
+
+test_parse_args_explicit_grok_value() {
+  reset_installer_state
+  parse_args grok --force
+
+  assert_eq "$TARGET_CLI" "grok" "parse_args should accept grok as an explicit target"
+  assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite for grok"
 }
 
 test_parse_args_defaults_target_when_missing() {
@@ -88,6 +106,11 @@ test_validate_target_rejects_unknown() {
 
 test_validate_target_accepts_cursor() {
   TARGET_CLI="cursor"
+  validate_target
+}
+
+test_validate_target_accepts_grok() {
+  TARGET_CLI="grok"
   validate_target
 }
 
@@ -381,6 +404,51 @@ test_cursor_manifest_includes_rule_templates() {
   done
 }
 
+test_grok_manifest_includes_workspace_assets() {
+  local expected_sources=(
+    "templates/agent.md"
+    "templates/DECISIONS.yml"
+    "templates/discussion-record.md"
+    "templates/skills/discussion.skill.md"
+    "templates/skills/discussion-validation.skill.md"
+    "templates/skills/decision-promotion.skill.md"
+    "templates/skills/implementation.skill.md"
+    "templates/skills/implementation-validation.skill.md"
+  )
+
+  local expected_destinations=(
+    ".grok/dod.agent.md"
+    "DECISIONS.yml"
+    ".dodkit/templates/discussion-record.md"
+    ".grok/discussion.skill.md"
+    ".grok/discussion-validation.skill.md"
+    ".grok/decision-promotion.skill.md"
+    ".grok/implementation.skill.md"
+    ".grok/implementation-validation.skill.md"
+  )
+
+  local index=0
+  local asset_spec=""
+  local source_path=""
+  local destination_path=""
+  local asset_name=""
+  local found_match=0
+
+  for index in "${!expected_sources[@]}"; do
+    found_match=0
+    for asset_spec in "${GROK_ASSET_SPECS[@]}"; do
+      IFS='|' read -r source_path destination_path asset_name <<< "$asset_spec"
+
+      if [[ "$source_path" == "${expected_sources[$index]}" ]] && [[ "$destination_path" == "${expected_destinations[$index]}" ]]; then
+        found_match=1
+        break
+      fi
+    done
+
+    assert_eq "$found_match" "1" "grok manifest should include ${expected_sources[$index]} -> ${expected_destinations[$index]}"
+  done
+}
+
 test_run_install_for_cursor_creates_expected_workspace_files() {
   local tmpdir=""
   local faketools=""
@@ -464,14 +532,80 @@ alwaysApply: false
   assert_file_content "$tmpdir/.dodkit/templates/discussion-record.md" "shared-discussion-record-template" "cursor target should still install the shared discussion record template without rendering"
 }
 
+test_run_install_for_grok_creates_expected_workspace_files() {
+  local tmpdir=""
+  local faketools=""
+
+  tmpdir="$(mktemp -d)"
+  faketools="$tmpdir/faketools"
+  mkdir -p "$faketools"
+
+  cat >"$faketools/curl" <<'FAKECURL'
+#!/usr/bin/env bash
+set -euo pipefail
+output_file=""
+source_url=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      source_url="$1"
+      shift
+      ;;
+  esac
+done
+
+case "$source_url" in
+  *"/templates/agent.md")
+    printf 'grok-agent-content' >"$output_file"
+    ;;
+  *"/templates/skills/discussion.skill.md")
+    printf 'grok-discussion-skill-content' >"$output_file"
+    ;;
+  *"/templates/DECISIONS.yml")
+    printf 'grok-decisions-template' >"$output_file"
+    ;;
+  *"/templates/discussion-record.md")
+    printf 'grok-discussion-record-template' >"$output_file"
+    ;;
+  *)
+    printf 'generic-grok-source:%s' "$source_url" >"$output_file"
+    ;;
+esac
+FAKECURL
+  chmod +x "$faketools/curl"
+
+  PATH="$faketools:$PATH"
+  TARGET_CLI="grok"
+  FORCE_OVERWRITE=1
+
+  pushd "$tmpdir" >/dev/null
+  run_install_for_target
+  popd >/dev/null
+
+  assert_file_content "$tmpdir/.grok/dod.agent.md" "grok-agent-content" "grok target should copy the shared agent source into .grok"
+  assert_file_content "$tmpdir/.grok/discussion.skill.md" "grok-discussion-skill-content" "grok target should copy the discussion skill into .grok"
+  assert_file_exists "$tmpdir/.grok/discussion-validation.skill.md" "grok target should install the discussion validation skill into .grok"
+  assert_file_exists "$tmpdir/.grok/decision-promotion.skill.md" "grok target should install the decision promotion skill into .grok"
+  assert_file_exists "$tmpdir/.grok/implementation.skill.md" "grok target should install the implementation skill into .grok"
+  assert_file_exists "$tmpdir/.grok/implementation-validation.skill.md" "grok target should install the implementation validation skill into .grok"
+  assert_file_content "$tmpdir/DECISIONS.yml" "grok-decisions-template" "grok target should install the shared decision template at the workspace root"
+  assert_file_content "$tmpdir/.dodkit/templates/discussion-record.md" "grok-discussion-record-template" "grok target should install the shared discussion record template at its existing path"
+}
+
 run_tests() {
   test_parse_args_explicit_values
   test_parse_args_explicit_cursor_value
+  test_parse_args_explicit_grok_value
   test_parse_args_defaults_target_when_missing
   test_parse_args_no_args_defaults
   test_parse_args_rejects_repo_ref_options
   test_validate_target_rejects_unknown
   test_validate_target_accepts_cursor
+  test_validate_target_accepts_grok
   test_copy_asset_installs_and_sets_permissions
   test_copy_asset_skips_when_unchanged
   test_copy_asset_refuses_symlink_paths
@@ -480,7 +614,9 @@ run_tests() {
   test_copilot_manifest_includes_skill_templates
   test_cursor_manifest_includes_discussion_record_template
   test_cursor_manifest_includes_rule_templates
+  test_grok_manifest_includes_workspace_assets
   test_run_install_for_cursor_creates_expected_workspace_files
+  test_run_install_for_grok_creates_expected_workspace_files
   printf '[PASS] install.sh function-level tests passed\n'
 }
 

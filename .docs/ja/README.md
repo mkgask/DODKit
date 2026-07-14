@@ -5,12 +5,12 @@
 > **アルファ版ソフトウェアです。** DODKit は開発初期段階にあります。不具合や破壊的変更が含まれる可能性があります。使用は自己責任でお願いします。
 
 DODKit は Decision Oriented Development（DOD）を軽量に運用するためのツールキットです。
-現在有効な決定事項を明示し、決定の履歴と現在の拘束条件を分離し、再利用可能な Copilot または Cursor のカスタマイズアセットをワークスペースへ導入できる実践的な構成を提供します。
+現在有効な決定事項を明示し、決定の履歴と現在の拘束条件を分離し、再利用可能な Copilot、Cursor、またはユーザーが明示的に Grok へ提供するためのカスタマイズアセットをワークスペースへ導入できる実践的な構成を提供します。
 
 ## インストール
 
 インストーラーはリポジトリルートの `install.sh` です。
-GitHub Copilot と Cursor に対応しており、現在のワークスペースディレクトリへ DOD アセットを導入します。
+GitHub Copilot、Cursor、およびユーザーが明示的に利用する Grok のワークスペース convention に対応しており、現在のワークスペースディレクトリへ DOD アセットを導入します。
 
 インストール/コピーされるアセット:
 - 両ターゲット共通:
@@ -30,6 +30,15 @@ GitHub Copilot と Cursor に対応しており、現在のワークスペース
 	- `.cursor/rules/decision-promotion.mdc`
 	- `.cursor/rules/implementation.mdc`
 	- `.cursor/rules/implementation-validation.mdc`
+- `grok` 向け:
+	- `.grok/dod.agent.md`
+	- `.grok/discussion.skill.md`
+	- `.grok/discussion-validation.skill.md`
+	- `.grok/decision-promotion.skill.md`
+	- `.grok/implementation.skill.md`
+	- `.grok/implementation-validation.skill.md`
+
+`.grok` ディレクトリは、ユーザーが Grok に明示的に提供するファイルのためのワークスペース convention です。公式の Grok 自動 discovery path ではありません。
 
 ### curl でインストール
 
@@ -48,6 +57,9 @@ wget -qO- https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash
 ```bash
 # 既定の Copilot ではなく Cursor 向けアセットを導入
 curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor
+
+# ユーザーが Grok に明示的に提供するアセットを導入
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- grok
 
 # 既存の対象ファイルを強制上書き
 curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --force

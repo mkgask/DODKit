@@ -30,6 +30,17 @@ CURSOR_ASSET_SPECS=(
   "templates/skills/implementation-validation.skill.md|.cursor/rules/implementation-validation.mdc|DOD Gate B and Gate C implementation-validation procedure for manual use in Cursor."
 )
 
+GROK_ASSET_SPECS=(
+  "templates/agent.md|.grok/dod.agent.md|DOD agent for Grok"
+  "templates/DECISIONS.yml|DECISIONS.yml|DOD decisions"
+  "templates/discussion-record.md|.dodkit/templates/discussion-record.md|DOD discussion record template"
+  "templates/skills/discussion.skill.md|.grok/discussion.skill.md|DOD discussion skill for Grok"
+  "templates/skills/discussion-validation.skill.md|.grok/discussion-validation.skill.md|DOD discussion validation skill for Grok"
+  "templates/skills/decision-promotion.skill.md|.grok/decision-promotion.skill.md|DOD decision promotion skill for Grok"
+  "templates/skills/implementation.skill.md|.grok/implementation.skill.md|DOD implementation skill for Grok"
+  "templates/skills/implementation-validation.skill.md|.grok/implementation-validation.skill.md|DOD implementation validation skill for Grok"
+)
+
 # Files that must never be overwritten, even with --force.
 # These contain project-specific data that would be lost on overwrite.
 PROTECT_FROM_OVERWRITE=(
@@ -39,7 +50,7 @@ PROTECT_FROM_OVERWRITE=(
 print_usage() {
   cat <<'USAGE'
 Usage:
-  install.sh [copilot|cursor] [--force]
+  install.sh [copilot|cursor|grok] [--force]
 
 Description:
   Install DOD assets for a supported editor customization target into the current workspace.
@@ -47,6 +58,7 @@ Description:
 Arguments:
   copilot                 Optional explicit target for GitHub Copilot assets. Defaults to copilot.
   cursor                  Optional explicit target for Cursor project rule assets.
+  grok                    Optional explicit target for user-directed Grok workspace assets.
 
 Options:
   --force                 Overwrite existing target files without interactive prompt.
@@ -129,7 +141,7 @@ parse_args() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      copilot|cursor)
+      copilot|cursor|grok)
         TARGET_CLI="$1"
         shift
         ;;
@@ -155,11 +167,11 @@ parse_args() {
 
 validate_target() {
   case "$TARGET_CLI" in
-    copilot|cursor)
+    copilot|cursor|grok)
       return 0
       ;;
     *)
-      die "Unsupported target '$TARGET_CLI'. Supported targets are: copilot, cursor."
+      die "Unsupported target '$TARGET_CLI'. Supported targets are: copilot, cursor, grok."
       ;;
   esac
 }
@@ -382,6 +394,23 @@ Validation steps:
    - .cursor/rules/discussion.mdc
 VALIDATION
       ;;
+    grok)
+  cat <<'VALIDATION'
+Validation steps:
+1. Confirm the installed files exist:
+   - .grok/dod.agent.md
+   - .grok/discussion.skill.md
+   - .grok/discussion-validation.skill.md
+   - .grok/decision-promotion.skill.md
+   - .grok/implementation.skill.md
+   - .grok/implementation-validation.skill.md
+   - .dodkit/templates/discussion-record.md
+   - DECISIONS.yml
+2. Review local changes before commit:
+   - git status
+3. Explicitly provide the relevant files under .grok to Grok when requesting DOD-guided work. The .grok directory is a workspace convention, not an automatic Grok discovery path.
+VALIDATION
+  ;;
   esac
 }
 
@@ -402,6 +431,9 @@ run_install_for_target() {
       ;;
     cursor)
       asset_specs=("${CURSOR_ASSET_SPECS[@]}")
+      ;;
+    grok)
+      asset_specs=("${GROK_ASSET_SPECS[@]}")
       ;;
   esac
 
