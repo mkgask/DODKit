@@ -15,7 +15,7 @@ It supports GitHub Copilot, Cursor, and a user-directed Grok workspace conventio
 Installed/copied assets:
 - Shared for both targets:
 	- `.dodkit/templates/discussion-record.md`
-	- `DECISIONS.yml` (installed only when missing; existing file is preserved even with `--force`)
+	- `DECISIONS.yml` (installed only when missing; existing file is preserved even with `--overwrite yes`)
 - For `copilot`:
 	- `.github/agents/dod.agent.md`
 	- `.github/skills/discussion/SKILL.md`
@@ -40,6 +40,8 @@ Installed/copied assets:
 
 The `.grok` directory is a workspace convention for files that you explicitly provide to Grok. It is not an official automatic Grok discovery path.
 
+On reinstall, changed files declared in the selected target manifest are managed outputs, while identical files remain unchanged. When `--overwrite` is omitted, an interactive terminal asks `Overwrite this file? [Y/n]:`; pressing Enter accepts the default and `n` keeps that file. `--overwrite yes` overwrites changed managed files without confirmation, and `--overwrite no` keeps them without confirmation. If the default ask policy has no usable terminal, changed managed files update automatically. This includes the agent and skill files, so local edits to those managed outputs can be replaced by the current templates. Existing `DECISIONS.yml` is the exception: it is project data and is never overwritten, even with `--overwrite yes`.
+
 ### Install with curl
 
 ```bash
@@ -61,8 +63,11 @@ curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bas
 # Install user-directed Grok assets
 curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- grok
 
-# Force overwrite existing target files
-curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --force
+# Overwrite changed managed target files without confirmation
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --overwrite yes
+
+# Keep changed managed target files without confirmation
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --overwrite no
 ```
 
 ## What is DOD?

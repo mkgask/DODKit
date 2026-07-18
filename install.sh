@@ -3,7 +3,7 @@
 set -euo pipefail
 
 TARGET_CLI=""
-FORCE_OVERWRITE=0
+OVERWRITE_POLICY="ask"
 
 SOURCE_REPOSITORY="mkgask/DODKit"
 SOURCE_REF="main"
@@ -41,7 +41,7 @@ GROK_ASSET_SPECS=(
   "templates/skills/implementation-validation.skill.md|.grok/implementation-validation.skill.md|DOD implementation validation skill for Grok"
 )
 
-# Files that must never be overwritten, even with --force.
+# Files that must never be overwritten, even with --overwrite yes.
 # These contain project-specific data that would be lost on overwrite.
 PROTECT_FROM_OVERWRITE=(
   "DECISIONS.yml"
@@ -50,7 +50,7 @@ PROTECT_FROM_OVERWRITE=(
 print_usage() {
   cat <<'USAGE'
 Usage:
-  install.sh [copilot|cursor|grok] [--force]
+  install.sh [copilot|cursor|grok] [--overwrite yes|no]
 
 Description:
   Install DOD assets for a supported editor customization target into the current workspace.
@@ -61,13 +61,9 @@ Arguments:
   grok                    Optional explicit target for user-directed Grok workspace assets.
 
 Options:
-  --force                 Overwrite existing target files without interactive prompt.
+  --overwrite yes|no      Set whether changed managed files are overwritten without prompting.
   -h, --help              Show this help.
 USAGE
-}
-
-has_tty() {
-  [[ -r /dev/tty ]] && [[ -w /dev/tty ]]
 }
 
 path_has_symlink_component() {
@@ -129,11 +125,13 @@ require_command() {
 
 interactive_setup() {
   TARGET_CLI="copilot"
-  FORCE_OVERWRITE=0
-  log_info "No arguments provided. Using defaults: target=copilot overwrite=prompt-on-conflict"
+  OVERWRITE_POLICY="ask"
+  log_info "No arguments provided. Using defaults: target=copilot overwrite=ask"
 }
 
 parse_args() {
+  OVERWRITE_POLICY="ask"
+
   if [[ $# -eq 0 ]]; then
     interactive_setup
     return 0
@@ -145,9 +143,20 @@ parse_args() {
         TARGET_CLI="$1"
         shift
         ;;
-      --force)
-        FORCE_OVERWRITE=1
-        shift
+      --overwrite)
+        if [[ $# -lt 2 ]]; then
+          die "--overwrite requires a value: yes or no."
+        fi
+
+        case "$2" in
+          yes|no)
+            OVERWRITE_POLICY="$2"
+            shift 2
+            ;;
+          *)
+            die "Invalid --overwrite value '$2'. Expected yes or no."
+            ;;
+        esac
         ;;
       -h|--help)
         print_usage
@@ -176,40 +185,51 @@ validate_target() {
   esac
 }
 
+has_tty() {
+  [[ -r /dev/tty ]] && [[ -w /dev/tty ]] && [[ -t 1 ]]
+}
+
 confirm_overwrite() {
   local destination_path="$1"
   local answer=""
 
   if has_tty; then
     printf '[WARNING] File exists: %s\n' "$destination_path" >/dev/tty
-    printf 'Overwrite this file? [y/N]: ' >/dev/tty
+    printf 'Overwrite this file? [Y/n]: ' >/dev/tty
     read -r answer </dev/tty || true
-
-    case "$answer" in
-      y|Y|yes|YES)
-        return 0
-        ;;
-      *)
-        return 1
-        ;;
-    esac
+  elif [[ -t 0 ]]; then
+    printf '[WARNING] File exists: %s\n' "$destination_path"
+    printf 'Overwrite this file? [Y/n]: '
+    read -r answer || true
+  else
+    return 0
   fi
-
-  if [[ ! -t 0 ]]; then
-    log_warning "Non-interactive execution detected; preserving existing file: $destination_path"
-    return 1
-  fi
-
-  printf '[WARNING] File exists: %s\n' "$destination_path"
-  printf 'Overwrite this file? [y/N]: '
-  read -r answer
 
   case "$answer" in
-    y|Y|yes|YES)
-      return 0
+    n|N|no|NO)
+      return 1
       ;;
     *)
+      return 0
+      ;;
+  esac
+}
+
+should_overwrite() {
+  local destination_path="$1"
+
+  case "$OVERWRITE_POLICY" in
+    yes)
+      return 0
+      ;;
+    no)
       return 1
+      ;;
+    ask)
+      confirm_overwrite "$destination_path"
+      ;;
+    *)
+      die "Unsupported overwrite policy '$OVERWRITE_POLICY'. Expected ask, yes, or no."
       ;;
   esac
 }
@@ -315,6 +335,7 @@ render_cursor_rule_asset() {
 install_staged_asset() {
   local staged_file="$1"
   local destination_path="$2"
+  local destination_existed=0
 
   if path_has_symlink_component "$destination_path"; then
     rm -f "$staged_file"
@@ -325,6 +346,8 @@ install_staged_asset() {
   create_parent_directory "$destination_path"
 
   if [[ -f "$destination_path" ]]; then
+    destination_existed=1
+
     if cmp -s "$staged_file" "$destination_path"; then
       rm -f "$staged_file"
       log_info "Already up-to-date: $destination_path"
@@ -340,7 +363,7 @@ install_staged_asset() {
       fi
     done
 
-    if [[ "$FORCE_OVERWRITE" -ne 1 ]] && ! confirm_overwrite "$destination_path"; then
+    if ! should_overwrite "$destination_path"; then
       rm -f "$staged_file"
       log_warning "Skipped existing file: $destination_path"
       return 1
@@ -350,7 +373,13 @@ install_staged_asset() {
   cp "$staged_file" "$destination_path"
   chmod 0644 "$destination_path"
   rm -f "$staged_file"
-  log_success "Installed: $destination_path"
+
+  if [[ "$destination_existed" -eq 1 ]]; then
+    log_success "Updated: $destination_path"
+  else
+    log_success "Installed: $destination_path"
+  fi
+
   return 0
 }
 

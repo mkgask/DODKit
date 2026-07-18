@@ -128,3 +128,48 @@ Trade-offs:
 - The installer now maps `templates/skills/*.skill.md` sources into `.github/skills/<skill-name>/SKILL.md` outputs.
 - Installer validation guidance now includes the five installed skill files in addition to the DOD agent file and discussion-record template.
 - Function-level installer validation passed with `bash tests/install.test.sh` after the manifest update.
+
+## Discussion Update (2026-07-18)
+- A reinstall through `curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash` downloaded a changed `templates/agent.md`, but `.github/agents/dod.agent.md` was skipped after the overwrite prompt received no affirmative answer.
+- `dod.agent.md` is not listed in `PROTECT_FROM_OVERWRITE`; it is an ordinary manifest-managed output. The skip came from the general existing-file confirmation path, which is reached before the installer can copy any changed non-protected asset.
+- The user-facing reinstall objective is to use rerunning the pinned installer as the update mechanism for declared DOD assets. `DECISIONS.yml` remains project data and must keep its unconditional protection, while identical managed outputs should remain `Already up-to-date`.
+- The candidate direction is to update changed manifest-managed outputs by default on reinstall, without creating backups. This intentionally treats those declared outputs as installer-owned files; local customizations to them are replaced by the current source templates.
+
+## Discussion Validation Update (2026-07-18)
+- The candidate direction fits the original installer objective because a rerun can deliver current agent and skill templates without requiring an interactive answer or a separate update command.
+- It preserves the active workspace-only, template-source, idempotent, and fail-fast constraints. The existing `DECISIONS.yml` protection remains a separate invariant and continues to take precedence over any overwrite behavior.
+- The candidate does change the previous prompt-on-conflict rule for declared managed outputs. That trade-off is explicit and bounded to manifest destinations; it does not authorize writes to undeclared paths or project decision data.
+- Promote the managed-output reinstall rule by updating `agent-002-8-existing-file-overwrite-policy` in `DECISIONS.yml`, then validate the installer and documentation together.
+
+## Implementation Update (2026-07-18)
+- The overwrite policy was promoted so changed installer-managed outputs are updated by default during reinstall, while unchanged outputs remain untouched and `DECISIONS.yml` remains protected.
+- Focused shell tests cover the changed-file update path and the protected decision-file path alongside the existing idempotence and target installation checks.
+
+## Discussion Update (2026-07-18)
+- Follow-up user feedback clarified that the default should remain overwrite, but the interactive confirmation should remain visible so a user can decline a particular replacement.
+- The refined direction is an affirmative-default prompt (`Overwrite this file? [Y/n]:`) for changed managed files in an interactive terminal. Empty input accepts the overwrite, while an explicit `n` preserves that file. Non-interactive execution cannot answer a prompt and therefore keeps automatic managed-file updates; `--force` bypasses confirmation.
+
+## Discussion Validation Update (2026-07-18)
+- The refined direction preserves the reinstall objective while restoring a visible last-moment choice for interactive users. It keeps identical-file idempotence, workspace-only writes, template sourcing, no-backup behavior, and unconditional `DECISIONS.yml` protection.
+- The distinction between interactive and non-interactive execution is explicit, so piping the installer through `bash` does not silently wait for input when no terminal is available.
+- Promote the refined confirmation behavior in `agent-002-8-existing-file-overwrite-policy` and validate both pseudo-terminal responses and non-interactive installation.
+
+## Implementation Update (2026-07-18)
+- Restored the overwrite confirmation for changed managed outputs with an affirmative default. Explicit `n` skips that file; empty input, other affirmative input, and non-interactive execution continue with the update.
+- Kept `--force` as the confirmation bypass and updated the completion notice, README files, and focused shell tests to describe and verify the refined behavior.
+
+## Discussion Update (2026-07-18)
+- Follow-up feedback proposed replacing the boolean-style `--force` switch with an explicit `--overwrite yes|no` option so automation states its overwrite decision directly.
+- The candidate policy is to use `ask` as the internal default when `--overwrite` is omitted. Interactive terminals retain the affirmative-default prompt; `--overwrite yes` overwrites changed managed files without prompting, and `--overwrite no` preserves them without prompting.
+- When the default `ask` policy has no usable terminal, the installer cannot obtain an answer and keeps the existing non-interactive update behavior. Explicit `--overwrite yes|no` always takes precedence over terminal detection. `DECISIONS.yml` remains protected in every mode.
+
+## Discussion Validation Update (2026-07-18)
+- The candidate policy satisfies the reinstall objective because users can keep the default terminal confirmation while scripted callers can choose `yes` or `no` explicitly without relying on prompt input.
+- It preserves idempotence for identical files, workspace-only writes, template-based sourcing, no-backup behavior, symlink protection, and unconditional `DECISIONS.yml` protection. The option changes only the decision for changed manifest-managed outputs.
+- Replacing `--force` removes the ambiguous boolean switch and makes both overwrite outcomes testable. The parser must reject missing or invalid values and the implementation must reject the legacy option.
+- Promote the policy in `agent-002-8-existing-file-overwrite-policy` and the related `DECISIONS.yml` protection text, then validate parser, overwrite, documentation, and target-install behavior together.
+
+## Implementation Update (2026-07-18)
+- Replaced `FORCE_OVERWRITE` and `--force` with `OVERWRITE_POLICY` and `--overwrite yes|no`. Omitted options use the `ask` policy; explicit `yes` and `no` bypass the prompt in their respective directions.
+- Preserved the existing affirmative-default terminal prompt, non-interactive update fallback, idempotent unchanged-file path, symlink protection, and unconditional protection for an existing `DECISIONS.yml`.
+- Updated focused shell tests and English/Japanese README files. Validation covers parser acceptance and rejection, explicit yes/no outcomes, default prompt behavior, non-interactive updates, target manifests, and protected decision data.

@@ -41,39 +41,39 @@ assert_file_exists() {
 
 reset_installer_state() {
   TARGET_CLI=""
-  FORCE_OVERWRITE=0
+  OVERWRITE_POLICY="ask"
 }
 
 test_parse_args_explicit_values() {
   reset_installer_state
-  parse_args copilot --force
+  parse_args copilot --overwrite yes
 
   assert_eq "$TARGET_CLI" "copilot" "parse_args should set explicit target"
-  assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite"
+  assert_eq "$OVERWRITE_POLICY" "yes" "parse_args should enable explicit overwrite"
 }
 
 test_parse_args_explicit_cursor_value() {
   reset_installer_state
-  parse_args cursor --force
+  parse_args cursor --overwrite no
 
   assert_eq "$TARGET_CLI" "cursor" "parse_args should accept cursor as an explicit target"
-  assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite for cursor"
+  assert_eq "$OVERWRITE_POLICY" "no" "parse_args should preserve changed files when overwrite is disabled"
 }
 
 test_parse_args_explicit_grok_value() {
   reset_installer_state
-  parse_args grok --force
+  parse_args grok --overwrite yes
 
   assert_eq "$TARGET_CLI" "grok" "parse_args should accept grok as an explicit target"
-  assert_eq "$FORCE_OVERWRITE" "1" "parse_args should enable force overwrite for grok"
+  assert_eq "$OVERWRITE_POLICY" "yes" "parse_args should enable explicit overwrite for grok"
 }
 
 test_parse_args_defaults_target_when_missing() {
   reset_installer_state
-  parse_args --force
+  parse_args --overwrite yes
 
   assert_eq "$TARGET_CLI" "copilot" "parse_args should default target to copilot"
-  assert_eq "$FORCE_OVERWRITE" "1" "parse_args should still parse force option"
+  assert_eq "$OVERWRITE_POLICY" "yes" "parse_args should parse overwrite policy without an explicit target"
 }
 
 test_parse_args_no_args_defaults() {
@@ -81,7 +81,34 @@ test_parse_args_no_args_defaults() {
   parse_args
 
   assert_eq "$TARGET_CLI" "copilot" "parse_args with no args should default target to copilot"
-  assert_eq "$FORCE_OVERWRITE" "0" "parse_args with no args should keep overwrite prompt behavior"
+  assert_eq "$OVERWRITE_POLICY" "ask" "parse_args with no args should keep ask overwrite behavior"
+}
+
+test_parse_args_rejects_invalid_overwrite_value() {
+  reset_installer_state
+
+  if (parse_args --overwrite maybe 2>/dev/null); then
+    printf '[FAIL] parse_args should reject invalid overwrite values\n' >&2
+    exit 1
+  fi
+}
+
+test_parse_args_rejects_missing_overwrite_value() {
+  reset_installer_state
+
+  if (parse_args --overwrite 2>/dev/null); then
+    printf '[FAIL] parse_args should reject a missing overwrite value\n' >&2
+    exit 1
+  fi
+}
+
+test_parse_args_rejects_legacy_force_option() {
+  reset_installer_state
+
+  if (parse_args --force 2>/dev/null); then
+    printf '[FAIL] parse_args should reject the legacy force option\n' >&2
+    exit 1
+  fi
 }
 
 test_parse_args_rejects_repo_ref_options() {
@@ -143,7 +170,7 @@ FAKECURL
   chmod +x "$faketools/curl"
 
   PATH="$faketools:$PATH"
-  FORCE_OVERWRITE=1
+  OVERWRITE_POLICY=yes
 
   destination="$tmpdir/output/file.txt"
   copy_asset "templates/test.txt" "$destination"
@@ -184,7 +211,7 @@ FAKECURL
   chmod +x "$faketools/curl"
 
   PATH="$faketools:$PATH"
-  FORCE_OVERWRITE=0
+  OVERWRITE_POLICY=ask
 
   destination="$tmpdir/output/file.txt"
   mkdir -p "$(dirname "$destination")"
@@ -196,6 +223,173 @@ FAKECURL
   else
     local status="$?"
     assert_eq "$status" "2" "copy_asset should return 2 when destination is unchanged"
+  fi
+}
+
+test_copy_asset_updates_changed_file_by_default() {
+  local tmpdir=""
+  local faketools=""
+  local destination=""
+
+  tmpdir="$(mktemp -d)"
+  faketools="$tmpdir/faketools"
+  mkdir -p "$faketools"
+
+  cat >"$faketools/curl" <<'FAKECURL'
+#!/usr/bin/env bash
+set -euo pipefail
+output_file=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+printf 'updated-content' >"$output_file"
+FAKECURL
+  chmod +x "$faketools/curl"
+
+  PATH="$faketools:$PATH"
+  OVERWRITE_POLICY=ask
+
+  destination="$tmpdir/output/file.txt"
+  mkdir -p "$(dirname "$destination")"
+  printf 'old-content' >"$destination"
+
+  if ! (exec </dev/null; copy_asset "templates/test.txt" "$destination" >"$tmpdir/install.log"); then
+    printf '[FAIL] copy_asset should update a changed managed file by default\n' >&2
+    exit 1
+  fi
+
+  assert_file_content "$destination" "updated-content" "copy_asset should update changed managed files by default"
+}
+
+test_copy_asset_preserves_protected_decisions_file() {
+  local tmpdir=""
+  local faketools=""
+
+  tmpdir="$(mktemp -d)"
+  faketools="$tmpdir/faketools"
+  mkdir -p "$faketools"
+
+  cat >"$faketools/curl" <<'FAKECURL'
+#!/usr/bin/env bash
+set -euo pipefail
+output_file=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+printf 'new-decisions-content' >"$output_file"
+FAKECURL
+  chmod +x "$faketools/curl"
+
+  PATH="$faketools:$PATH"
+  OVERWRITE_POLICY=yes
+
+  printf 'project-decisions-content' >"$tmpdir/DECISIONS.yml"
+
+  pushd "$tmpdir" >/dev/null
+  if copy_asset "templates/test.txt" "DECISIONS.yml"; then
+    popd >/dev/null
+    printf '[FAIL] copy_asset should preserve DECISIONS.yml even with overwrite enabled\n' >&2
+    exit 1
+  else
+    local status="$?"
+    popd >/dev/null
+    assert_eq "$status" "1" "copy_asset should return 1 when DECISIONS.yml is protected"
+  fi
+
+  assert_file_content "$tmpdir/DECISIONS.yml" "project-decisions-content" "copy_asset should preserve project DECISIONS.yml content"
+}
+
+test_install_staged_asset_honors_no_policy() {
+  local tmpdir=""
+  local staged_file=""
+  local destination=""
+
+  tmpdir="$(mktemp -d)"
+  staged_file="$tmpdir/staged.txt"
+  destination="$tmpdir/output/file.txt"
+  mkdir -p "$(dirname "$destination")"
+  printf 'new-content' >"$staged_file"
+  printf 'old-content' >"$destination"
+  OVERWRITE_POLICY=no
+
+  if install_staged_asset "$staged_file" "$destination" >"$tmpdir/install.log"; then
+    printf '[FAIL] install_staged_asset should skip changed files when overwrite is disabled\n' >&2
+    exit 1
+  else
+    local status="$?"
+    assert_eq "$status" "1" "install_staged_asset should return 1 when overwrite is disabled"
+  fi
+
+  assert_file_content "$destination" "old-content" "overwrite=no should preserve changed managed files"
+}
+
+test_install_staged_asset_honors_yes_policy() {
+  local tmpdir=""
+  local staged_file=""
+  local destination=""
+
+  tmpdir="$(mktemp -d)"
+  staged_file="$tmpdir/staged.txt"
+  destination="$tmpdir/output/file.txt"
+  mkdir -p "$(dirname "$destination")"
+  printf 'new-content' >"$staged_file"
+  printf 'old-content' >"$destination"
+  OVERWRITE_POLICY=yes
+
+  if ! install_staged_asset "$staged_file" "$destination" >"$tmpdir/install.log"; then
+    printf '[FAIL] install_staged_asset should overwrite changed files when overwrite is enabled\n' >&2
+    exit 1
+  fi
+
+  assert_file_content "$destination" "new-content" "overwrite=yes should update changed managed files"
+}
+
+run_confirm_overwrite_in_pty() {
+  local answer="$1"
+
+  if ! command -v script >/dev/null 2>&1; then
+    printf '[INFO] skipping interactive confirmation test because script is unavailable\n'
+    return 0
+  fi
+
+  printf '%s\n' "$answer" | DODKIT_INSTALLER_PATH="$INSTALLER_PATH" script -qec "bash -c 'source \"\$DODKIT_INSTALLER_PATH\"; if confirm_overwrite test; then echo accepted; else echo rejected; fi'" /dev/null 2>&1
+}
+
+test_confirm_overwrite_defaults_to_yes_in_interactive_terminal() {
+  local output=""
+
+  output="$(run_confirm_overwrite_in_pty "")"
+
+  if [[ "$output" != *"Overwrite this file? [Y/n]:"* ]] || [[ "$output" != *"accepted"* ]]; then
+    printf '[FAIL] interactive overwrite confirmation should accept an empty response by default\n' >&2
+    exit 1
+  fi
+}
+
+test_confirm_overwrite_skips_on_explicit_no_in_interactive_terminal() {
+  local output=""
+
+  output="$(run_confirm_overwrite_in_pty "n")"
+
+  if [[ "$output" != *"Overwrite this file? [Y/n]:"* ]] || [[ "$output" != *"rejected"* ]]; then
+    printf '[FAIL] interactive overwrite confirmation should skip on an explicit no response\n' >&2
+    exit 1
   fi
 }
 
@@ -229,7 +423,7 @@ FAKECURL
   chmod +x "$faketools/curl"
 
   PATH="$faketools:$PATH"
-  FORCE_OVERWRITE=1
+  OVERWRITE_POLICY=yes
 
   mkdir -p "$tmpdir/real-output"
   ln -s "$tmpdir/real-output" "$tmpdir/output"
@@ -449,6 +643,62 @@ test_grok_manifest_includes_workspace_assets() {
   done
 }
 
+test_run_install_for_copilot_updates_managed_agent_and_preserves_decisions() {
+  local tmpdir=""
+  local faketools=""
+
+  tmpdir="$(mktemp -d)"
+  faketools="$tmpdir/faketools"
+  mkdir -p "$faketools"
+
+  cat >"$faketools/curl" <<'FAKECURL'
+#!/usr/bin/env bash
+set -euo pipefail
+output_file=""
+source_url=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      source_url="$1"
+      shift
+      ;;
+  esac
+done
+
+case "$source_url" in
+  *"/templates/agent.md")
+    printf 'updated-copilot-agent' >"$output_file"
+    ;;
+  *"/templates/DECISIONS.yml")
+    printf 'new-decisions-template' >"$output_file"
+    ;;
+  *)
+    printf 'copilot-source:%s' "$source_url" >"$output_file"
+    ;;
+esac
+FAKECURL
+  chmod +x "$faketools/curl"
+
+  PATH="$faketools:$PATH"
+  TARGET_CLI="copilot"
+  OVERWRITE_POLICY=ask
+
+  mkdir -p "$tmpdir/.github/agents"
+  printf 'old-copilot-agent' >"$tmpdir/.github/agents/dod.agent.md"
+  printf 'project-decisions-content' >"$tmpdir/DECISIONS.yml"
+
+  pushd "$tmpdir" >/dev/null
+  (exec </dev/null; run_install_for_target >"$tmpdir/install.log")
+  popd >/dev/null
+
+  assert_file_content "$tmpdir/.github/agents/dod.agent.md" "updated-copilot-agent" "copilot reinstall should update the managed agent by default"
+  assert_file_content "$tmpdir/DECISIONS.yml" "project-decisions-content" "copilot reinstall should preserve project DECISIONS.yml"
+}
+
 test_run_install_for_cursor_creates_expected_workspace_files() {
   local tmpdir=""
   local faketools=""
@@ -511,7 +761,7 @@ FAKECURL
 
   PATH="$faketools:$PATH"
   TARGET_CLI="cursor"
-  FORCE_OVERWRITE=1
+  OVERWRITE_POLICY=yes
 
   pushd "$tmpdir" >/dev/null
   run_install_for_target
@@ -580,7 +830,7 @@ FAKECURL
 
   PATH="$faketools:$PATH"
   TARGET_CLI="grok"
-  FORCE_OVERWRITE=1
+  OVERWRITE_POLICY=yes
 
   pushd "$tmpdir" >/dev/null
   run_install_for_target
@@ -602,12 +852,21 @@ run_tests() {
   test_parse_args_explicit_grok_value
   test_parse_args_defaults_target_when_missing
   test_parse_args_no_args_defaults
+  test_parse_args_rejects_invalid_overwrite_value
+  test_parse_args_rejects_missing_overwrite_value
+  test_parse_args_rejects_legacy_force_option
   test_parse_args_rejects_repo_ref_options
   test_validate_target_rejects_unknown
   test_validate_target_accepts_cursor
   test_validate_target_accepts_grok
   test_copy_asset_installs_and_sets_permissions
   test_copy_asset_skips_when_unchanged
+  test_copy_asset_updates_changed_file_by_default
+  test_copy_asset_preserves_protected_decisions_file
+  test_install_staged_asset_honors_no_policy
+  test_install_staged_asset_honors_yes_policy
+  test_confirm_overwrite_defaults_to_yes_in_interactive_terminal
+  test_confirm_overwrite_skips_on_explicit_no_in_interactive_terminal
   test_copy_asset_refuses_symlink_paths
   test_asset_specs_are_well_formed
   test_copilot_manifest_includes_discussion_record_template
@@ -615,6 +874,7 @@ run_tests() {
   test_cursor_manifest_includes_discussion_record_template
   test_cursor_manifest_includes_rule_templates
   test_grok_manifest_includes_workspace_assets
+  test_run_install_for_copilot_updates_managed_agent_and_preserves_decisions
   test_run_install_for_cursor_creates_expected_workspace_files
   test_run_install_for_grok_creates_expected_workspace_files
   printf '[PASS] install.sh function-level tests passed\n'

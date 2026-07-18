@@ -109,13 +109,14 @@ decisions:
           status: "✅️Implementation Approved"
           link: "records/agent-011-grok-install-target.md"
         - id: agent-002-8-existing-file-overwrite-policy
-          decision: Preserve existing files by default and ask before overwrite without backups. The installer must protect existing workspace files without silently replacing them or creating extra backup artifacts.
+          decision: Treat files declared in an installer target manifest as managed outputs and overwrite changed files on reinstall without creating backups. When `--overwrite` is omitted, use the `ask` policy: interactive runs ask with `Overwrite this file? [Y/n]:`, where Enter accepts and `n` preserves that file; `--overwrite yes` overwrites changed managed files without confirmation, and `--overwrite no` preserves them without confirmation. If `ask` has no usable terminal, update automatically because no answer can be obtained. Explicit `--overwrite yes|no` takes precedence over terminal detection, and DECISIONS.yml remains protected.
           status: "✅️Implementation Approved"
+          link: "records/agent-002-installer-delivery.md"
         - id: agent-002-9-initial-copilot-template-manifest
           decision: Install templates/agent.md and templates/DECISIONS.yml into the initial Copilot workspace paths. The first release needs an explicit template file set and destination mapping so installer behavior stays deterministic.
           status: "✅️Implementation Approved"
         - id: agent-002-10-decisions-yml-never-overwrite
-          decision: Never overwrite an existing DECISIONS.yml regardless of --force. DECISIONS.yml contains project-specific decision records that would be permanently lost on overwrite; the installer must always preserve it.
+          decision: Never overwrite an existing DECISIONS.yml regardless of `--overwrite yes|no`. DECISIONS.yml contains project-specific decision records that would be permanently lost on overwrite; the installer must always preserve it.
           status: "✅️Implementation Approved"
         - id: agent-002-11-no-template-fallback-copy
           decision: Do not save a fallback copy such as DECISIONS.template.yml when DECISIONS.yml already exists. A fallback copy adds filesystem noise without clear benefit; the upstream template is always available via the source repository.

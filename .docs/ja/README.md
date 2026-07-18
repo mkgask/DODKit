@@ -15,7 +15,7 @@ GitHub Copilot、Cursor、およびユーザーが明示的に利用する Grok 
 インストール/コピーされるアセット:
 - 両ターゲット共通:
 	- `.dodkit/templates/discussion-record.md`
-	- `DECISIONS.yml`（存在しない場合のみ導入。既存ファイルは `--force` 指定時でも保護されます）
+	- `DECISIONS.yml`（存在しない場合のみ導入。既存ファイルは `--overwrite yes` 指定時でも保護されます）
 - `copilot` 向け:
 	- `.github/agents/dod.agent.md`
 	- `.github/skills/discussion/SKILL.md`
@@ -40,6 +40,8 @@ GitHub Copilot、Cursor、およびユーザーが明示的に利用する Grok 
 
 `.grok` ディレクトリは、ユーザーが Grok に明示的に提供するファイルのためのワークスペース convention です。公式の Grok 自動 discovery path ではありません。
 
+再インストール時は、選択したターゲットのマニフェストに宣言されたファイルを管理対象として扱い、同一内容のファイルは変更しません。`--overwrite` を省略した場合、対話端末では `Overwrite this file? [Y/n]:` と確認し、Enter で既定の上書きを受け入れ、`n` でそのファイルを保持します。`--overwrite yes` は確認なしで変更済み管理対象を上書きし、`--overwrite no` は確認なしで保持します。既定の ask ポリシーで利用可能な端末がない場合は、変更済み管理対象を自動更新します。agent と skill files も管理対象のため、それらへのローカル編集は現在のテンプレートで置き換えられる可能性があります。`DECISIONS.yml` だけは例外で、プロジェクトデータとして扱い、`--overwrite yes` 指定時も上書きしません。
+
 ### curl でインストール
 
 ```bash
@@ -61,8 +63,11 @@ curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bas
 # ユーザーが Grok に明示的に提供するアセットを導入
 curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- grok
 
-# 既存の対象ファイルを強制上書き
-curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --force
+# 確認を省略して変更済み管理対象ファイルを上書き
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --overwrite yes
+
+# 確認を省略して変更済み管理対象ファイルを保持
+curl -fsSL https://raw.githubusercontent.com/mkgask/DODKit/main/install.sh | bash -s -- cursor --overwrite no
 ```
 
 ## DOD とは
