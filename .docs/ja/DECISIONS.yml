@@ -243,3 +243,24 @@ decisions:
         - id: agent-007-3-implementation-validation-before-closeout
           decision: 実装作業を閉じる前に有効な決定に対する実装検証を必須にする. テスト、コード、関連成果物が昇格済み決定に照らして検証されない限り、決定は助言に留まりやすいため。
           status: "✅️Implementation Approved"
+
+    - id: agent-012-decision-file-scope-and-hierarchy
+      decision: ルートの DECISIONS.yml をプロジェクト全体の基準として維持し、将来の入れ子の DECISIONS.yml は各ディレクトリ配下への追加制約としてのみ許可する. 適用対象の決定はルートから最も近い祖先までを解決し、コンポーネント横断の制約はルートに置く. 親子の衝突は明示的に報告し、対話実行ではユーザーに質問し、非対話実行ではスコープ関係が明確な場合に警告を出して子を優先する. 解決不能な曖昧性は検証失敗にする。
+      status: "✅️Implementation Approved"
+      link: "records/agent-012-decision-file-scope-and-hierarchy.md"
+      sub_decisions:
+        - id: agent-012-1-root-baseline
+          decision: ルートの DECISIONS.yml を共有するプロジェクトレベルの正本として維持する. 入れ子のファイルでルートの決定を置き換えたり隠したりせず、現在の install.sh もルートを対象とする。
+          status: "✅️Implementation Approved"
+        - id: agent-012-2-nested-additive-scope
+          decision: 入れ子の DECISIONS.yml は任意とし、そのディレクトリ配下だけに適用する. 実効的な決定集合は、最も広いスコープから最も狭いスコープの順に、ルートと適用対象の祖先ファイルを組み合わせて解決する。
+          status: "✅️Implementation Approved"
+        - id: agent-012-3-cross-scope-conflict
+          decision: 複数コンポーネントに影響する決定はルートファイルに置く. 親子の衝突を黙って解決せず、明確な親子衝突は agent-012-5 の実行モード別方針に従い、同一スコープまたはその他の曖昧な重複は検証失敗にする。
+          status: "✅️Implementation Approved"
+        - id: agent-012-4-hierarchy-runtime-deferred
+          decision: 入れ子ファイルの探索とマージはまだ有効化しない. 階層挙動を有効にする前に、後続の実装決定でファイル探索、決定識別子、衝突検証、テストを定義する。
+          status: "✅️Implementation Approved"
+        - id: agent-012-5-actionable-conflict-resolution
+          decision: 適用対象のファイルパス、決定 ID、衝突した制約、選択したフォールバックを報告する. 対話実行では明確な親子衝突の解消方法をユーザーに質問し、非対話実行では警告を出して狭いスコープの子決定を適用し継続する. 同一スコープまたはその他の曖昧な衝突は自動解決しない。
+          status: "✅️Implementation Approved"

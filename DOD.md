@@ -2,23 +2,35 @@
 
 **Decision Oriented Development: DOD**
 
-A lightweight continuous development method for discovering and obtaining the true form of software that should truly exist.
+A lightweight continuous development method for discovering and obtaining the project outputs that should truly exist.
 
-DOD places decisions at the center of continuous development. By repeating the **discussion phase** and the **implementation phase**, and by separately maintaining the current decision list, the implementation that follows those decisions, and the history behind them, teams can search for what the software should truly become while keeping the active decision set lightweight and sustainable.
+DOD places decisions at the center of continuous development. By repeating the **discussion phase** and the **implementation phase**, and by separately maintaining the current decision list, the implementation that follows those decisions, and the history behind them, teams can search for what the project should truly become while keeping the active decision set lightweight and sustainable.
 
 ## Purpose, Background, and Why DOD
 
-The purpose of DOD is to discover what the software should truly be, and to obtain that software through continuous development.
+The purpose of DOD is to discover what a project should truly become, and to obtain that result through continuous development.
 
 To make that sustainable across medium- and long-term development, DOD keeps the active decision list lightweight and sustainable, so the cognitive load for the next decision stays as low as possible.
 
-The background is a common failure in software projects: the current decisions, the history behind them, and the implementation details often get mixed together. When that happens, people must repeatedly dig through old context just to answer two basic questions: "What is decided now?" and "Why was it decided?"
+The background is a common failure in projects: the current decisions, the history behind them, and the implementation details often get mixed together. When that happens, people must repeatedly dig through old context just to answer two basic questions: "What is decided now?" and "Why was it decided?"
 
 DOD solves this by separating active decisions from discussion history and by making the source of truth for implementation explicit.
 
 Another part of the motivation is that the source of specification is rarely explicit at the start.
 It often exists as tacit understanding distributed across people, constraints, context, and prior discussion.
 DOD is a way to turn that tacit source into explicit decisions (in `DECISIONS.yml`) and explicit rationale/history (in `records/{discussion-id}.md`), so implementation can proceed from a shared and inspectable basis.
+
+## Applicability and Scope
+
+DOD is independent of programming language, runtime, framework, build system, editor, deployment model, and repository layout.
+It can guide software, scripts, configuration, schemas, infrastructure, documentation, and other project artifacts when decisions constrain what should be created or changed next.
+
+DOD can be used for a small project with one implementation artifact or for a larger project with multiple components and languages.
+The active decision set should describe constraints at the scope needed for the next implementation decision without requiring a single language or toolchain to be shared by every component.
+
+The project-level `DECISIONS.yml` is the baseline decision list.
+A project may use additional scoped decision files only when its active decisions explicitly define file discovery, decision identity, inheritance, and conflict behavior.
+Scoped files are additive constraints for their subtrees, not replacements for the project-level baseline; directory layout alone must never be treated as an implicit decision hierarchy.
 
 ## Core Principle
 
@@ -27,7 +39,7 @@ The core distinction in DOD is not whether a piece of information is important. 
 DOD must keep discussion, decision, and implementation separate.
 - Discussion is where investigation, research, questions, trade-offs, and evolving understanding accumulate.
 - Decision is the binding definition produced from discussion. In DOD, "decision" is not limited to resolved disputes — specifications, design constraints, interface contracts, technology selections, project constitution, philosophy, governing principles, behavioral invariants, and non-goals are all decisions and must be managed in `DECISIONS.yml`.
-- Implementation is the act of turning those decisions into tests and working code.
+- Implementation is the act of turning those decisions into appropriate project artifacts and, where applicable, tests and working code.
 
 Because of that, DOD separates the following two artifacts.
 
@@ -48,7 +60,7 @@ DOD works through three connected ideas:
 - Allow one discussion to produce multiple decisions when the resulting constraints are independently active
 - Move work through only two phases: discussion and implementation
 
-In the discussion phase, the team investigates, records discussion history, validates the current direction, and updates one or more decision objects. In the implementation phase, the team designs, writes tests and code that enforce the active decisions, and validates the resulting implementation against those decisions. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
+In the discussion phase, the team investigates, records discussion history, validates the current direction, and updates one or more decision objects. In the implementation phase, the team designs, creates the appropriate implementation artifacts, and validates the resulting change against those decisions. Those artifacts may be code, configuration, schemas, documentation, infrastructure, scripts, tests, or other project outputs. Because the current decisions stay explicit, both humans and AI can start from the same source of truth without rereading all historical discussion.
 
 ## Development Flow (Only Two Phases)
 
@@ -58,9 +70,10 @@ In the discussion phase, the team investigates, records discussion history, vali
 - Always write the discussion history to `records/{discussion-id}.md` first, then validate whether the recorded direction still fits the original purpose and active constraints, and then promote the resulting active decisions to `DECISIONS.yml`.
 - Do not enter implementation until the relevant decisions and decision contracts are explicit in `DECISIONS.yml`.
 
-**Implementation Phase** (until tests pass)
-- A practical order inside this phase is: 1. design, 2. test and implement, 3. validation.
-- Design, test, implement, and validate against the active decisions.
+**Implementation Phase** (until the relevant validation passes)
+- A practical order inside this phase is: 1. design, 2. test when appropriate and implement, 3. validation.
+- Design, test when appropriate, implement, and validate against the active decisions.
+- Treat code, configuration, schemas, documentation, infrastructure, scripts, tests, and other project outputs as implementation artifacts when they are part of the requested change.
 - Do not deviate from the relevant decisions.
 - If new facts are discovered, append them to the related discussion record file, and promote them to `DECISIONS.yml` if they become binding constraints.
 
@@ -104,7 +117,8 @@ Operational rule:
 If the answer suggests that implementation could drift, the safe default is to store or promote the information in `DECISIONS.yml`.
 
 **Decision List File (`DECISIONS.yml`)**: mutable, project decision register
-- This is the canonical set of active decision objects and binding constraints for the project.
+- The project-level file is the canonical baseline of active decision objects and binding constraints.
+- If scoped decision files are enabled by explicit project decisions, resolve the applicable set from the project baseline through the relevant ancestors. Scoped files add constraints and do not hide the baseline.
 - A new implementer should be able to start here without rereading broad history.
 - Keep entries concise, but do not omit any active rule that can change implementation.
 - Prefer many small decisions or sub-decisions over a few overloaded entries.
@@ -130,15 +144,17 @@ This separation makes it possible to get both **what the project decisions are**
 DOD does not work if decisions remain only as remembered intent.
 They must be enforced in implementation.
 
-- Tests and working code enforce the behavioral side of active decisions.
+- Tests and other suitable validation mechanisms enforce the behavioral and structural side of active decisions. When no executable test harness exists, use deterministic checks appropriate to the artifact, such as parsing, linting, schema validation, rendered-output comparison, or focused manual inspection.
 - Automated checks such as hooks can enforce consistency between `DECISIONS.yml`, tests, and implementation.
 - Discussion-validation enforces that only directionally sound conclusions become active decisions.
+- When scoped decision files are active, conflict diagnostics should identify the applicable file paths, decision IDs, conflicting constraints, and selected fallback. Interactive runs ask the user about an unambiguous parent-child conflict; non-interactive runs warn and prefer the narrower child only when the scope relation is unambiguous. Same-scope or otherwise ambiguous conflicts remain validation failures.
 - The exact enforcement mechanism is project-specific, but some enforcement mechanism is required; otherwise decisions remain advisory and implementation drift becomes likely.
 
-## Testing
+## Validation
 
-The exact testing approach may differ by project.
-The recommended default is fail-first TDD.
+The exact validation approach may differ by project and artifact type.
+When executable behavior is being changed and a suitable test framework is available, the recommended default is fail-first TDD.
+For documentation, configuration, schemas, infrastructure, or other non-code changes, use the smallest deterministic validation that can detect the relevant failure modes.
 
 ## Notes
 

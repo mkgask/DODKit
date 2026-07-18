@@ -244,3 +244,24 @@ decisions:
           decision: Require implementation-validation against active decisions before closing implementation work. Decisions remain advisory unless tests, code, and related artifacts are checked against the promoted decision set before closeout.
           status: "✅️Implementation Approved"
 
+    - id: agent-012-decision-file-scope-and-hierarchy
+      decision: Keep root DECISIONS.yml as the project-wide baseline and allow future nested DECISIONS.yml files only as additive constraints for their directory subtrees. Applicable decisions resolve from root through the nearest ancestor; cross-component constraints stay at root. Report parent-child conflicts explicitly: interactive runs ask the user, while non-interactive runs warn and prefer the child only when the scope relation is unambiguous; unresolved ambiguity fails validation.
+      status: "✅️Implementation Approved"
+      link: "records/agent-012-decision-file-scope-and-hierarchy.md"
+      sub_decisions:
+        - id: agent-012-1-root-baseline
+          decision: Preserve the root DECISIONS.yml as the shared project-level canonical file. Nested files must not replace or hide root decisions, and the current install.sh remains root-oriented.
+          status: "✅️Implementation Approved"
+        - id: agent-012-2-nested-additive-scope
+          decision: Treat a nested DECISIONS.yml as optional and applicable only to its directory subtree. Resolve the effective set by combining the root and applicable ancestor files from broadest to narrowest scope.
+          status: "✅️Implementation Approved"
+        - id: agent-012-3-cross-scope-conflict
+          decision: Keep decisions affecting multiple components in the root file. Do not silently resolve parent-child conflicts: unambiguous parent-child conflicts use the explicit interaction-mode policy in agent-012-5, while same-scope or otherwise ambiguous duplicates remain validation failures.
+          status: "✅️Implementation Approved"
+        - id: agent-012-4-hierarchy-runtime-deferred
+          decision: Do not activate nested-file discovery or merging yet. A later implementation decision must define file discovery, decision identity, conflict validation, and tests before hierarchical behavior is enabled.
+          status: "✅️Implementation Approved"
+        - id: agent-012-5-actionable-conflict-resolution
+          decision: Report the applicable file paths, decision IDs, conflicting constraints, and selected fallback. In interactive mode, ask the user to resolve an unambiguous parent-child conflict; in non-interactive mode, warn and continue with the narrower child decision. Do not auto-resolve same-scope or otherwise ambiguous conflicts.
+          status: "✅️Implementation Approved"
+
