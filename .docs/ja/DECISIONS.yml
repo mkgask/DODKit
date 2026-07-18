@@ -109,14 +109,14 @@ decisions:
           status: "✅️Implementation Approved"
           link: "records/agent-011-grok-install-target.md"
         - id: agent-002-8-existing-file-overwrite-policy
-          decision: インストーラーのターゲットマニフェストに宣言されたファイルを管理対象出力として扱い、バックアップを作成せず、再インストール時に変更されたファイルを更新する。`--overwrite` を省略した場合は `ask` ポリシーとし、対話実行では `Overwrite this file? [Y/n]:` で確認し、Enter は許可、`n` はそのファイルを維持する。`--overwrite yes` は確認なしで変更済み管理対象を上書きし、`--overwrite no` は確認なしで保持する。`ask` で利用可能な端末がない場合は回答を取得できないため自動更新する。明示された `--overwrite yes|no` は端末検出より優先し、DECISIONS.yml は保護する。
+          decision: インストーラーのターゲットマニフェストに宣言されたファイルを管理対象出力として扱い、バックアップを作成せず、再インストール時に変更されたファイルを更新する。`--overwrite` を省略した場合は `ask` ポリシーとし、対話実行では `Overwrite this file? [Y/n/a] (a = all remaining files):` で確認する。Enter は現在のファイルだけを許可し、`n` は現在のファイルだけを維持し、`a` は現在のファイルを許可したうえで、現在のインストール中に以降の変更済み管理対象をすべて確認なしで上書きする。all-no の短縮入力は設けない。`--overwrite yes` は確認なしで変更済み管理対象を上書きし、`--overwrite no` は確認なしで保持する。`ask` で利用可能な端末がない場合は回答を取得できないため自動更新する。明示された `--overwrite yes|no` は端末検出より優先し、`a` の切り替えはセッション限定とし、DECISIONS.yml は保護する。
           status: "✅️Implementation Approved"
           link: "records/agent-002-installer-delivery.md"
         - id: agent-002-9-initial-copilot-template-manifest
           decision: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する. 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
           status: "✅️Implementation Approved"
         - id: agent-002-10-decisions-yml-never-overwrite
-          decision: `--overwrite yes|no` の指定にかかわらず、既存の DECISIONS.yml は絶対に上書きしない. DECISIONS.yml にはプロジェクト固有の決定記録が含まれており、上書きすると永久に失われるため、インストーラーは常に保護しなければならない。
+          decision: `--overwrite yes|no` または対話時の全ファイル選択の指定にかかわらず、既存の DECISIONS.yml は絶対に上書きしない. DECISIONS.yml にはプロジェクト固有の決定記録が含まれており、上書きすると永久に失われるため、インストーラーは常に保護しなければならない。
           status: "✅️Implementation Approved"
         - id: agent-002-11-no-template-fallback-copy
           decision: DECISIONS.yml が既に存在する場合に DECISIONS.template.yml のような別名コピーを残さない. 別名コピーはファイルシステムの余分なノイズになるだけで実質的な価値がなく、元のテンプレートはソースリポジトリから常に参照可能なため。

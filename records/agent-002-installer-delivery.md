@@ -173,3 +173,20 @@ Trade-offs:
 - Replaced `FORCE_OVERWRITE` and `--force` with `OVERWRITE_POLICY` and `--overwrite yes|no`. Omitted options use the `ask` policy; explicit `yes` and `no` bypass the prompt in their respective directions.
 - Preserved the existing affirmative-default terminal prompt, non-interactive update fallback, idempotent unchanged-file path, symlink protection, and unconditional protection for an existing `DECISIONS.yml`.
 - Updated focused shell tests and English/Japanese README files. Validation covers parser acceptance and rejection, explicit yes/no outcomes, default prompt behavior, non-interactive updates, target manifests, and protected decision data.
+
+## Discussion Update (2026-07-18)
+- Follow-up feedback confirmed that the omitted `--overwrite` policy asks separately for each changed managed file, and proposed an `a` response to switch the remainder of the current install to overwrite-all behavior.
+- The candidate prompt is `Overwrite this file? [Y/n/a] (a = all):`. Enter accepts the current file only, `n` preserves the current file only, and `a` overwrites the current file and changes the session policy to `yes` for all subsequent changed managed files. There is no all-no shortcut because overwrite is the affirmative default and per-file `n` remains available.
+- The `a` transition is session-scoped and applies only while the omitted-option `ask` flow is running. Explicit `--overwrite yes|no` continues to take precedence, non-interactive `ask` continues to update automatically, and `DECISIONS.yml` remains protected even after `a`.
+
+## Discussion Validation Update (2026-07-18)
+- The candidate preserves the original reinstall objective while reducing repetitive confirmation for the common case where the user wants to update all current managed templates. A per-file `n` remains available for the exceptional file, so an all-no shortcut is unnecessary.
+- The prompt should use `Overwrite this file? [Y/n/a] (a = all remaining files):` so the scope of `a` is explicit. Enter and `n` affect only the current file; `a` affects the current file and transitions the current install to the same effective behavior as `--overwrite yes`.
+- The transition must be session-local: it must not alter future invocations, must not override an explicit `--overwrite no`, and must never bypass the existing protected-file check for `DECISIONS.yml`. Non-interactive `ask` remains automatic because no prompt answer can be obtained.
+- Validation must cover a multi-file sequence where `a` is entered once and later files receive no prompt, alongside existing Enter, `n`, explicit yes/no, non-interactive, protected-file, idempotence, symlink, and target-manifest checks.
+- Promote this behavior in `agent-002-8-existing-file-overwrite-policy`, then implement and validate the session transition and the exact prompt text.
+
+## Implementation Update (2026-07-18)
+- Extended the interactive overwrite prompt to `Overwrite this file? [Y/n/a] (a = all remaining files):`. Enter accepts only the current file, `n` preserves only the current file, and `a` accepts the current file and changes the current install policy to `yes` for all subsequent changed managed files.
+- Kept the transition session-scoped and below the existing protected-file check, so `a` cannot overwrite `DECISIONS.yml` and does not affect later invocations or explicit `--overwrite no` runs.
+- Updated focused tests and English/Japanese README files. Validation covers the exact prompt, one-time `a` input across multiple overwrite checks, existing Enter and `n` responses, explicit yes/no policies, non-interactive behavior, and all existing installer safety checks.
