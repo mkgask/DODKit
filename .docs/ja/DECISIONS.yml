@@ -229,6 +229,24 @@ decisions:
           decision: 各 decision は簡潔さを保ちつつ、拘束内容の明確化が必要な場合のみ 3 行程度まで記述を許可する. これにより、一覧性を維持しながら意味を複数フィールドに分断せずに済む。
           status: "✅️Implementation Approved"
 
+    - id: agent-013-discussion-record-boundaries
+      decision: 各 DOD discussion record を1つのまとまった意思決定テーマに絞り、record template と discussion skill に明示的な分割指示を加える. 独立した意思決定の境界、または記録が実務上のサイズ目安に達した時点で新しい discussion ID を使い、追記専用履歴と前の記録への参照を保つ。
+      status: "✅️Implementation Approved"
+      link: "records/agent-013-discussion-record-boundaries.md"
+      sub_decisions:
+        - id: agent-013-1-one-theme-per-record
+          decision: 1つの議論記録は1つのまとまった意思決定テーマに保つ. 本当に独立した質問、コンポーネント、またはフォローアップは、無関係な履歴を延長せず、新しい discussion ID の新記録を開始し、前の記録を参照する。
+          status: "✅️Implementation Approved"
+        - id: agent-013-2-practical-record-size-signal
+          decision: おおよそ10エントリまたは1,000語を、自然な区切りでいったん閉じて新しい記録へ続けるための一覧性シグナルとして扱う. これはヒューリスティックであり、パーサーが強制する上限ではない。
+          status: "✅️Implementation Approved"
+        - id: agent-013-3-lightweight-boundary-nongoals
+          decision: 分割指示は軽量に保つ. DOD の第3フェーズ、必須記録フィールド、新しいインストーラーアセット対応は追加しない。同じテーマのエントリは簡潔でレビュー可能な間、現在の記録に残してよい。
+          status: "✅️Implementation Approved"
+        - id: agent-013-4-template-skill-sync-acceptance
+          decision: templates/discussion-record.md と templates/skills/discussion.skill.md に同等の境界指示を置き、インストール済み共有コピーと日本語ミラーも同期する. どちらかの原本面から独立テーマのトリガーまたは実務上のサイズ目安が欠けた場合、検証は失敗とする。
+          status: "✅️Implementation Approved"
+
   DODプロセス:
     - id: agent-007-phase-verification-model
       decision: DOD を 2 フェーズのまま保ちつつ、フェーズ別の検証を明示する. DOD には決定昇格前の方向性検証と、クローズ前の実装検証が必要だが、独立した検証フェーズを追加すると価値に対して手順が重くなりすぎるため。

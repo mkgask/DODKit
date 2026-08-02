@@ -229,6 +229,24 @@ decisions:
           decision: Keep each decision field concise while allowing up to about three lines when the binding constraint needs extra clarity. This preserves scanability without forcing semantic split across multiple fields.
           status: "✅️Implementation Approved"
 
+    - id: agent-013-discussion-record-boundaries
+      decision: Keep each DOD discussion record focused on one cohesive decision theme and add explicit split guidance to the record template and discussion skill. Start a new discussion ID at an independent decision boundary or when the record reaches the practical size signal, while preserving append-only history and prior-record references.
+      status: "✅️Implementation Approved"
+      link: "records/agent-013-discussion-record-boundaries.md"
+      sub_decisions:
+        - id: agent-013-1-one-theme-per-record
+          decision: Keep one discussion record for one cohesive decision theme. A genuinely independent question, component, or follow-up must start a new record with a new discussion ID and reference the prior record instead of extending unrelated history.
+          status: "✅️Implementation Approved"
+        - id: agent-013-2-practical-record-size-signal
+          decision: Treat roughly 10 entries or 1,000 words as a reviewability signal to close at a natural boundary and continue in a new record. This is a heuristic, not a hard parser-enforced limit.
+          status: "✅️Implementation Approved"
+        - id: agent-013-3-lightweight-boundary-nongoals
+          decision: Keep the split guidance lightweight; do not add a third DOD phase, mandatory record fields, or a new installer asset mapping. Same-theme entries may remain in the current record when they stay concise and reviewable.
+          status: "✅️Implementation Approved"
+        - id: agent-013-4-template-skill-sync-acceptance
+          decision: Keep equivalent boundary guidance in templates/discussion-record.md and templates/skills/discussion.skill.md, and synchronize their installed shared copies and Japanese mirrors. Validation fails if either source surface omits the independent-theme trigger or practical size signal.
+          status: "✅️Implementation Approved"
+
   DOD Process:
     - id: agent-007-phase-verification-model
       decision: Keep DOD as a two-phase method while making phase-specific verification explicit. DOD needs directional validation before decision promotion and implementation validation before closeout, but adding a separate verification phase would add process weight without enough new value.
