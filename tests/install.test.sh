@@ -371,15 +371,19 @@ run_confirm_overwrite_in_pty() {
   printf '%s\n' "$answer" | DODKIT_INSTALLER_PATH="$INSTALLER_PATH" script -qec "bash -c 'source \"\$DODKIT_INSTALLER_PATH\"; if confirm_overwrite test; then echo accepted; else echo rejected; fi'" /dev/null 2>&1
 }
 
-test_confirm_overwrite_defaults_to_yes_in_interactive_terminal() {
+test_confirm_overwrite_defaults_to_all_in_interactive_terminal() {
   local output=""
 
-  output="$(run_confirm_overwrite_in_pty "")"
+  output="$(run_overwrite_policy_sequence_in_pty "")"
 
-  if [[ "$output" != *"Overwrite this file? [Y/n/a] (a = all remaining files):"* ]] || [[ "$output" != *"accepted"* ]]; then
-    printf '[FAIL] interactive overwrite confirmation should accept an empty response by default\n' >&2
+  if [[ "$output" != *"Overwrite this file? [y/n/A] (A = all remaining files):"* ]] || [[ "$output" != *"first-accepted"* ]] || [[ "$output" != *"second-accepted"* ]] || [[ "$output" != *"policy=yes"* ]]; then
+    printf '[FAIL] interactive overwrite confirmation should overwrite all remaining files after an empty response\n' >&2
     exit 1
   fi
+
+  local prompt_count=""
+  prompt_count="$(printf '%s' "$output" | grep -o 'Overwrite this file?' | wc -l | tr -d ' ')"
+  assert_eq "$prompt_count" "1" "an empty response should prompt only once for all remaining files"
 }
 
 test_confirm_overwrite_skips_on_explicit_no_in_interactive_terminal() {
@@ -387,27 +391,29 @@ test_confirm_overwrite_skips_on_explicit_no_in_interactive_terminal() {
 
   output="$(run_confirm_overwrite_in_pty "n")"
 
-  if [[ "$output" != *"Overwrite this file? [Y/n/a] (a = all remaining files):"* ]] || [[ "$output" != *"rejected"* ]]; then
+  if [[ "$output" != *"Overwrite this file? [y/n/A] (A = all remaining files):"* ]] || [[ "$output" != *"rejected"* ]]; then
     printf '[FAIL] interactive overwrite confirmation should skip on an explicit no response\n' >&2
     exit 1
   fi
 }
 
-run_all_overwrite_policy_sequence_in_pty() {
+run_overwrite_policy_sequence_in_pty() {
+  local answer="$1"
+
   if ! command -v script >/dev/null 2>&1; then
     printf '[INFO] skipping interactive all confirmation test because script is unavailable\n'
     return 0
   fi
 
-  printf 'a\n' | DODKIT_INSTALLER_PATH="$INSTALLER_PATH" script -qec "bash -c 'source \"\$DODKIT_INSTALLER_PATH\"; OVERWRITE_POLICY=ask; if should_overwrite first; then echo first-accepted; else echo first-rejected; fi; if should_overwrite second; then echo second-accepted; else echo second-rejected; fi; echo policy=\$OVERWRITE_POLICY'" /dev/null 2>&1
+  printf '%s\n' "$answer" | DODKIT_INSTALLER_PATH="$INSTALLER_PATH" script -qec "bash -c 'source \"\$DODKIT_INSTALLER_PATH\"; OVERWRITE_POLICY=ask; if should_overwrite first; then echo first-accepted; else echo first-rejected; fi; if should_overwrite second; then echo second-accepted; else echo second-rejected; fi; echo policy=\$OVERWRITE_POLICY'" /dev/null 2>&1
 }
 
 test_confirm_overwrite_all_switches_remaining_files_to_yes() {
   local output=""
 
-  output="$(run_all_overwrite_policy_sequence_in_pty)"
+  output="$(run_overwrite_policy_sequence_in_pty "a")"
 
-  if [[ "$output" != *"Overwrite this file? [Y/n/a] (a = all remaining files):"* ]] || [[ "$output" != *"first-accepted"* ]] || [[ "$output" != *"second-accepted"* ]] || [[ "$output" != *"policy=yes"* ]]; then
+  if [[ "$output" != *"Overwrite this file? [y/n/A] (A = all remaining files):"* ]] || [[ "$output" != *"first-accepted"* ]] || [[ "$output" != *"second-accepted"* ]] || [[ "$output" != *"policy=yes"* ]]; then
     printf '[FAIL] interactive all response should accept the current and subsequent files without another prompt\n' >&2
     exit 1
   fi
@@ -889,7 +895,7 @@ run_tests() {
   test_copy_asset_preserves_protected_decisions_file
   test_install_staged_asset_honors_no_policy
   test_install_staged_asset_honors_yes_policy
-  test_confirm_overwrite_defaults_to_yes_in_interactive_terminal
+  test_confirm_overwrite_defaults_to_all_in_interactive_terminal
   test_confirm_overwrite_skips_on_explicit_no_in_interactive_terminal
   test_confirm_overwrite_all_switches_remaining_files_to_yes
   test_copy_asset_refuses_symlink_paths

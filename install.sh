@@ -195,18 +195,18 @@ confirm_overwrite() {
 
   if has_tty; then
     printf '[WARNING] File exists: %s\n' "$destination_path" >/dev/tty
-    printf 'Overwrite this file? [Y/n/a] (a = all remaining files): ' >/dev/tty
+    printf 'Overwrite this file? [y/n/A] (A = all remaining files): ' >/dev/tty
     read -r answer </dev/tty || true
   elif [[ -t 0 ]]; then
     printf '[WARNING] File exists: %s\n' "$destination_path"
-    printf 'Overwrite this file? [Y/n/a] (a = all remaining files): '
+    printf 'Overwrite this file? [y/n/A] (A = all remaining files): '
     read -r answer || true
   else
     return 0
   fi
 
   case "$answer" in
-    a|A)
+    ""|a|A)
       OVERWRITE_POLICY="yes"
       return 0
       ;;

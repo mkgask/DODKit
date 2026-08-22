@@ -109,9 +109,9 @@ decisions:
           status: "✅️Implementation Approved"
           link: "records/agent-011-grok-install-target.md"
         - id: agent-002-8-existing-file-overwrite-policy
-          decision: インストーラーのターゲットマニフェストに宣言されたファイルを管理対象出力として扱い、バックアップを作成せず、再インストール時に変更されたファイルを更新する。`--overwrite` を省略した場合は `ask` ポリシーとし、対話実行では `Overwrite this file? [Y/n/a] (a = all remaining files):` で確認する。Enter は現在のファイルだけを許可し、`n` は現在のファイルだけを維持し、`a` は現在のファイルを許可したうえで、現在のインストール中に以降の変更済み管理対象をすべて確認なしで上書きする。all-no の短縮入力は設けない。`--overwrite yes` は確認なしで変更済み管理対象を上書きし、`--overwrite no` は確認なしで保持する。`ask` で利用可能な端末がない場合は回答を取得できないため自動更新する。明示された `--overwrite yes|no` は端末検出より優先し、`a` の切り替えはセッション限定とし、DECISIONS.yml は保護する。
+          decision: インストーラーのターゲットマニフェストに宣言されたファイルを管理対象出力として扱い、バックアップを作成せず、再インストール時に変更されたファイルを更新する。`--overwrite` を省略した場合は `ask` ポリシーとし、対話実行では `Overwrite this file? [y/n/A] (A = all remaining files):` で確認する。Enter、`A`、`a` は現在のファイルを許可したうえで、現在のインストール中に以降の変更済み管理対象をすべて確認なしで上書きする。`y` は現在のファイルだけを許可し、`n` は現在のファイルだけを維持する。all-no の短縮入力は設けない。`--overwrite yes` は確認なしで変更済み管理対象を上書きし、`--overwrite no` は確認なしで保持する。`ask` で利用可能な端末がない場合は回答を取得できないため自動更新する。明示された `--overwrite yes|no` は端末検出より優先し、残り全部への切り替えはセッション限定とし、DECISIONS.yml は保護する。
           status: "✅️Implementation Approved"
-          link: "records/agent-002-installer-delivery.md"
+          link: "records/agent-015-overwrite-default-all.md"
         - id: agent-002-9-initial-copilot-template-manifest
           decision: templates/agent.md と templates/DECISIONS.yml を初期 Copilot ワークスペースパスへ配置する. 初期リリースでテンプレートファイルセットと配置先対応を明示し、インストーラー挙動を決定的に保つため。
           status: "✅️Implementation Approved"
