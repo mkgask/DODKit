@@ -284,3 +284,18 @@ decisions:
           decision: Report the applicable file paths, decision IDs, conflicting constraints, and selected fallback. In interactive mode, ask the user to resolve an unambiguous parent-child conflict; in non-interactive mode, warn and continue with the narrower child decision. Do not auto-resolve same-scope or otherwise ambiguous conflicts.
           status: "✅️Implementation Approved"
 
+    - id: agent-014-decision-document-ownership
+      decision: Keep each project-specific DOD binding constraint canonical in the applicable DECISIONS.yml and prevent its decision text from being duplicated across operational or explanatory documents. Use records for rationale and let other documents change only for independently required content.
+      status: "✅️Implementation Approved"
+      link: "records/agent-014-decision-document-ownership.md"
+      sub_decisions:
+        - id: agent-014-1-canonical-project-decision-source
+          decision: Treat the applicable project decision list, rooted at the project-level DECISIONS.yml under the active scope rules, as the sole canonical source for current project-specific decisions and implementation constraints. Do not create a second DOD decision authority in PRINCIPLES.md or another document.
+          status: "✅️Implementation Approved"
+        - id: agent-014-2-no-duplicate-project-decision-text
+          decision: Do not copy the same project-specific binding decision into AGENTS.md, PRINCIPLES.md, DOD.md, README.md, or skill files. Those documents may contain distinct operational or explanatory content when their own roles require it.
+          status: "✅️Implementation Approved"
+        - id: agent-014-3-document-ownership-validation
+          decision: Require discussion to classify document ownership before writing and discussion-validation to check for a single DECISIONS.yml owner and unjustified duplicate decision text. The corresponding English skill templates and Japanese mirrors must stay synchronized.
+          status: "✅️Implementation Approved"
+

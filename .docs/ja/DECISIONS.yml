@@ -283,3 +283,18 @@ decisions:
         - id: agent-012-5-actionable-conflict-resolution
           decision: 適用対象のファイルパス、決定 ID、衝突した制約、選択したフォールバックを報告する. 対話実行では明確な親子衝突の解消方法をユーザーに質問し、非対話実行では警告を出して狭いスコープの子決定を適用し継続する. 同一スコープまたはその他の曖昧な衝突は自動解決しない。
           status: "✅️Implementation Approved"
+
+    - id: agent-014-decision-document-ownership
+      decision: プロジェクト固有の DOD 実装拘束条件は適用対象の DECISIONS.yml を正本として保ち、その決定文を運用文書や説明文書に重複させない. 理由は records に置き、他文書は固有の内容が必要な場合だけ変更する。
+      status: "✅️Implementation Approved"
+      link: "records/agent-014-decision-document-ownership.md"
+      sub_decisions:
+        - id: agent-014-1-canonical-project-decision-source
+          decision: 有効なスコープ規則に従い、プロジェクトレベルの DECISIONS.yml を起点とする適用対象のプロジェクト決定リストを、現在のプロジェクト固有の決定と実装拘束条件に関する唯一の正本として扱う. PRINCIPLES.md やその他の文書に DOD の別の決定事項正本を作らない。
+          status: "✅️Implementation Approved"
+        - id: agent-014-2-no-duplicate-project-decision-text
+          decision: 同じプロジェクト固有の拘束力ある決定を AGENTS.md、PRINCIPLES.md、DOD.md、README.md、または skill files にコピーしない. それぞれの文書固有の役割に必要な独立した運用上または説明上の内容は、これらの文書に記載してよい。
+          status: "✅️Implementation Approved"
+        - id: agent-014-3-document-ownership-validation
+          decision: discussion では書き込み前に文書所有権を分類し、discussion-validation では DECISIONS.yml 上の正本が1つであることと、正当化されていない決定文の重複を確認する. 対応する英語 skill テンプレートと日本語ミラーは同期させる。
+          status: "✅️Implementation Approved"
