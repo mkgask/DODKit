@@ -76,8 +76,20 @@ Decision Oriented Development (DOD) is a lightweight development method centered
 
 For the full specification, see [DOD.md](DOD.md).
 
-Core idea:
+### Core idea
+
 - `DECISIONS.yml` is the canonical list of active decisions and current implementation constraints.
 - `records/{discussion-id}.md` keeps immutable discussion history such as context, research, trade-offs, and alternatives.
 
 This separation helps teams make the next decision quickly without rereading broad history, while still preserving full discussion context when needed.
+
+### Strengths, limits, and suitable uses
+
+DOD is a human-led method based on the idea that humans ultimately bear responsibility: people make fine-grained decisions while AI helps investigate, implement, and validate them against the shared decision set.
+
+- **Strengths:** Keeps current constraints and their rationale distinct, improves continuity across long-running work, and gives humans and AI the same implementation baseline.
+- **Limitations:** Requires deliberate decision and record maintenance, can become heavy for trivial changes, and still depends on the quality of human judgment.
+- **Best at:** Sustained product development, evolving APIs and data models, cross-artifact changes, and collaboration where context must survive handoffs.
+- **Less suited to:** Disposable experiments, one-off scripts, highly exploratory work, and immediate incident response.
+- **Recommended for:** Long-lived SaaS and business applications, SDKs and libraries, OSS, infrastructure and CI/CD tools, and AI-assisted repositories.
+- **Overall:** Strong for continuous development where many small human decisions must remain coherent; intentionally less efficient for short-lived, low-risk work.
